@@ -41,3 +41,10 @@ services:
       - 1080:80
     volumes:
       - /sessions
+
+  react:
+    container_name: react
+    build: src/frontend
+    ports:
+      - '3007:3000'
+    tty: true
