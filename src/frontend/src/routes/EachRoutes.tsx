@@ -4,8 +4,8 @@ import {
     Routes,
     Route,
 } from "react-router-dom";
-import Footer from "../components/common/Footer";
-import Header from "../components/common/Header";
+import Footer from "../components/common/footer/Footer";
+import Header from "../components/common/header/Header";
 import Test from "../components/app/Test";
 import Index from "../components/Index";
 import Instagram from "../components/common/footer/Instagram";
