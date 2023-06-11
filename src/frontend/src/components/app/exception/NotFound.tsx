@@ -2,12 +2,13 @@ import React from "react";
 import Header from "../../common/header/Header";
 import Footer from "../../common/footer/Footer";
 
-
-export default function Posts() {
+export default function NotFound() {
     return(
         <>
             <Header/>
-            All posts are displayed at here .
+            <div>
+                Page was not found here ....
+            </div>
             <Footer/>
         </>
     )

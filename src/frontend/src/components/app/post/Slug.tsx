@@ -2,12 +2,13 @@ import React from "react";
 import Header from "../../common/header/Header";
 import Footer from "../../common/footer/Footer";
 
-
-export default function Posts() {
+export default function Slug() {
     return(
         <>
             <Header/>
-            All posts are displayed at here .
+            <div>
+                Each post is displayed at here.
+            </div>
             <Footer/>
         </>
     )
