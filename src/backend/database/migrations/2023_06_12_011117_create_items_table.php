@@ -13,15 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('posts', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('items', function (Blueprint $table) {
+            $table->increments('id')->unsigned()->nullable(false);
             $table->string('name', 200);
-            $table->string('description', 255);
+            $table->text('description');
             $table->integer('price');
-            $table->string('category', 100);
+            $table->tinyInteger('category')->unsigned();
             $table->integer('click_count');
             $table->integer('admin_id')->unsigned();
-            $table->foreign('admin_id')->references('id')->on('admins');
+            $table->foreign('admin_id')->references('id')->on('admins')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -35,5 +35,6 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('items');
+
     }
 };
