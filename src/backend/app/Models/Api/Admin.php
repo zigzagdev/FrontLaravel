@@ -6,14 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class User extends Model
+class Admin extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $model = User::class;
+    protected $model = Admin::class;
 
-    protected  $guarded = [
-        'id',
-        'admin_id'
+    protected $guarded = [
+      'id'
     ];
 }

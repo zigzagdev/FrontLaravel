@@ -3,17 +3,18 @@
 namespace App\Models\Api;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Model
+class Item extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $model = User::class;
+    protected $model = Item::class;
 
     protected  $guarded = [
-        'id',
-        'admin_id'
+      'id',
+      'admin_id'
     ];
+
 }
