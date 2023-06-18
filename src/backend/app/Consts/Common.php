@@ -2,7 +2,7 @@
 
 namespace App\Consts;
 
-class CommonConst
+class Common
 {
     // Common Messages
     public const FAILED = "%sに失敗しました。";
