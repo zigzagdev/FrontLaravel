@@ -2,16 +2,16 @@
 
 namespace Database\Factories;
 
-use App\Models\Api\User;
+use App\Models\Api\Admin;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Api\Model>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
  */
-class UserFactory extends Factory
+class AdminFactory extends Factory
 {
-    protected $model = User::class;
+    protected $model = Admin::class;
     /**
      * Define the model's default state.
      *
