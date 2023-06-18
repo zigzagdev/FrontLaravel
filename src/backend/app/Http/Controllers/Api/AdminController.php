@@ -45,7 +45,6 @@ class AdminController extends Controller
         } catch(\Exception $e) {
             DB::rollBack();
             $request->merge(['statusMessage' => sprintf(Common::REGISTER_FAILED, 'アカウント')]);
-//            var_dump($e->getMessage());
             $statusMessage = $e->getMessage();
 
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
