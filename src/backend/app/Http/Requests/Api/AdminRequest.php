@@ -33,28 +33,22 @@ class AdminRequest extends CommonRequest
         $message = $this->errorMessages();
         return  [
             //nickName
-            "nickName.required" => $message['required'],
-            "nickName.min" => sprintf($message['min'], 4),
-            "nickName.max" => sprintf($message['max'], 50),
-            "nickName.regex" => $message['regex'],
+            "name.required" => $message['required'],
+            "name.min" => sprintf($message['min'], 4),
+            "name.max" => sprintf($message['max'], 50),
+            "name.regex" => $message['regex'],
+
             //password
             "password.required" => $message['required'],
             "password.min" => sprintf($message['min'], 8),
             "password.max" => sprintf($message['max'], 255),
             "password.regex" => $message['regex'],
-            //address
-            "address.required" => $message['required'],
-            "address.max" => sprintf($message['max'], 255),
-            "address.email" => $message['email'],
-            "address.unique" => $message['unique'],
-            //age
-            "age.required" => $message['required'],
-            "age.integer" => $message['integer'],
-            "age.between" => sprintf($message['between'], 10, 120),
-            //sex
-            "sex.required" => $message['required'],
-            "sex.integer" => $message['integer'],
-            "sex.between" => sprintf($message['between'], 0, 2),
+
+            //email
+            "email.required" => $message['required'],
+            "email.max" => sprintf($message['max'], 255),
+            "email.email" => $message['email'],
+            "email.unique" => $message['unique']
         ];
     }
 }
