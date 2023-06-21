@@ -17,4 +17,9 @@ class Item extends Model
       'admin_id'
     ];
 
+    public function User()
+    {
+        return $this->belongsTo('App\Api\User');
+    }
+
 }
