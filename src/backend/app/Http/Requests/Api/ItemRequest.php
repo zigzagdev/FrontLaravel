@@ -22,7 +22,7 @@ class ItemRequest extends CommonRequest
     public function rules()
     {
         return [
-            "name" => "required|min:5||max:100|string",
+            "itemName" => "required|min:5||max:100|string",
             "description" => "required|min:4|max:100|string",
             "price" => "required|integer",
             "category" => "required|integer",
@@ -34,10 +34,11 @@ class ItemRequest extends CommonRequest
     {
         $message = $this->errorMessages();
         return  [
-            //name
-            "name.required" => $message['required'],
-            "name.min" => sprintf($message['min'], 4),
-            "name.max" => sprintf($message['min'], 100),
+            //itemName
+            "itemName.required" => $message['required'],
+            "itemName.min" => sprintf($message['min'], 4),
+            "itemName.max" => sprintf($message['min'], 100),
+            "itemName.string" => $message['string'],
 
             //description
             "description.required" => $message['required'],
