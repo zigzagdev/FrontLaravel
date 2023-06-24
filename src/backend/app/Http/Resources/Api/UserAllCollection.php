@@ -20,6 +20,7 @@ class UserAllCollection extends ResourceCollection
             'statusMessage' => 'OK',
             'userInformation' => $this->collection->map(function ($users) {
                 return [
+                    'id' => $users->id,
                     'userName' => $users->name,
                     'emailAddress' => $users->email
                 ];
