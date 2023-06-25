@@ -37,6 +37,8 @@ services:
     environment:
       - PMA_ARBITRARY=1
     restart: always
+    depends_on:
+      - db
     ports:
       - 1080:80
     volumes:

@@ -11,8 +11,11 @@ class Admin extends Model
     use HasFactory, SoftDeletes;
 
     protected $model = Admin::class;
+    protected  $guarded = ['id'];
 
-    protected $guarded = [
-      'id'
-    ];
+
+    public function Items()
+    {
+        return $this->hasMany(Item::class, 'foreign_key');
+    }
 }

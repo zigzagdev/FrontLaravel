@@ -11,15 +11,13 @@ class Item extends Model
     use HasFactory, SoftDeletes;
 
     protected $model = Item::class;
+    protected $guarded = ['id'];
+    protected $table = 'items';
+    protected $dates = ['deleted_at'];
 
-    protected  $guarded = [
-      'id',
-      'admin_id'
-    ];
-
-    public function User()
+    public function Admin()
     {
-        return $this->belongsTo('App\Api\User');
+        return $this->belongsTo(Admin::class);
     }
 
 }

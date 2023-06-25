@@ -3,18 +3,16 @@
 namespace App\Http\Resources\Api;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Http\Resources\Json\ResourceResponse;
 
-class ErrorResource extends JsonResource
+class ItemResource extends JsonResource
 {
 
-    public $statusCode;
-
-    public function __construct($request, $statusCode = 401)
+    public function __construct($request, $statusCode = 200)
     {
         parent::__construct($request);
         $this->statusCode = $statusCode;
     }
+
     /**
      * Transform the resource into an array.
      *
@@ -25,12 +23,7 @@ class ErrorResource extends JsonResource
     {
         return [
             'statusCode' => $this->statusCode,
-            'statusMessage' => $this->statusMessage
+            'statusMessage' => 'OK',
         ];
-    }
-
-    public function toResponse($request)
-    {
-        return (new ResourceResponse($this))->toResponse($request)->setStatusCode($this->statusCode);
     }
 }

@@ -39,6 +39,7 @@ class UserController extends Controller
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]);
+
             DB::commit();
 
             return new UserResource($request);

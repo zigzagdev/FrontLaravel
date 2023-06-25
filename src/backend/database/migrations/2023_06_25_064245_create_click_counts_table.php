@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('click_counts', function (Blueprint $table) {
             $table->id()->autoIncrement();
-            $table->string('name', 100);
-            $table->string('email', 100)->unique();
-            $table->string('password', 255)->unique();
+            $table->integer('click_count');
+            $table->unsignedBigInteger('admin_id')->unsigned();
+            $table->foreign('admin_id')->references('id')->on('admins')
+                ->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('click_counts');
     }
 };

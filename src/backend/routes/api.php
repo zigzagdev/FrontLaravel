@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\ItemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,5 +31,9 @@ Route::middleware(['api', 'cors'])->group(function () {
         Route::get('/each/:id', 'eachUser');
     });
 
+    Route::controller(ItemController::class)->group(function () {
+        Route::post('/registerItem', 'createItem');
+        Route::get('/displayItem', 'display');
+    });
 });
 

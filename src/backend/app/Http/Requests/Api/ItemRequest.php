@@ -22,11 +22,10 @@ class ItemRequest extends CommonRequest
     public function rules()
     {
         return [
-            "itemName" => "required|min:5||max:100|string",
+            "name" => "required|min:5||max:100|string",
             "description" => "required|min:4|max:100|string",
-            "price" => "required|integer",
-            "category" => "required|integer",
-            "click_count" => "required|integer",
+            "price" => "required",
+            "category" => "required",
         ];
     }
 
@@ -34,11 +33,11 @@ class ItemRequest extends CommonRequest
     {
         $message = $this->errorMessages();
         return  [
-            //itemName
-            "itemName.required" => $message['required'],
-            "itemName.min" => sprintf($message['min'], 4),
-            "itemName.max" => sprintf($message['min'], 100),
-            "itemName.string" => $message['string'],
+            //name
+            "name.required" => $message['required'],
+            "name.min" => sprintf($message['min'], 4),
+            "name.max" => sprintf($message['min'], 100),
+            "name.string" => $message['string'],
 
             //description
             "description.required" => $message['required'],
@@ -47,15 +46,9 @@ class ItemRequest extends CommonRequest
 
             //price
             "price.required" => $message['required'],
-            "price.integer" => $message['integer'],
 
             //category
             "category.required" => $message['required'],
-            "category.integer" => $message['integer'],
-
-            //click_count
-            "click_count.required" => $message['required'],
-            "click_count.integer" => $message['integer'],
         ];
     }
 }
