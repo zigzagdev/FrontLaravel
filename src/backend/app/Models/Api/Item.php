@@ -15,9 +15,9 @@ class Item extends Model
     protected $table = 'items';
     protected $dates = ['deleted_at'];
 
-//    public function Admin()
-//    {
-//        return $this->belongsTo(Admin::class, 'foreign_key');
-//    }
+    public function Admin()
+    {
+        return $this->belongsTo(Admin::class);
+    }
 
 }
