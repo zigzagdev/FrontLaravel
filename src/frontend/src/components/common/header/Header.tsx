@@ -1,10 +1,12 @@
 import React from 'react';
 
 export default function Header() {
-    return(
+    return (
         <>
-            <div>
-                Header test page
+            <div className="py-12 px-24">
+                <a href="/" className="decoration-neutral-50">
+                    <strong>Whisky love</strong>
+                </a>
             </div>
         </>
     )
