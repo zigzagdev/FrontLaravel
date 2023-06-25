@@ -18,9 +18,9 @@ return new class extends Migration {
             $table->text('description');
             $table->integer('price');
             $table->tinyInteger('category')->unsigned();
-            $table->integer('click_count');
             $table->integer('admin_id')->unsigned();
-            $table->foreign('admin_id')->references('id')->on('admins')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('admin_id')->references('id')->on('admins')
+                ->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -13,12 +13,6 @@ class User extends Model
     protected $model = User::class;
 
     protected  $guarded = [
-        'id',
-        'admin_id'
+        'id'
     ];
-
-    public function Items()
-    {
-        return $this->hasMany('App\Api\Item');
-    }
 }

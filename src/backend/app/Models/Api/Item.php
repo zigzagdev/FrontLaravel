@@ -19,7 +19,7 @@ class Item extends Model
 
     public function User()
     {
-        return $this->belongsTo('App\Api\User');
+        return $this->belongsTo('App\Api\Admin');
     }
 
 }

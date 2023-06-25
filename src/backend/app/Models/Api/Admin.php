@@ -12,7 +12,13 @@ class Admin extends Model
 
     protected $model = Admin::class;
 
-    protected $guarded = [
-      'id'
+    protected  $guarded = [
+        'id',
+        'admin_id'
     ];
+
+    public function Items()
+    {
+        return $this->hasMany('App\Api\Item');
+    }
 }
