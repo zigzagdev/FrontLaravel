@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Api;
 
-class AdminRequest extends CommonRequest
+use Illuminate\Foundation\Http\FormRequest;
+
+class UserRequest extends CommonRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -35,7 +37,7 @@ class AdminRequest extends CommonRequest
             //name
             "name.required" => $message['required'],
             "name.min" => sprintf($message['min'], 4),
-            "name.max" => sprintf($message['max'], 50),
+            "name.max" => sprintf($message['max'], 100),
             "name.regex" => $message['regex'],
 
             //password
@@ -47,7 +49,7 @@ class AdminRequest extends CommonRequest
             //email
             "email.required" => $message['required'],
             "email.min" => sprintf($message['min'], 4),
-            "email.max" => sprintf($message['max'], 255),
+            "email.max" => sprintf($message['max'], 100),
             "email.email" => $message['email'],
             "email.unique" => $message['unique']
         ];

@@ -16,4 +16,9 @@ class User extends Model
         'id',
         'admin_id'
     ];
+
+    public function Items()
+    {
+        return $this->hasMany('App\Api\Item');
+    }
 }

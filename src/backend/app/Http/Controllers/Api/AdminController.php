@@ -18,12 +18,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AdminController extends Controller
 {
-    function post(AdminRequest $request)
+    function createAdmin(AdminRequest $request)
     {
         try {
             DB::beginTransaction();
-            $existUser = Admin::where('email', $request->address)->first();
-            print_r($existUser);
+            $existUser = Admin::where('email', $request->email)->first();
+
             if (!empty($existUser)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_08)]);
                 $statusCode = Message::Unauthorized;

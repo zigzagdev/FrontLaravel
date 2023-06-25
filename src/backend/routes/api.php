@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AdminController;
+use App\Http\Controllers\Api\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,11 +16,18 @@ use App\Http\Controllers\Api\AdminController;
 |
 */
 
-Route::middleware('api')->group(function () {
+Route::middleware(['api', 'cors'])->group(function () {
 
     Route::controller(AdminController::class)->group(function () {
-        Route::post('/registerAdmin', 'post');
+        Route::post('/registerAdmin', 'createAdmin');
         Route::put('/updateAdmin', 'updateAdmin');
+    });
+
+    Route::controller(UserController::class)->group(function () {
+        Route::post('/registerUser', 'createUser');
+        Route::put('/updateUser', 'updateUser');
+        Route::get('/userAll', 'allUser');
+        Route::get('/each/:id', 'eachUser');
     });
 
 });
