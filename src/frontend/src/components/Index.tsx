@@ -52,10 +52,3 @@ export default function Index() {
 
 
 
-
-
-
-
-
-
-
