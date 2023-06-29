@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from "react";
+import './Darkmode.css'
 
 function Change() {
     const [theme, setTheme] = useState('light');
     const toggleTheme = () => {
-        if (theme == 'light') {
+        if (theme === 'light') {
             setTheme('dark');
         } else {
             setTheme('light');
@@ -13,9 +14,7 @@ function Change() {
         document.body.className = theme;
     }, [theme]);
     return (
-        <div style={{
-            color: theme === 'dark' ? '#fff' : '#000',
-        }}>
+        <div className={theme}>
             <button onClick={toggleTheme}>Toggle Theme</button>
         </div>
     );
