@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
-import Header from "./common/header/Header";
-import Footer from "./common/footer/Footer";
 import axios from "axios";
+import Change from "./common/header/Darkmode";
+import Darkmode from "./common/header/Darkmode";
 
 interface Info {
     id?: number,
@@ -12,8 +12,9 @@ interface Info {
 
 export default function Index() {
     const [users, setUsers] = useState<Info[]>([]);
+    const baseURL = process.env.REACT_APP_API_BASE_URL;
     useEffect(() => {
-        axios.get('http://localhost:9901/api/userAll')
+        axios.get(`${baseURL}./userAll`)
             .then(res => {
                 setUsers(res.data.data.userInformation)
 
@@ -21,7 +22,6 @@ export default function Index() {
     }, [])
     return (
         <>
-            <Header/>
             <div className="my-3 block text-sm text-gray-300 duration-700 hover:text-gray-100">
                 Top Page
             </div>
@@ -34,7 +34,6 @@ export default function Index() {
                     )
                 })}
             </div>
-            <Footer/>
         </>
     )
 }

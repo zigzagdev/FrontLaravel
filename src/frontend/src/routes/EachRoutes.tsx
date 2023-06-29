@@ -17,14 +17,11 @@ import Contact from "../components/common/footer/Contact";
 export default function EachRoutes() {
     return (
         <>
-            <Header/>
             <div>
                 <BrowserRouter>
                     <Header/>
                     <Routes>
                         <Route path="/" element={<Index/>}/>
-                        <Route path="/Header" element={<Header/>}/>
-                        <Route path="/Footer" element={<Footer/>}/>
                         <Route path="/Posts" element={<Posts/>}/>
                         <Route path="/Instagram" element={<Instagram/>}/>
                         <Route path="/Posts" element={<Posts/>}/>

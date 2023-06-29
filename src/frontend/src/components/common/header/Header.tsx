@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import Change from "./Darkmode";
 
 export default function Header() {
     return (
@@ -7,6 +8,7 @@ export default function Header() {
                 <a href="/" className="decoration-neutral-50">
                     <strong>Whisky love</strong>
                 </a>
+                <Change/>
             </div>
         </>
     )
