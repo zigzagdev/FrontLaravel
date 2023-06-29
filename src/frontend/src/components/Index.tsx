@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from "react";
-import Header from "./common/header/Header";
-import Footer from "./common/footer/Footer";
 import axios from "axios";
+import Change from "./common/header/Darkmode";
 
 interface Info {
     id?: number,
@@ -13,7 +12,6 @@ interface Info {
 export default function Index() {
     const [users, setUsers] = useState<Info[]>([]);
     const baseURL = process.env.REACT_APP_API_BASE_URL;
-    console.log(baseURL);
     useEffect(() => {
         axios.get(`${baseURL}./userAll`)
             .then(res => {
