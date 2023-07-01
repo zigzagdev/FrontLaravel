@@ -33,7 +33,9 @@ Route::middleware(['api', 'cors'])->group(function () {
 
     Route::controller(ItemController::class)->group(function () {
         Route::post('/registerItem', 'createItem');
-        Route::get('/displayItem', 'display');
+        Route::get('/allItem', 'allItems');
+        Route::get('/displayItem/:slug', 'display');
+
     });
 });
 
