@@ -14,12 +14,12 @@ function Darkmode() {
         document.body.className = theme;
     }, [theme]);
     return (
-        <div className={theme}
-        >
+        <div className={theme}>
             <button onClick={toggleTheme}>
                 {theme === 'dark' ? "🌙" : "🌞"}
             </button>
         </div>
     );
 }
+
 export default Darkmode;
