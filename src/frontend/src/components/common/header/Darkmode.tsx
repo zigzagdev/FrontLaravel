@@ -16,7 +16,8 @@ function Darkmode() {
     return (
         <div className={theme}>
             <button onClick={toggleTheme}>
-                {theme === 'dark' ? "🌙" : "🌞"}
+                {theme === 'dark' ? "🌙" : "🌞"}<br/>
+                {theme === 'dark' ? "dark" : "light"}
             </button>
         </div>
     );

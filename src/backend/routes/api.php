@@ -36,9 +36,9 @@ Route::middleware(['api', 'cors'])->group(function () {
         Route::post('/registerItem', 'createItem');
         // first display URL
         Route::get('/allItem', 'allItems');
-        Route::get('/displayItem/:slug', 'display');
+        Route::get('/displayItem/:slug', 'displayDetail');
         Route::get('/q', 'searchItems');
-
+        Route::put('/fixItem/:slug', 'changeItemStatus');
     });
 });
 

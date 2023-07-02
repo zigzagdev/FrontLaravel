@@ -69,6 +69,17 @@ class ItemController extends Controller
         }
     }
 
+    function changeItemStatus(ItemRequest $request)
+    {
+        try {
+            $adminId = $request->admin_id;
+            DB::beginTransaction();
+        } catch (Exception $e) {
+            DB::rollBack();
+        }
+    }
+
+    // after making click_count table and related to display
     function allItems(Request $request)
     {
         try {
@@ -78,14 +89,9 @@ class ItemController extends Controller
         }
     }
 
-    function display(Request $request)
+    function displayDetail()
     {
-        try {
-            DB::beginTransaction();
-        } catch (Exception $e) {
-            DB::rollBack();
 
-        }
     }
 
     function searchItems(Request $request)
