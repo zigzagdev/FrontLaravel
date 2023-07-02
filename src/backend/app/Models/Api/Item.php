@@ -25,10 +25,7 @@ class Item extends Model
 
     public function searchableAs()
     {
-        $array = 'item_index';
-
-        return $array;
-
+         return 'item_index';
     }
 
 }

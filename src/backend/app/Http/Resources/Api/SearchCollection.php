@@ -21,13 +21,13 @@ class SearchCollection extends ResourceCollection
         return [
             'statusCode' => Response::HTTP_OK,
             'statusMessage' => 'OK',
-            'userInformation' => $this->collection->map(function ($items) {
+            'itemInformation' => $this->collection->map(function ($items) {
                 return [
-                    'id' => $items->id,
-                    'itemName' => $items->name,
-                    'content' => Str::limit($items->description, 15, '...'),
-                    'price' => $items->price,
-                    'category' => $items->category
+                    'id' => $items['id'],
+                    'itemName' => $items['name'],
+                    'content' => Str::limit($items['description'], 15, '...'),
+                    'price' => $items['price'],
+                    'categoryName' => $items['categoryName']
                 ];
             })
         ];
