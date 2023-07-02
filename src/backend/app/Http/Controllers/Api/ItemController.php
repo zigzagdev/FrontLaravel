@@ -11,6 +11,7 @@ use App\Http\Resources\Api\ErrorResource;
 use App\Http\Resources\Api\ItemResource;
 use App\Http\Resources\Api\SearchCollection;
 use App\Models\Api\Admin;
+use App\Models\Api\Click;
 use App\Models\Api\Item;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -83,6 +84,7 @@ class ItemController extends Controller
     function allItems(Request $request)
     {
         try {
+            $popularItems = Click::displayPopularItems();
             DB::beginTransaction();
         } catch (Exception $e) {
             DB::rollBack();
