@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('click_counts', function (Blueprint $table) {
             $table->id()->autoIncrement();
             $table->integer('click_count');
-            $table->unsignedBigInteger('admin_id')->unsigned();
-            $table->foreign('admin_id')->references('id')->on('admins')
+            $table->unsignedBigInteger('item_id')->unsigned();
+            $table->foreign('item_id')->references('id')->on('items')
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
