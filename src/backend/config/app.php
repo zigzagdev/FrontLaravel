@@ -208,9 +208,8 @@ return [
     |
     */
 
-    'aliases' => Facade::defaultAliases()->merge([
-        // 'ExampleClass' => App\Example\ExampleClass::class,
-
-    ])->toArray(),
+    'aliases' => [
+        'Category' => App\Consts\Api\Category::class,
+    ]
 
 ];
