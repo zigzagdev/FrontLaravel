@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Models\Api\Item;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\UserController;
@@ -33,7 +34,11 @@ Route::middleware(['api', 'cors'])->group(function () {
 
     Route::controller(ItemController::class)->group(function () {
         Route::post('/registerItem', 'createItem');
-        Route::get('/displayItem', 'display');
+        // first display URL
+        Route::get('/allItem', 'allItems');
+        Route::get('/displayItem/:slug', 'displayDetail');
+        Route::get('/q', 'searchItems');
+        Route::put('/fixItem/:slug', 'changeItemStatus');
     });
 });
 

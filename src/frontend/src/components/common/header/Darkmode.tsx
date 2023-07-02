@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import './Darkmode.css'
 
-function Change() {
+function Darkmode() {
     const [theme, setTheme] = useState('light');
     const toggleTheme = () => {
         if (theme === 'light') {
@@ -15,8 +15,12 @@ function Change() {
     }, [theme]);
     return (
         <div className={theme}>
-            <button onClick={toggleTheme}>Toggle Theme</button>
+            <button onClick={toggleTheme}>
+                {theme === 'dark' ? "🌙" : "🌞"}<br/>
+                {theme === 'dark' ? "dark" : "light"}
+            </button>
         </div>
     );
 }
-export default Change;
+
+export default Darkmode;
