@@ -20,11 +20,3 @@ class ClickCountsCollection extends ResourceCollection
 
 
 
-
-
-
-
-
-
-
-
