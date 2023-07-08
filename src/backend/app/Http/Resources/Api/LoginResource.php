@@ -66,8 +66,3 @@ class LoginResource extends JsonResource
 
 
 
-
-
-
-
-
