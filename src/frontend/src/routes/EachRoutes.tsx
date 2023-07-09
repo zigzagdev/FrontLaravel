@@ -12,6 +12,7 @@ import Instagram from "../components/common/footer/Instagram";
 import PostSlug from "../components/app/post/PostSlug";
 import NotFound from "../components/app/exception/NotFound";
 import Contact from "../components/common/footer/Contact";
+import Login from "../components/app/auth/Login";
 
 
 export default function EachRoutes() {
@@ -28,6 +29,7 @@ export default function EachRoutes() {
                         <Route path="/Posts/:slug" element={<PostSlug/>}/>
                         <Route path="/404" element={<NotFound/>}/>
                         <Route path="/Contact" element={<Contact/>}/>
+                        <Route path="/Login" element={<Login/>}/>
                     </Routes>
                     <Footer/>
                 </BrowserRouter>
