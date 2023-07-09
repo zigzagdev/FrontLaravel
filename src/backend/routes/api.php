@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-use App\Models\Api\Item;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\UserController;
