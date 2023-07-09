@@ -28,4 +28,9 @@ class Item extends Model
          return 'item_index';
     }
 
+    public function Item()
+    {
+        return $this->hasMany(Click::class);
+    }
+
 }
