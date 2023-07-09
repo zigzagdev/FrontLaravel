@@ -1,7 +1,5 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
-import Change from "./common/header/Darkmode";
-import Darkmode from "./common/header/Darkmode";
 
 interface Info {
     id?: number,
@@ -17,7 +15,6 @@ export default function Index() {
         axios.get(`${baseURL}./userAll`)
             .then(res => {
                 setUsers(res.data.data.userInformation)
-
             })
     }, [])
     return (
