@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 
-class LoginController extends Controller
+class AuthenticationController extends Controller
 {
     function loginAuth(Request $request)
     {
@@ -37,6 +37,17 @@ class LoginController extends Controller
             return new LoginResource($request);
         } catch (\Exception $e) {
 
+        }
+    }
+
+    function logoutAuth($request)
+    {
+        try {
+            DB::beginTransaction();
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return new ErrorResource($request);
         }
     }
 }
