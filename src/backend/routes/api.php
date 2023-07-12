@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ItemController;
 use App\Http\Controllers\Api\AuthenticationController;
+use App\Http\Controllers\Api\CsvController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +44,11 @@ Route::middleware(['api', 'cors'])->group(function () {
         Route::get('/displayItem/:slug', 'displayDetail');
         Route::get('/q', 'searchItems');
         Route::put('/fixItem/:slug', 'changeItemStatus');
+    });
+
+    Route::controller(CsvController::class)->group(function () {
+        Route::get('/importCSV', 'importCSV');
+        Route::get('/exportCSV', 'exportCSV');
     });
 });
 
