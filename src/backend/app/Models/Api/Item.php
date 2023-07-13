@@ -5,9 +5,7 @@ namespace App\Models\Api;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 use Laravel\Scout\Searchable;
-use Symfony\Component\HttpFoundation\Response;
 
 class Item extends Model
 {
