@@ -14,7 +14,12 @@ return new class extends Migration
     public function up()
     {
         Schema::create('display_flag', function (Blueprint $table) {
-            $table->id();
+            $table->id()->autoIncrement();
+            $table->integer('flag')->comment('表示させるかどうかの基準');
+            $table->unsignedBigInteger('item_id')->unsigned();
+            $table->foreign('item_id')->references('id')->on('items')
+                ->onUpdate('cascade')->onDelete('cascade');
+            $table->timestamp('expired_at');
             $table->timestamps();
         });
     }
