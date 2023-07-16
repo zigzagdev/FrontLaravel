@@ -32,6 +32,8 @@ class AuthenticationController extends Controller
                 return new ErrorResource($request);
             }
 
+
+
             DB::commit();
 
             return new LoginResource($request);
