@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 
 class AuthenticationController extends Controller
@@ -31,8 +32,10 @@ class AuthenticationController extends Controller
                 $request->merge(['statusMessage' => Message::Unauthorized]);
                 return new ErrorResource($request);
             }
+            $expiration = $authentication->expiration;
 
-
+            $todayDate = Carbon::now()->addMonthNoOverflow()->toDateString();
+            $request->update(['expiration' => $todayDate]);
 
             DB::commit();
 
@@ -53,3 +56,10 @@ class AuthenticationController extends Controller
         }
     }
 }
+
+
+
+
+
+
+
