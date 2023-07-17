@@ -32,11 +32,9 @@ class AuthenticationController extends Controller
                 $request->merge(['statusMessage' => Message::Unauthorized]);
                 return new ErrorResource($request);
             }
-            $expiration = $authentication->expiration;
 
-            $todayDate = Carbon::now()->addMonthNoOverflow()->toDateString();
-            $request->update(['expiration' => $todayDate]);
-
+            $expirationDate = Carbon::now('Asia/Tokyo')->addMonthNoOverflow()->toDateString();
+            $request->update(['expiration' => $expirationDate]);
             DB::commit();
 
             return new LoginResource($request);
