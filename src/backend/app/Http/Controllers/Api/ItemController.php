@@ -12,6 +12,7 @@ use App\Http\Resources\Api\ItemResource;
 use App\Http\Resources\Api\SearchCollection;
 use App\Models\Api\Admin;
 use App\Models\Api\Click;
+use App\Models\Api\DisplayFlag;
 use App\Models\Api\Item;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -61,31 +62,33 @@ class ItemController extends Controller
             return new ItemResource($request);
         } catch (\Exception $e) {
             DB::rollBack();
-
             $request->merge(['statusMessage' => sprintf(Common::REGISTER_FAILED, 'アイテム')]);
-            $statusMessage = $e->getMessage();
 
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
 
         }
     }
 
+
+
     function changeItemStatus(ItemRequest $request)
     {
         try {
-            $adminId = $request->admin_id;
             DB::beginTransaction();
+            $adminId = $request->admin_id;
+
+
+            DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
         }
     }
 
-    // after making click_count table and related to display
     function allItems(Request $request)
     {
         try {
-            $popularItems = Click::displayPopularItems();
             DB::beginTransaction();
+            $displayItems = DisplayFlag::onDateItem();
         } catch (Exception $e) {
             DB::rollBack();
         }
@@ -121,8 +124,8 @@ class ItemController extends Controller
             }
         } catch (Exception $e) {
             DB::rollBack();
-
-            return new ErrorResource($request);
+            $request->merge(['statusMessage' => sprintf(Common::REGISTER_FAILED, 'アイテム取得')]);
+            return new ErrorResource($request, Common::FAILED);
         }
     }
 }
