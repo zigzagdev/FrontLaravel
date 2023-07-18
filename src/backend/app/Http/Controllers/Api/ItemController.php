@@ -124,7 +124,7 @@ class ItemController extends Controller
             }
         } catch (Exception $e) {
             DB::rollBack();
-            $request->merge(['statusMessage' => sprintf(Common::REGISTER_FAILED, 'アイテム取得')]);
+            $request->merge(['statusMessage' => sprintf(Common::FAILED, 'アイテム取得')]);
             return new ErrorResource($request, Common::FAILED);
         }
     }
