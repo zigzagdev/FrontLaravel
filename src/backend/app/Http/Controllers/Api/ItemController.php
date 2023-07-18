@@ -94,11 +94,6 @@ class ItemController extends Controller
         }
     }
 
-    function displayDetail()
-    {
-
-    }
-
     function searchItems(Request $request)
     {
         try {
