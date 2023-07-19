@@ -26,7 +26,7 @@ class ItemFlag extends Model
             'category',
         ])->leftjoin('display_flag', function ($join) {
             $join->on('items.id', '=', 'display_flag.item_id');
-        })->where('item.expiration', '>', Carbon::now())
+        })->where('item.expiration', '>=', Carbon::now())
             ->orderBy('item.created_at', 'asc')
             ->get();
     }
