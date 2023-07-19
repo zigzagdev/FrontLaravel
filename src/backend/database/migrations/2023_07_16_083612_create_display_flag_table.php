@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('display_flag', function (Blueprint $table) {
+        Schema::create('item_display', function (Blueprint $table) {
             $table->id()->autoIncrement();
             $table->integer('flag')->comment('表示させるかどうかの基準');
             $table->unsignedBigInteger('item_id')->unsigned();
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('display_flag');
+        Schema::dropIfExists('item_display');
     }
 };
