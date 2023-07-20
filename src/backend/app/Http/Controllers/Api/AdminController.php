@@ -44,6 +44,7 @@ class AdminController extends Controller
                 'expiration' => Carbon::now()->addDays(3)
             ]);
             DB::commit();
+
             return new RegisterAdminResource($request);
         } catch(\Exception $e) {
             DB::rollBack();
@@ -79,8 +80,9 @@ class AdminController extends Controller
                 'statusMessage' => Message::OK,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
+                'expiration' => Carbon::now()->addDay(3)
             ]);
-
+            DB::commit();
             return new AdminResource($request);
 
         } catch (\Exception $e) {
