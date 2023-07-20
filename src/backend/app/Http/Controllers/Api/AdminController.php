@@ -41,7 +41,7 @@ class AdminController extends Controller
                 'statusMessage' => Message::OK,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
-                'expiration' => Carbon::now()->addDays(7)
+                'expiration' => Carbon::now()->addDays(3)
             ]);
             DB::commit();
             return new RegisterAdminResource($request);
