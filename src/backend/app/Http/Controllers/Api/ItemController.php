@@ -12,7 +12,7 @@ use App\Http\Resources\Api\ItemResource;
 use App\Http\Resources\Api\SearchCollection;
 use App\Models\Api\Admin;
 use App\Models\Api\Click;
-use App\Models\Api\DisplayFlag;
+use App\Models\Api\ItemFlag;
 use App\Models\Api\Item;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -47,7 +47,7 @@ class ItemController extends Controller
                 return new ErrorResource($request, $statusCode);
             }
 
-            $newItem = Item::create([
+            Item::create([
                 'name' => $request->input('name'),
                 'description' => $request->input('description'),
                 'price' => $request->input('price'),
@@ -56,6 +56,7 @@ class ItemController extends Controller
                 'statusMessage' => Message::OK,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
+                'expiration' => Carbon::now()->addYear(1)
             ]);
             DB::commit();
 
@@ -65,7 +66,6 @@ class ItemController extends Controller
             $request->merge(['statusMessage' => sprintf(Common::REGISTER_FAILED, 'アイテム')]);
 
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
-
         }
     }
 
@@ -88,7 +88,8 @@ class ItemController extends Controller
     {
         try {
             DB::beginTransaction();
-            $displayItems = DisplayFlag::onDateItem();
+            $displayItems = ItemFlag::onDateItem();
+            var_dump($displayItems);
         } catch (Exception $e) {
             DB::rollBack();
         }
