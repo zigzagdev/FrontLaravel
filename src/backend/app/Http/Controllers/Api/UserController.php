@@ -31,7 +31,7 @@ class UserController extends Controller
                 return new ErrorResource($request, $statusCode);
             }
 
-            $newUser = User::create([
+            User::create([
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
                 'password' => Hash::make($request->input('password')),
@@ -39,15 +39,12 @@ class UserController extends Controller
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]);
-
             DB::commit();
 
             return new UserResource($request);
         } catch (\Exception $e) {
             DB::rollBack();
-
             $request->merge(['statusMessage' => sprintf(Common::REGISTER_FAILED, 'アカウント')]);
-            $statusMessage = $e->getMessage();
 
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
@@ -57,8 +54,7 @@ class UserController extends Controller
     {
         try {
            DB::beginTransaction();
-
-            $existUser = User::where('email', $request->email)->first();
+           $existUser = User::where('email', $request->email)->first();
 
             if (empty($existUser)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
@@ -90,9 +86,7 @@ class UserController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
-
             $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, 'ユーザーデータ')]);
-            $statusMessage = $e->getMessage();
 
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
