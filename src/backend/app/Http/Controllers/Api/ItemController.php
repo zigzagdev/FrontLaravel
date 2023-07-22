@@ -8,6 +8,7 @@ use App\Consts\Common;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ItemRequest;
 use App\Http\Resources\Api\ErrorResource;
+use App\Http\Resources\Api\ItemCollection;
 use App\Http\Resources\Api\ItemResource;
 use App\Http\Resources\Api\SearchCollection;
 use App\Models\Api\Admin;
@@ -100,8 +101,17 @@ class ItemController extends Controller
         try {
             DB::beginTransaction();
             $displayItems = ItemFlag::onDateItems();
-var_dump($displayItems->toArray());
 
+            if (empty($displayItems)) {
+                return new ErrorResource($request);
+            }
+            $changeItems =  $displayItems->toArray();
+            foreach ($changeItems as $key => $value) {
+                $insertNumber = $value['category'];
+                $changeItems[$key]['categoryName'] = Category::genre[$insertNumber];
+            }
+
+            return new ItemCollection($changeItems);
         } catch (Exception $e) {
             DB::rollBack();
             $message  = $e->getMessage();
