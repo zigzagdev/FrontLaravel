@@ -12,6 +12,7 @@ use App\Http\Resources\Api\ItemResource;
 use App\Http\Resources\Api\SearchCollection;
 use App\Models\Api\Admin;
 use App\Models\Api\Click;
+use App\Models\Api\ItemFlag;
 use App\Models\Api\Item;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -46,7 +47,7 @@ class ItemController extends Controller
                 return new ErrorResource($request, $statusCode);
             }
 
-            $newItem = Item::create([
+            $Item = Item::create([
                 'name' => $request->input('name'),
                 'description' => $request->input('description'),
                 'price' => $request->input('price'),
@@ -55,45 +56,57 @@ class ItemController extends Controller
                 'statusMessage' => Message::OK,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
+                'expiration' => Carbon::now()->addYear(1)
             ]);
+            $itemId = $Item->id;
+
+            ItemFlag::create([
+                'flag' => 1,
+                'item_id' => $itemId,
+                'expired_at' => Carbon::now()->addMonth(6),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ]);
+
             DB::commit();
 
             return new ItemResource($request);
         } catch (\Exception $e) {
             DB::rollBack();
-
             $request->merge(['statusMessage' => sprintf(Common::REGISTER_FAILED, 'アイテム')]);
-            $statusMessage = $e->getMessage();
-
+            $a = $e->getMessage();
+            var_dump($a);
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
-
         }
     }
+
+
 
     function changeItemStatus(ItemRequest $request)
     {
         try {
-            $adminId = $request->admin_id;
             DB::beginTransaction();
+            $adminId = $request->admin_id;
+
+
+            DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
         }
     }
 
-    // after making click_count table and related to display
     function allItems(Request $request)
     {
         try {
-            $popularItems = Click::displayPopularItems();
             DB::beginTransaction();
+            $displayItems = ItemFlag::onDateItems();
+var_dump($displayItems->toArray());
+
         } catch (Exception $e) {
             DB::rollBack();
+            $message  = $e->getMessage();
+            var_dump($message);
         }
-    }
-
-    function displayDetail()
-    {
-
     }
 
     function searchItems(Request $request)
@@ -121,8 +134,8 @@ class ItemController extends Controller
             }
         } catch (Exception $e) {
             DB::rollBack();
-
-            return new ErrorResource($request);
+            $request->merge(['statusMessage' => sprintf(Common::FAILED, 'アイテム取得')]);
+            return new ErrorResource($request, Common::FAILED);
         }
     }
 }

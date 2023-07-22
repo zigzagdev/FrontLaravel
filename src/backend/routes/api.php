@@ -27,6 +27,7 @@ Route::middleware(['api', 'cors'])->group(function () {
     Route::controller(AdminController::class)->group(function () {
         Route::post('/registerAdmin', 'createAdmin');
         Route::put('/updateAdmin', 'updateAdmin');
+        Route::get('/getAdmin', 'getAdmin');
     });
 
     Route::controller(UserController::class)->group(function () {
@@ -39,7 +40,7 @@ Route::middleware(['api', 'cors'])->group(function () {
     Route::controller(ItemController::class)->group(function () {
         Route::post('/registerItem', 'createItem');
         // first display URL
-        Route::get('/allItem', 'allItems');
+        Route::get('/allItems', 'allItems');
         Route::get('/displayItem/:slug', 'displayDetail');
         Route::get('/q', 'searchItems');
         Route::put('/fixItem/:slug', 'changeItemStatus');

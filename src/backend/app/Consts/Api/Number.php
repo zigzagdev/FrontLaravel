@@ -9,4 +9,7 @@ class Number{
 
     // first state
     public const Initial_State = 0;
+
+    public const Display_Flag = 1;
+    public const Expired_Flag = 2;
 }

@@ -4,7 +4,7 @@ namespace App\Http\Resources\Api;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class LoginResource extends JsonResource
+class AdminResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -12,12 +12,23 @@ class LoginResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
+
+    public function __construct($resource, $statusCode = 201)
+    {
+        parent::__construct($resource);
+        $this->statusCode = $statusCode;
+    }
+
+
     public function toArray($request)
     {
         return [
-            'statusCode' => '200',
+            'statusCode' => $this->statusCode,
             'statusMessage' => 'OK',
-            'expiration' => $this->expiration
+            'profile' => [
+                'name' => $this->name,
+                'email' => $this->email
+            ]
         ];
     }
 }

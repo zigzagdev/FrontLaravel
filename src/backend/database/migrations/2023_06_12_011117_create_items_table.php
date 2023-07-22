@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->text('description');
             $table->integer('price');
             $table->tinyInteger('category')->unsigned();
+            $table->date('expiration');
             $table->unsignedBigInteger('admin_id')->unsigned();
             $table->foreign('admin_id')->references('id')->on('admins')
                 ->onUpdate('cascade')->onDelete('cascade');
