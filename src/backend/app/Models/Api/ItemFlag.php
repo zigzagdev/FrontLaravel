@@ -2,32 +2,30 @@
 
 namespace App\Models\Api;
 
-use Carbon\Carbon;
+use App\Consts\Api\Number;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+
 
 class ItemFlag extends Model
 {
     use HasFactory;
 
-    protected $model = Item::class;
+    protected $table = 'item_display';
+    protected $guarded = ['id'];
 
     public function Item()
     {
         return $this->belongsTo(Item::class);
     }
 
-    public function onDateItem()
+    public static function onDateItems()
     {
         return self::select([
-            'name',
-            'description',
-            'price',
-            'category',
-        ])->leftjoin('display_flag', function ($join) {
-            $join->on('items.id', '=', 'display_flag.item_id');
-        })->where('item.expiration', '>=', Carbon::now())
-            ->orderBy('item.created_at', 'asc')
+           'items.category'
+        ])->leftjoin('items', function ($join) {
+            $join->on('item_display.item_id', '=', 'items.id');
+        })->where('item_display.flag', '=', Number::Display_Flag)
             ->get();
     }
 }

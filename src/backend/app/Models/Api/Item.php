@@ -28,7 +28,7 @@ class Item extends Model
 
     public function Flag()
     {
-        return $this->hasMany(DisplayFlag::class);
+        return $this->hasMany(ItemFlag::class);
     }
 
 }

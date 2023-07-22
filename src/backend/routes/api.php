@@ -40,7 +40,7 @@ Route::middleware(['api', 'cors'])->group(function () {
     Route::controller(ItemController::class)->group(function () {
         Route::post('/registerItem', 'createItem');
         // first display URL
-        Route::get('/allItem', 'allItems');
+        Route::get('/allItems', 'allItems');
         Route::get('/displayItem/:slug', 'displayDetail');
         Route::get('/q', 'searchItems');
         Route::put('/fixItem/:slug', 'changeItemStatus');
