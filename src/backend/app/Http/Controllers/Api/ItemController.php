@@ -47,7 +47,7 @@ class ItemController extends Controller
                 return new ErrorResource($request, $statusCode);
             }
 
-            Item::create([
+            $Item = Item::create([
                 'name' => $request->input('name'),
                 'description' => $request->input('description'),
                 'price' => $request->input('price'),
@@ -58,13 +58,24 @@ class ItemController extends Controller
                 'updated_at' => Carbon::now(),
                 'expiration' => Carbon::now()->addYear(1)
             ]);
+            $itemId = $Item->id;
+
+            ItemFlag::create([
+                'flag' => 1,
+                'item_id' => $itemId,
+                'expired_at' => Carbon::now()->addMonth(6),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ]);
+
             DB::commit();
 
             return new ItemResource($request);
         } catch (\Exception $e) {
             DB::rollBack();
             $request->merge(['statusMessage' => sprintf(Common::REGISTER_FAILED, 'アイテム')]);
-
+            $a = $e->getMessage();
+            var_dump($a);
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
@@ -88,10 +99,13 @@ class ItemController extends Controller
     {
         try {
             DB::beginTransaction();
-            $displayItems = ItemFlag::onDateItem();
-            var_dump($displayItems);
+            $displayItems = ItemFlag::onDateItems();
+var_dump($displayItems->toArray());
+
         } catch (Exception $e) {
             DB::rollBack();
+            $message  = $e->getMessage();
+            var_dump($message);
         }
     }
 

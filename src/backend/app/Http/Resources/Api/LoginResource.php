@@ -17,6 +17,7 @@ class LoginResource extends JsonResource
         return [
             'statusCode' => '200',
             'statusMessage' => 'OK',
+            'expiration' => $this->expiration
         ];
     }
 }
