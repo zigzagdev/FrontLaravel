@@ -3,6 +3,8 @@
 namespace App\Http\Resources\Api;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Str;
 
 class ItemCollection extends ResourceCollection
 {
@@ -14,6 +16,17 @@ class ItemCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'statusCode' => Response::HTTP_OK,
+            'statusMessage' => 'OK',
+            'commentList' => $this->collection->map(function ($changeItems) {
+                return [
+                    'itemName' => $changeItems['name'],
+                    'content' => Str::limit($changeItems['description'], 15, '...'),
+                    'price' => $changeItems['price'],
+                    'categoryName' => $changeItems['categoryName']
+                ];
+            })
+        ];
     }
 }
