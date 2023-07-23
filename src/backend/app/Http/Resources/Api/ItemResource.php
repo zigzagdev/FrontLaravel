@@ -29,7 +29,7 @@ class ItemResource extends JsonResource
                 'itemName' => $this->name,
                 'content' => Str::limit($this->description, 15, '...'),
                 'price' => $this->price,
-                'category' => $this->category
+                'category' => $this->categoryName
             ]
         ];
     }

@@ -66,8 +66,10 @@ class ItemController extends Controller
                 'expired_at' => Carbon::now()->addMonth(6),
                 'created_at' => Carbon::now(),
             ]);
-
             DB::commit();
+
+            $categoryNumber = intval($request->input('category'));
+            $request->merge(['categoryName' => Category::genre[$categoryNumber]]);
 
             return new ItemResource($request);
         } catch (\Exception $e) {
@@ -109,6 +111,9 @@ class ItemController extends Controller
                 'updated_at' => Carbon::now(),
             ]);
             DB::commit();
+
+            $categoryNumber = intval($request->input('category'));
+            $request->merge(['categoryName' => Category::genre[$categoryNumber]]);
 
             return new ItemResource($request);
         } catch (Exception $e) {
