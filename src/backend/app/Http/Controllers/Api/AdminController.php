@@ -81,7 +81,6 @@ class AdminController extends Controller
 
             Admin::where('id', $adminId)->update([
                 'name' => $request->input('name'),
-                'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
                 'expiration' => Carbon::now()->addDay(3)
             ]);
