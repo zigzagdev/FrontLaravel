@@ -2,7 +2,8 @@
 
 namespace App\Consts\Api;
 
-class Category{
+class Category
+{
 
     const genre = [
         1 => 'Food',
