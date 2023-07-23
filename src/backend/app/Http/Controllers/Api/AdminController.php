@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\UpdateAdminRequest;
+use App\Http\Requests\Api\UpdateEmailRequest;
 use App\Http\Resources\Api\UpdateAdminResource;
+use App\Http\Resources\Api\UpdateEmailResource;
 use App\Models\Api\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -94,21 +96,35 @@ class AdminController extends Controller
         }
     }
 
-//    function updateAdminEmail(Request $request)
-//    {
-//        try {
-//            DB::beginTransaction();
-//
-//            if ($authentication->email === $request->email) {
-//                $request->merge(['statusMessage' => sprintf(Common::ERR_10)]);
-//                $statusCode = Message::Bad_Request;
-//
-//                return new ErrorResource($request, $statusCode);
-//            }
-//        } catch (\Exception $e) {
-//            DB::rollBack();
-//        }
-//    }
+    function updateAdminEmail(UpdateEmailRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+            $adminId = $request->admin_id;
+            $authentication = Admin::find($adminId);
+
+            if (!$authentication) {
+                $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
+                $statusCode = Message::Not_Acceptable;
+
+                return new ErrorResource($request, $statusCode);
+            }
+
+            Admin::where('id', $adminId)->update([
+               'email' => $request->email
+            ]);
+
+            DB::commit();
+
+            return new UpdateEmailResource($request);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $request->merge(['statusMessage' => sprintf(Common::UPDATE_FAILED, 'メールアドレス')]);
+
+            return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
+        }
+    }
 
 
 
