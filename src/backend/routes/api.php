@@ -43,7 +43,7 @@ Route::middleware(['api', 'cors'])->group(function () {
         Route::post('/registerItem', 'createItem');
         // first display URL
         Route::get('/allItems', 'allItems');
-        Route::get('/displayItem/:slug', 'displayDetail');
+        Route::get('/displayItem/{id}', 'displayDetail');
         Route::get('/q', 'searchItems');
         Route::put('/fixItem/{id}', 'updateItem');
     });
