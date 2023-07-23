@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Api;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Str;
 
 class ItemResource extends JsonResource
 {
@@ -24,6 +25,12 @@ class ItemResource extends JsonResource
         return [
             'statusCode' => $this->statusCode,
             'statusMessage' => 'OK',
+            'profile' => [
+                'itemName' => $this->name,
+                'content' => Str::limit($this->description, 15, '...'),
+                'price' => $this->price,
+                'category' => $this->category
+            ]
         ];
     }
 }

@@ -29,7 +29,7 @@ class ItemController extends Controller
             DB::beginTransaction();
             $adminId = $request->admin_id;
 
-            $admin = Admin::where('id', $adminId)->first();
+            $admin = Admin::find($adminId);
             if (!$admin) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_08)]);
                 return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
@@ -56,7 +56,6 @@ class ItemController extends Controller
                 'admin_id' => $adminId,
                 'statusMessage' => Message::OK,
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
                 'expiration' => Carbon::now()->addYear(1)
             ]);
             $itemId = $Item->id;
@@ -66,7 +65,6 @@ class ItemController extends Controller
                 'item_id' => $itemId,
                 'expired_at' => Carbon::now()->addMonth(6),
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
             ]);
 
             DB::commit();
@@ -75,22 +73,44 @@ class ItemController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             $request->merge(['statusMessage' => sprintf(Common::REGISTER_FAILED, 'アイテム')]);
-            $a = $e->getMessage();
-            var_dump($a);
+
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
 
 
-
-    function changeItemStatus(ItemRequest $request)
+    function updateItem(ItemRequest $request)
     {
         try {
             DB::beginTransaction();
             $adminId = $request->admin_id;
+            $itemId = $request->item_id;
+            $authentication = Admin::find($adminId);
 
+            if (!$authentication) {
+                $request->merge(['statusMessage' => sprintf(Common::ERR_08)]);
+                return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
+            }
 
+            Item::where('id', $itemId)->update([
+                'name' => $request->input('name'),
+                'description' => $request->input('description'),
+                'price' => $request->input('price'),
+                'category' => $request->input('category'),
+                'admin_id' => $adminId,
+                'updated_at' => Carbon::now(),
+                'expiration' => Carbon::now()->addYear(1)
+            ]);
+
+            ItemFlag::where('item_id', $itemId)->update([
+                'flag' => 1,
+                'item_id' => $itemId,
+                'expired_at' => Carbon::now()->addMonth(6),
+                'updated_at' => Carbon::now(),
+            ]);
             DB::commit();
+
+            return new ItemResource($request);
         } catch (Exception $e) {
             DB::rollBack();
         }
@@ -105,7 +125,7 @@ class ItemController extends Controller
             if (empty($displayItems)) {
                 return new ErrorResource($request);
             }
-            $changeItems =  $displayItems->toArray();
+            $changeItems = $displayItems->toArray();
             foreach ($changeItems as $key => $value) {
                 $insertNumber = $value['category'];
                 $changeItems[$key]['categoryName'] = Category::genre[$insertNumber];
@@ -114,8 +134,8 @@ class ItemController extends Controller
             return new ItemCollection($changeItems);
         } catch (Exception $e) {
             DB::rollBack();
-            $message  = $e->getMessage();
-            var_dump($message);
+            $request->merge(['statusMessage' => sprintf(Common::FAILED, 'アイテム取得')]);
+            return new ErrorResource($request, Common::FAILED);
         }
     }
 
