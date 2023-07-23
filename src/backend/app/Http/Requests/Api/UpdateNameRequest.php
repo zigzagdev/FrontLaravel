@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Api;
 
-class UpdateAdminRequest extends CommonRequest
+class UpdateNameRequest extends CommonRequest
 {
     /**
      * Determine if the user is authorized to make this request.
