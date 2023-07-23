@@ -23,6 +23,10 @@ class UserResource extends JsonResource
         return [
             'statusCode' => $this->statusCode,
             'statusMessage' => 'OK',
+            'profile' => [
+                'name' => $this->name,
+                'email' => $this->email
+            ]
         ];
     }
 }
