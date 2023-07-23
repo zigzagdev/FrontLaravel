@@ -25,7 +25,7 @@ class UpdateEmailResource extends JsonResource
             'statusCode' => $this->statusCode,
             'statusMessage' => 'OK',
             'profile' => [
-                'name' => $this->email,
+                'email' => $this->email,
             ]
         ];
     }

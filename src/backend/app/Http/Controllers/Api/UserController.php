@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Consts\Api\Message;
 use App\Consts\Common;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\UpdateEmailRequest;
 use App\Http\Requests\Api\UserRequest;
 use App\Http\Resources\Api\ErrorResource;
+use App\Http\Resources\Api\UpdateEmailResource;
 use App\Http\Resources\Api\UserAllCollection;
 use App\Http\Resources\Api\UserResource;
+use App\Models\Api\Admin;
 use App\Models\Api\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -64,6 +67,36 @@ class UserController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
+        }
+    }
+
+    public function updateEmail(UpdateEmailRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+            $userId = $request->user_id;
+            $authentication = User::find($userId);
+
+            if (!$authentication) {
+                $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
+                $statusCode = Message::Not_Acceptable;
+
+                return new ErrorResource($request, $statusCode);
+            }
+
+            User::where('id', $userId)->update([
+                'email' => $request->email
+            ]);
+
+            DB::commit();
+
+            return new UpdateEmailResource($request);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $request->merge(['statusMessage' => sprintf(Common::UPDATE_FAILED, 'メールアドレス')]);
+
+            return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
 
