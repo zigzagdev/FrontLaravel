@@ -18,6 +18,7 @@ use App\Models\Api\Item;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Mockery\Exception;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -56,7 +57,8 @@ class ItemController extends Controller
                 'admin_id' => $adminId,
                 'statusMessage' => Message::OK,
                 'created_at' => Carbon::now(),
-                'expiration' => Carbon::now()->addYear(1)
+                'expiration' => Carbon::now()->addYear(1),
+                'slug' => Str::slug($request->input('name'))
             ]);
             $itemId = $Item->id;
 
@@ -75,7 +77,8 @@ class ItemController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             $request->merge(['statusMessage' => sprintf(Common::REGISTER_FAILED, 'アイテム')]);
-
+            $y = $e->getMessage();
+            var_dump($y);
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
@@ -101,7 +104,8 @@ class ItemController extends Controller
                 'category' => $request->input('category'),
                 'admin_id' => $adminId,
                 'updated_at' => Carbon::now(),
-                'expiration' => Carbon::now()->addYear(1)
+                'expiration' => Carbon::now()->addYear(1),
+                'slug' => Str::slug($request->input('name'))
             ]);
 
             ItemFlag::where('item_id', $itemId)->update([
