@@ -36,6 +36,7 @@ Route::middleware(['api', 'cors'])->group(function () {
         Route::put('/updateUser', 'updateUser');
         Route::get('/userAll', 'allUser');
         Route::get('/each/:id', 'eachUser');
+        Route::put('/userEmail', 'updateEmail');;
     });
 
     Route::controller(ItemController::class)->group(function () {
