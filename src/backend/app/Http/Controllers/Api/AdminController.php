@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\UpdateAdminRequest;
+use App\Http\Requests\Api\UpdateNameRequest;
 use App\Http\Requests\Api\UpdateEmailRequest;
 use App\Http\Resources\Api\UpdateAdminResource;
 use App\Http\Resources\Api\UpdateEmailResource;
@@ -44,7 +44,6 @@ class AdminController extends Controller
                 'password' => Hash::make($request->input('password')),
                 'statusMessage' => Message::OK,
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
                 'expiration' => Carbon::now()->addDays(3)
             ]);
             DB::commit();
@@ -57,7 +56,7 @@ class AdminController extends Controller
         }
     }
 
-    function updateAdmin(UpdateAdminRequest $request)
+    function updateAdmin(UpdateNameRequest $request)
     {
         try {
             DB::beginTransaction();
@@ -110,7 +109,8 @@ class AdminController extends Controller
             }
 
             Admin::where('id', $adminId)->update([
-               'email' => $request->email
+               'email' => $request->email,
+                'updated_at' => Carbon::now()
             ]);
 
             DB::commit();
