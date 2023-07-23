@@ -46,7 +46,7 @@ class UserController extends Controller
             return new UserResource($request);
         } catch (\Exception $e) {
             DB::rollBack();
-            $request->merge(['statusMessage' => sprintf(Common::REGISTER_FAILED, 'アカウント')]);
+            $request->merge(['statusMessage' => sprintf(Common::REGISTER_FAILED, 'ユーザーアカウント')]);
 
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
@@ -75,7 +75,7 @@ class UserController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
-            $request->merge(['statusMessage' => sprintf(Common::REGISTER_FAILED, 'アカウント')]);
+            $request->merge(['statusMessage' => sprintf(Common::REGISTER_FAILED, 'ユーザーアカウント')]);
 
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
