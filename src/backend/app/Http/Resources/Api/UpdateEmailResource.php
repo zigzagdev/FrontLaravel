@@ -4,7 +4,7 @@ namespace App\Http\Resources\Api;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class UpdateEmailResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,14 +18,14 @@ class UserResource extends JsonResource
         $this->statusCode = $statusCode;
     }
 
+
     public function toArray($request)
     {
         return [
             'statusCode' => $this->statusCode,
             'statusMessage' => 'OK',
             'profile' => [
-                'name' => $this->name,
-                'email' => $this->email
+                'name' => $this->email,
             ]
         ];
     }

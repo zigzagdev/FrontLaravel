@@ -32,7 +32,7 @@ class UpdateAdminRequest extends CommonRequest
         return [
             "name.required" => $message['required'],
             "name.min" => sprintf($message['min'], 4),
-            "name.max" => sprintf($message['max'], 50),
+            "name.max" => sprintf($message['max'], 100),
             "name.regex" => $message['regex'],
         ];
     }

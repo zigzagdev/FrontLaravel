@@ -22,8 +22,8 @@ class UserRequest extends CommonRequest
     public function rules()
     {
         return [
-            "name" => "required|min:5||max:100|string",
-            "email" => "required|min:5|max:100|email|unique:admins|unique:users",
+            "name" => "required|min:4|max:100|string",
+            "email" => "required|min:4|max:100|email|unique:admins|unique:users",
             "password" => "min:8|max:255|required",
         ];
     }
