@@ -16,19 +16,19 @@ export default function Login() {
 
     const AuthCheck = (e: React.FormEvent) => {
         e.preventDefault();
-            try {
-                axios.post<Inputs>(`${baseURL}./login`, {
-                    email,
-                    password
+        try {
+            axios.post<Inputs>(`${baseURL}./login`, {
+                email,
+                password
+            })
+                .then((res) => {
+                    return (
+                        navigate('/Posts')
+                    )
                 })
-                    .then((res) => {
-                        return (
-                            navigate('/Posts')
-                        )
-                    })
-            } catch (error) {
-                console.log("error")
-            }
+        } catch (error) {
+            console.log("error")
+        }
     }
     return (
         <>

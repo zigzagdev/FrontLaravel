@@ -2,9 +2,9 @@ import React from "react";
 
 
 export default function Logout() {
-    return(
+    return (
         <>
-          Logout function here
+            Logout function here
         </>
     )
 }

@@ -31,7 +31,7 @@ class AdminRequest extends CommonRequest
     public function messages()
     {
         $message = $this->errorMessages();
-        return  [
+        return [
             //name
             "name.required" => $message['required'],
             "name.min" => sprintf($message['min'], 4),

@@ -23,7 +23,7 @@ class Item extends Model
 
     public function searchableAs()
     {
-         return 'item_index';
+        return 'item_index';
     }
 
     public function Flag()

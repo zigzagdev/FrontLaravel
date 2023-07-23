@@ -12,7 +12,5 @@ class User extends Model
 
     protected $model = User::class;
 
-    protected  $guarded = [
-        'id'
-    ];
+    protected $guarded = ['id'];
 }

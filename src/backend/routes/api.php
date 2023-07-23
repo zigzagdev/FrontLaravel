@@ -45,7 +45,7 @@ Route::middleware(['api', 'cors'])->group(function () {
         Route::get('/allItems', 'allItems');
         Route::get('/displayItem/:slug', 'displayDetail');
         Route::get('/q', 'searchItems');
-        Route::put('/fixItem/:slug', 'changeItemStatus');
+        Route::put('/fixItem/{id}', 'updateItem');
     });
 });
 

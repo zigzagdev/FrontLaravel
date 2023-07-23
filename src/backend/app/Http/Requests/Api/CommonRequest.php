@@ -54,7 +54,7 @@ class CommonRequest extends FormRequest
         $errors = $validator->errors()->toArray();
 
         $response = [
-            'statusCode'  => Message::Bad_Request,
+            'statusCode' => Message::Bad_Request,
             'statusMessage' => reset($errors)[0]
         ];
         throw new HttpResponseException(

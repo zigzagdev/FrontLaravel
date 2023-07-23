@@ -22,7 +22,6 @@ use App\Http\Resources\Api\AdminResource;
 use Illuminate\Support\Facades\Route;
 
 
-
 class AdminController extends Controller
 {
     function createAdmin(AdminRequest $request)
@@ -38,7 +37,7 @@ class AdminController extends Controller
                 return new ErrorResource($request, $statusCode);
             }
 
-           Admin::create([
+            Admin::create([
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
                 'password' => Hash::make($request->input('password')),
@@ -49,7 +48,7 @@ class AdminController extends Controller
             DB::commit();
 
             return new RegisterAdminResource($request);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             DB::rollBack();
             $request->merge(['statusMessage' => sprintf(Common::REGISTER_FAILED, 'アカウント')]);
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
@@ -109,7 +108,7 @@ class AdminController extends Controller
             }
 
             Admin::where('id', $adminId)->update([
-               'email' => $request->email,
+                'email' => $request->email,
                 'updated_at' => Carbon::now()
             ]);
 
@@ -124,7 +123,6 @@ class AdminController extends Controller
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
-
 
 
     function getAdmin(Request $request)
