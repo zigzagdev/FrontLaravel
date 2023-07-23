@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\UpdateAdminRequest;
+use App\Http\Resources\Api\UpdateAdminResource;
 use App\Models\Api\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -53,11 +55,12 @@ class AdminController extends Controller
         }
     }
 
-    function updateAdmin(AdminRequest $request)
+    function updateAdmin(UpdateAdminRequest $request)
     {
         try {
             DB::beginTransaction();
-            $authentication = Admin::where('email', $request->email)->first();
+            $adminId = $request->admin_id;
+            $authentication = Admin::find($adminId);
 
             if (empty($authentication)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_08)]);
@@ -74,24 +77,40 @@ class AdminController extends Controller
                 return new ErrorResource($request, $statusCode);
             }
 
-            Admin::update([
+            Admin::where('id', $adminId)->update([
                 'name' => $request->input('name'),
-                'email' => $request->input('email'),
-                'statusMessage' => Message::OK,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
                 'expiration' => Carbon::now()->addDay(3)
             ]);
             DB::commit();
-            return new AdminResource($request);
+            return new UpdateAdminResource($request);
 
         } catch (\Exception $e) {
             DB::rollBack();
+            $request->merge(['statusMessage' => sprintf(Common::UPDATE_FAILED, 'アカウント')]);
 
-            $request->merge(['statusMessage' => sprintf(Common::REGISTER_FAILED, 'アカウント')]);
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
+
+//    function updateAdminEmail(Request $request)
+//    {
+//        try {
+//            DB::beginTransaction();
+//
+//            if ($authentication->email === $request->email) {
+//                $request->merge(['statusMessage' => sprintf(Common::ERR_10)]);
+//                $statusCode = Message::Bad_Request;
+//
+//                return new ErrorResource($request, $statusCode);
+//            }
+//        } catch (\Exception $e) {
+//            DB::rollBack();
+//        }
+//    }
+
+
 
     function getAdmin(Request $request)
     {

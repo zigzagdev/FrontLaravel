@@ -68,7 +68,7 @@ class UserController extends Controller
         }
     }
 
-    public function allUser(Request $request)
+    public function allUser($request)
     {
         try {
             DB::beginTransaction();
