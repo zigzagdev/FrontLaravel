@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 class AdminFactory extends Factory
 {
     protected $model = Admin::class;
+
     /**
      * Define the model's default state.
      *
