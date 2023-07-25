@@ -26,13 +26,13 @@ class ItemController extends Controller
 {
     function createItem(ItemRequest $request)
     {
-        try {
-            DB::beginTransaction();
+                          try {
+                   DB::beginTransaction();
             $adminId = $request->admin_id;
 
             $admin = Admin::find($adminId);
             if (!$admin) {
-                $request->merge(['statusMessage' => sprintf(Common::ERR_08)]);
+                              $request->merge(['statusMessage' => sprintf(Common::ERR_08)]);
                 return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
             }
 
@@ -49,10 +49,10 @@ class ItemController extends Controller
                 return new ErrorResource($request, $statusCode);
             }
 
-            $Item = Item::create([
+                                  $Item = Item::create([
                 'name' => $request->input('name'),
                 'description' => $request->input('description'),
-                'price' => $request->input('price'),
+                         'price' => $request->input('price'),
                 'category' => $request->input('category'),
                 'admin_id' => $adminId,
                 'statusMessage' => Message::OK,
@@ -76,7 +76,7 @@ class ItemController extends Controller
             return new ItemResource($request);
         } catch (\Exception $e) {
             DB::rollBack();
-            $request->merge(['statusMessage' => sprintf(Common::REGISTER_FAILED, 'アイテム')]);
+                             $request->merge(['statusMessage' => sprintf(Common::REGISTER_FAILED, 'アイテム')]);
 
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
@@ -104,10 +104,10 @@ class ItemController extends Controller
             Item::where('id', $itemId)->update([
                 'name' => $request->input('name'),
                 'description' => $request->input('description'),
-                'price' => $request->input('price'),
+                             'price' => $request->input('price'),
                 'category' => $request->input('category'),
                 'admin_id' => $adminId,
-                'updated_at' => Carbon::now(),
+                        'updated_at' => Carbon::now(),
                 'expiration' => Carbon::now()->addYear(1),
                 'slug' => Str::slug($request->input('name'))
             ]);
@@ -144,10 +144,10 @@ class ItemController extends Controller
                 $changeItems[$key]['categoryName'] = Category::genre[$insertNumber];
             }
 
-            return new ItemCollection($changeItems);
-        } catch (Exception $e) {
+                                return new ItemCollection($changeItems);
+                   } catch (Exception $e) {
             DB::rollBack();
-            $request->merge(['statusMessage' => sprintf(Common::FAILED, 'アイテム取得')]);
+                        $request->merge(['statusMessage' => sprintf(Common::FAILED, 'アイテム取得')]);
             return new ErrorResource($request, Common::FAILED);
         }
     }
@@ -176,9 +176,9 @@ class ItemController extends Controller
                 return new SearchCollection($arrayResult);
             }
         } catch (Exception $e) {
-            DB::rollBack();
-            $request->merge(['statusMessage' => sprintf(Common::FAILED, 'アイテム取得')]);
+                      DB::rollBack();
+                             $request->merge(['statusMessage' => sprintf(Common::FAILED, 'アイテム取得')]);
             return new ErrorResource($request, Common::FAILED);
-        }
+                     }
     }
 }
