@@ -18,6 +18,7 @@ use App\Models\Api\Item;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Mockery\Exception;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -56,7 +57,8 @@ class ItemController extends Controller
                 'admin_id' => $adminId,
                 'statusMessage' => Message::OK,
                 'created_at' => Carbon::now(),
-                'expiration' => Carbon::now()->addYear(1)
+                'expiration' => Carbon::now()->addYear(1),
+                'slug' => Str::slug($request->input('name'))
             ]);
             $itemId = $Item->id;
 
@@ -87,11 +89,16 @@ class ItemController extends Controller
             DB::beginTransaction();
             $adminId = $request->admin_id;
             $itemId = $request->item_id;
-            $authentication = Admin::find($adminId);
+            $authentication = Item::find($itemId);
 
             if (!$authentication) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_08)]);
                 return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
+            }
+
+            if ($authentication->slug !== $authentication->name) {
+                $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
+                return new ErrorResource($request, Response::HTTP_NOT_FOUND);
             }
 
             Item::where('id', $itemId)->update([
@@ -101,7 +108,8 @@ class ItemController extends Controller
                 'category' => $request->input('category'),
                 'admin_id' => $adminId,
                 'updated_at' => Carbon::now(),
-                'expiration' => Carbon::now()->addYear(1)
+                'expiration' => Carbon::now()->addYear(1),
+                'slug' => Str::slug($request->input('name'))
             ]);
 
             ItemFlag::where('item_id', $itemId)->update([
