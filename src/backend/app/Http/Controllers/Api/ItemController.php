@@ -77,8 +77,7 @@ class ItemController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             $request->merge(['statusMessage' => sprintf(Common::REGISTER_FAILED, 'アイテム')]);
-            $y = $e->getMessage();
-            var_dump($y);
+
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
@@ -90,11 +89,16 @@ class ItemController extends Controller
             DB::beginTransaction();
             $adminId = $request->admin_id;
             $itemId = $request->item_id;
-            $authentication = Admin::find($adminId);
+            $authentication = Item::find($itemId);
 
             if (!$authentication) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_08)]);
                 return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
+            }
+
+            if ($authentication->slug !== $authentication->name) {
+                $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
+                return new ErrorResource($request, Response::HTTP_NOT_FOUND);
             }
 
             Item::where('id', $itemId)->update([
