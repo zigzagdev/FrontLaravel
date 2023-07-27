@@ -13,6 +13,7 @@ import PostSlug from "../components/app/post/PostSlug";
 import NotFound from "../components/app/exception/NotFound";
 import Contact from "../components/common/footer/Contact";
 import Login from "../components/app/auth/Login";
+import UserIndex from "../components/app/user/Info";
 
 
 export default function EachRoutes() {
@@ -30,6 +31,7 @@ export default function EachRoutes() {
                         <Route path="/404" element={<NotFound/>}/>
                         <Route path="/Contact" element={<Contact/>}/>
                         <Route path="/Login" element={<Login/>}/>
+                        <Route path="/UserIndex" element={<UserIndex/>}/>
                     </Routes>
                     <Footer/>
                 </BrowserRouter>
