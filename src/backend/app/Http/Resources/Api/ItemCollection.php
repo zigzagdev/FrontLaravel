@@ -19,7 +19,7 @@ class ItemCollection extends ResourceCollection
         return [
             'statusCode' => Response::HTTP_OK,
             'statusMessage' => 'OK',
-            'commentList' => $this->collection->map(function ($changeItems) {
+            'itemDetail' => $this->collection->map(function ($changeItems) {
                 return [
                     'itemName' => $changeItems['name'],
                     'content' => Str::limit($changeItems['description'], 15, '...'),
