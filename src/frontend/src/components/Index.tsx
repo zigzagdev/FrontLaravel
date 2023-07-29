@@ -1,20 +1,22 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
 
-interface Info {
+interface ItemInfo {
     id?: number,
-    userName?: string,
-    emailAddress?: string
+    itemName?: string,
+    content?: string,
+    price?: number,
+    categoryName? : string
 }
 
 
 export default function Index() {
-    const [users, setUsers] = useState<Info[]>([]);
+    const [items, setItems] = useState<ItemInfo[]>([]);
     const baseURL = process.env.REACT_APP_API_BASE_URL;
     useEffect(() => {
-        axios.get(`${baseURL}./userAll`)
+        axios.get(`${baseURL}./allItems`)
             .then(res => {
-                setUsers(res.data.data.userInformation)
+                setItems(res.data.data.itemDetail)
             })
     }, [])
     return (
@@ -23,11 +25,9 @@ export default function Index() {
                 Top Page
             </div>
             <div>
-                {users.map(user => {
-                    return (
-                        <>
-                            {user.userName}
-                        </>
+                {items.map(item => {
+                    return(
+                        item.itemName
                     )
                 })}
             </div>
