@@ -11,6 +11,7 @@ class User extends Model
     use HasFactory, SoftDeletes;
 
     protected $model = User::class;
+    protected $table = 'users';
 
     protected $guarded = ['id'];
 }
