@@ -118,10 +118,3 @@ export default function Index() {
 
 
 
-
-
-
-
-
-
-
