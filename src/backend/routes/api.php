@@ -44,7 +44,7 @@ Route::middleware(['api', 'cors'])->group(function () {
         // first display URL
         Route::get('/allItems', 'allItems');
         Route::get('/displayItem/{id}', 'displayDetail');
-        Route::get('/q', 'searchItems');
+        Route::get('/searchItem', 'searchItems');
         Route::put('/updateItem/{id}', 'updateItem');
     });
 });
