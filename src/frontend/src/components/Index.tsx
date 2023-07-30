@@ -125,12 +125,3 @@ export default function Index() {
 
 
 
-
-
-
-
-
-
-
-
-
