@@ -76,20 +76,3 @@ export default function Index() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
