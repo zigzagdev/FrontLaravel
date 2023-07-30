@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
+import Search from "./app/input/Search";
 
 interface ItemInfo {
     id?: number,
@@ -22,7 +23,7 @@ export default function Index() {
     return (
         <>
             <div className="my-3 block text-sm text-gray-300 duration-700 hover:text-gray-100">
-                Top Page
+                <Search/>
             </div>
             <div>
                 {items.map(item => {
