@@ -7,7 +7,7 @@ interface ItemInfo {
     itemName?: string,
     content?: string,
     price?: number,
-    categoryName? : string
+    categoryName?: string
 }
 
 
@@ -27,7 +27,7 @@ export default function Index() {
             </div>
             <div>
                 {items.map(item => {
-                    return(
+                    return (
                         item.itemName
                     )
                 })}
