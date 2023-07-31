@@ -25,27 +25,27 @@ Route::middleware(['api', 'cors'])->group(function () {
     });
 
     Route::controller(AdminController::class)->group(function () {
-        Route::post('/registerAdmin', 'createAdmin');
-        Route::put('/updateAdmin', 'updateAdmin');
-        Route::get('/getAdmin', 'getAdmin');
-        Route::put('/updateAdminEmail', 'updateAdminEmail');
+        Route::post('/register', 'createAdmin');
+        Route::put('/update', 'updateAdmin');
+        Route::get('/get', 'getAdmin');
+        Route::put('/update/email', 'updateAdminEmail');
     });
 
     Route::controller(UserController::class)->group(function () {
-        Route::post('/registerUser', 'createUser');
-        Route::put('/updateUser', 'updateUser');
-        Route::get('/userAll', 'allUser');
-        Route::get('/each/:id', 'eachUser');
-        Route::put('/userEmail', 'updateEmail');
+        Route::post('/register', 'createUser');
+        Route::put('/update', 'updateUser');
+        Route::get('/users', 'allUser');
+        Route::get('/user/:id', 'eachUser');
+        Route::put('/update/email', 'updateEmail');
     });
 
     Route::controller(ItemController::class)->group(function () {
-        Route::post('/registerItem', 'createItem');
+        Route::post('/register', 'createItem');
         // first display URL
-        Route::get('/allItems', 'allItems');
-        Route::get('/displayItem/{id}', 'displayDetail');
-        Route::get('/searchItem', 'searchItems');
-        Route::put('/updateItem/{id}', 'updateItem');
+        Route::get('/items', 'allItems');
+        Route::get('/display/{id}', 'displayDetail');
+        Route::get('/search', 'searchItems');
+        Route::put('/update/{id}', 'updateItem');
     });
 });
 
