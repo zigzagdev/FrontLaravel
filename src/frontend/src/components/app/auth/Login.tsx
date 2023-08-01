@@ -23,11 +23,13 @@ export default function Login() {
             })
                 .then((res) => {
                     return (
-                        navigate('/Posts')
+                        navigate('/')
                     )
                 })
         } catch (error) {
-            console.log("error")
+            <div>
+                something is wrong ....
+            </div>
         }
     }
     return (
