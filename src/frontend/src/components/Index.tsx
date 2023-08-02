@@ -15,7 +15,7 @@ export default function Index() {
     const [items, setItems] = useState<ItemInfo[]>([]);
     const baseURL = process.env.REACT_APP_API_BASE_URL;
     useEffect(() => {
-        axios.get(`${baseURL}./allItems`)
+        axios.get(`${baseURL}./items`)
             .then(res => {
                 setItems(res.data.data.itemDetail)
             })
