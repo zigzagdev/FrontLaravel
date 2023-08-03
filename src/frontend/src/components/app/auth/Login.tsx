@@ -7,6 +7,10 @@ type Inputs = {
     password: string
 }
 
+type errorMessage = {
+    error: string
+}
+
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -26,10 +30,10 @@ export default function Login() {
                         navigate('/')
                     )
                 })
-        } catch (error) {
-            <div>
-                something is wrong ....
-            </div>
+        } catch (e: any) {
+            if (e.response.status !== 201) {
+                console.log("error is happened !")
+            }
         }
     }
     return (
