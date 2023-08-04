@@ -17,6 +17,7 @@ use App\Models\Api\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
@@ -112,7 +113,7 @@ class UserController extends Controller
         }
     }
 
-    public function allUser($request)
+    public function allUser(Request $request)
     {
         try {
             DB::beginTransaction();

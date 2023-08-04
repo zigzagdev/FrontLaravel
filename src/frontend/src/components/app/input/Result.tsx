@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
-import Search from "./app/input/Search";
 
-interface ItemInfo {
+interface searchResults {
     id?: number,
     itemName?: string,
     content?: string,
@@ -11,24 +10,22 @@ interface ItemInfo {
 }
 
 
-export default function Index() {
-    const [items, setItems] = useState<ItemInfo[]>([]);
+export default function Result() {
+    const [searchContents, setSearchContents] = useState<searchResults[]>([]);
     const baseURL = process.env.REACT_APP_API_BASE_URL;
     useEffect(() => {
-        axios.get(`${baseURL}./items`)
+        axios.get(`${baseURL}./search?q=${searchContents}`)
             .then(res => {
-                setItems(res.data.data.itemDetail)
+                setSearchContents(res.data.data.itemInformation)
             })
     }, [])
+
     return (
         <>
-            <div className="my-3 block text-sm text-gray-300 duration-700 hover:text-gray-100">
-                <Search/>
-            </div>
             <div>
-                {items.map(item => {
+                {searchContents.map(searchContent => {
                     return (
-                        item.itemName
+                        searchContent.itemName
                     )
                 })}
             </div>

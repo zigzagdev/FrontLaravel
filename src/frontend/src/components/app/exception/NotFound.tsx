@@ -1,5 +1,5 @@
 import React from "react";
-import image from "../../../404_error.jpeg";
+import image from "./404_error.jpeg";
 
 export default function NotFound() {
     return (
