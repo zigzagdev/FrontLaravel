@@ -14,7 +14,7 @@ type errorMessage = {
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const [error, setError] = useState(false);
     const baseURL = process.env.REACT_APP_API_BASE_URL;
     const navigate = useNavigate();
 
@@ -32,45 +32,48 @@ export default function Login() {
                 })
         } catch (e: any) {
             if (e.response.status !== 201) {
-                console.log("error is happened !")
+                setError(true)
             }
         }
     }
     return (
         <>
-            <form action="" method="post" onSubmit={AuthCheck}>
-                <h1 className="my-5">
-                    <strong className="text-red-600">Login</strong>
-                </h1>
-                <p className="item">
-                    <label htmlFor="email"> Email </label>
-                    <input
-                        type="email"
-                        name="email"
-                        id="email"
-                        value={email}
-                        onChange={e => setEmail(e.target.value)}
-                    />
-                </p>
-                <p className="item">
-                    <label htmlFor="password"> Password </label>
-                    <input
-                        type="password"
-                        name="password"
-                        id="password"
-                        value={password}
-                        onChange={e => setPassword(e.target.value)}
-                    />
-                </p>
-                <p className="item">
-                    <button
-                        className="btn btn-outline-primary text-center shadow-none mb-3"
-                        type="submit"
-                    >
-                        Submit
-                    </button>
-                </p>
-            </form>
+            <div>
+                <form action="" method="post" onSubmit={AuthCheck}>
+                    {error && <div>{error}</div>}
+                    <h1 className="my-5">
+                        <strong className="text-red-600">Login</strong>
+                    </h1>
+                    <p className="item">
+                        <label htmlFor="email">Email</label>
+                        <input
+                            type="email"
+                            name="email"
+                            id="email"
+                            value={email}
+                            onChange={e => setEmail(e.target.value)}
+                        />
+                    </p>
+                    <p className="item">
+                        <label htmlFor="password"> Password </label>
+                        <input
+                            type="password"
+                            name="password"
+                            id="password"
+                            value={password}
+                            onChange={e => setPassword(e.target.value)}
+                        />
+                    </p>
+                    <p className="item">
+                        <button
+                            className="btn btn-outline-primary text-center shadow-none mb-3"
+                            type="submit"
+                        >
+                            Submit
+                        </button>
+                    </p>
+                </form>
+            </div>
         </>
     )
 }
