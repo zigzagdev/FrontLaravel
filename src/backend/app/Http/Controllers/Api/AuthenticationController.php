@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Consts\Api\Message;
+use App\Consts\Common;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\ErrorResource;
 use App\Http\Resources\Api\LoginResource;
@@ -24,12 +25,12 @@ class AuthenticationController extends Controller
 
             if (!$authentication) {
                 $request->merge(['statusMessage' => Message::No_Content]);
-                return new ErrorResource($request, Response::HTTP_UNAUTHORIZED);
+                return new ErrorResource($request, sprintf(Common::REGISTER_FAILED, 'アカウント'));
             }
 
             $password = $request->password;
             if (!Hash::check($password, $authentication->password)) {
-                $request->merge(['statusMessage' => Message::Unauthorized]);
+                $request->merge(['statusMessage' => sprintf(Common::AUTHENTICATE_FAILED, 'アカウント')]);
                 return new ErrorResource($request);
             }
 
