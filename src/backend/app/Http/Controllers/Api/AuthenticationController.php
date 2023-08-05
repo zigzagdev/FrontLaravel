@@ -40,7 +40,9 @@ class AuthenticationController extends Controller
 
             return new LoginResource($request);
         } catch (\Exception $e) {
-
+            DB::rollBack();
+            $request->merge(['statusMessage' => sprintf(Common::REGISTER_FAILED, 'アカウント')]);
+            return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
 
