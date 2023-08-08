@@ -46,10 +46,3 @@ export default function EachRoutes() {
 
 
 
-
-
-
-
-
-
-
