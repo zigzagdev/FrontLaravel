@@ -18,7 +18,7 @@ use Carbon\Carbon;
 
 class AuthenticationController extends Controller
 {
-    function loginAuth(Request $request)
+    public function loginAuth(Request $request)
     {
         try {
             DB::beginTransaction();
@@ -51,14 +51,16 @@ class AuthenticationController extends Controller
         }
     }
 
-    function logoutAuth($request)
+
+    public function logoutAuth($request)
     {
         try {
             DB::beginTransaction();
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return new ErrorResource($request);
+            $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, 'アカウント')]);
+            return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
 }
