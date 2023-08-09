@@ -38,7 +38,7 @@ export default function Login() {
     }
     return (
         <>
-            <div>
+            <div className="my-5 mx-36">
                 <form action="" method="post" onSubmit={AuthCheck}>
                     {error && <div>{error}</div>}
                     <h1 className="my-5">
