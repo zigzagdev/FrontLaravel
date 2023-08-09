@@ -6,6 +6,12 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class LoginResource extends JsonResource
 {
+
+    public function __construct($request, $statusCode = 200)
+    {
+        parent::__construct($request);
+        $this->statusCode = $statusCode;
+    }
     /**
      * Transform the resource into an array.
      *

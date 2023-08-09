@@ -14,6 +14,8 @@ class Common
     public const DELETE_FAILED = "%sの削除に失敗しました。";
     public const STATUS_NOT_FOUND = "ステータスが存在しません。";
     public const SESSION_FAILED = "セッションが切れました。再度ログインをお願い致します。";
+    public const LOGIN_FAILED = "%sのログインに失敗しました。";
+    public const LOGOUT_FAILED = "%sのログアウトに失敗しました。";
 
     //Specific Messages
     public const ERR_01 = "メールアドレスあるいはパスワードが間違っています。";

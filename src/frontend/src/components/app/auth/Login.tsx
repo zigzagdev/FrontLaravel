@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 
@@ -30,15 +30,14 @@ export default function Login() {
                         navigate('/')
                     )
                 })
-        } catch (e: any) {
-            if (e.response.status !== 201) {
-                setError(true)
-            }
+        } catch (e) {
+            console.error(error);
+
         }
     }
     return (
         <>
-            <div>
+            <div className="my-5 mx-36">
                 <form action="" method="post" onSubmit={AuthCheck}>
                     {error && <div>{error}</div>}
                     <h1 className="my-5">

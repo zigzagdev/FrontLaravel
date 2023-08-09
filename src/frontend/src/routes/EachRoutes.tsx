@@ -14,8 +14,7 @@ import NotFound from "../components/app/exception/NotFound";
 import Contact from "../components/common/footer/Contact";
 import Login from "../components/app/auth/Login";
 import UserIndex from "../components/app/user/Info";
-import Result from "../components/app/input/Result";
-
+import Result from "../components/app/input/Result"
 
 export default function EachRoutes() {
     return (
