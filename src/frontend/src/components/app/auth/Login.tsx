@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 
@@ -30,10 +30,9 @@ export default function Login() {
                         navigate('/')
                     )
                 })
-        } catch (e: any) {
-            if (e.response.status !== 201) {
-                setError(true)
-            }
+        } catch (e) {
+            console.error(error);
+
         }
     }
     return (
