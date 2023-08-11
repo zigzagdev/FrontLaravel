@@ -23,7 +23,7 @@ class AuthenticationController extends Controller
             DB::beginTransaction();
             $authentication = Admin::where('email', $request->email)->first();
 
-            if (isset($authentication)) {
+            if (empty($authentication)) {
                 $request->merge(['statusMessage' => Message::No_Content]);
                 return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
             }
@@ -45,6 +45,7 @@ class AuthenticationController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, 'アカウント')]);
+
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
