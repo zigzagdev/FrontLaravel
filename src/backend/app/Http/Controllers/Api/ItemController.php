@@ -31,7 +31,8 @@ class ItemController extends Controller
             $adminId = $request->admin_id;
 
             $admin = Admin::find($adminId);
-            if (!$admin) {
+
+            if (empty($admin)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_08)]);
                 return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
             }
@@ -42,7 +43,7 @@ class ItemController extends Controller
                 'category' => $request->category
             ])->first();
 
-            if (!empty($existItem)) {
+            if (($existItem)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_08)]);
                 $statusCode = Message::Unauthorized;
 

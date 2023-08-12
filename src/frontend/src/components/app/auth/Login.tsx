@@ -7,8 +7,8 @@ type Inputs = {
     password: string
 }
 
-type errorMessage = {
-    error: string
+type error = {
+    message: string
 }
 
 export default function Login() {
@@ -20,26 +20,24 @@ export default function Login() {
 
     const AuthCheck = (e: React.FormEvent) => {
         e.preventDefault();
-        try {
-            axios.post<Inputs>(`${baseURL}./login`, {
+        axios
+            .post<Inputs>(`${baseURL}./login`, {
                 email,
                 password
             })
-                .then((res) => {
-                    return (
-                        navigate('/')
-                    )
-                })
-        } catch (e) {
-            console.error(error);
-
-        }
+            .then((res) => {
+                return (
+                    navigate('/')
+                )
+            })
+            .catch((error: any) => {
+                console.log(error.response.statusText);
+            });
     }
     return (
         <>
             <div className="my-5 mx-36">
                 <form action="" method="post" onSubmit={AuthCheck}>
-                    {error && <div>{error}</div>}
                     <h1 className="my-5">
                         <strong className="text-red-600">Login</strong>
                     </h1>

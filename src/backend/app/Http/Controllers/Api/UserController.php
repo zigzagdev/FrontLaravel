@@ -30,9 +30,7 @@ class UserController extends Controller
 
             if (!empty($existUser)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_08)]);
-                $statusCode = Message::Unauthorized;
-
-                return new ErrorResource($request, $statusCode);
+                return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
             }
 
             User::create([
@@ -62,9 +60,7 @@ class UserController extends Controller
 
             if (empty($authentication)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
-                $statusCode = Message::Unauthorized;
-
-                return new ErrorResource($request, $statusCode);
+                return new ErrorResource($request, Response::HTTP_NOT_FOUND);
             }
 
             User::where('id', $userId)->update([
@@ -77,7 +73,6 @@ class UserController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             $request->merge(['statusMessage' => sprintf(Common::REGISTER_FAILED, 'ユーザーアカウント')]);
-
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
@@ -89,18 +84,15 @@ class UserController extends Controller
             $userId = $request->user_id;
             $authentication = User::find($userId);
 
-            if (!$authentication) {
+            if (empty($authentication)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
-                $statusCode = Message::Not_Acceptable;
-
-                return new ErrorResource($request, $statusCode);
+                return new ErrorResource($request, Response::HTTP_NOT_FOUND);
             }
 
             User::where('id', $userId)->update([
                 'email' => $request->email,
                 'updated_at' => Carbon::now()
             ]);
-
             DB::commit();
 
             return new UpdateEmailResource($request);
@@ -108,7 +100,6 @@ class UserController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             $request->merge(['statusMessage' => sprintf(Common::UPDATE_FAILED, 'メールアドレス')]);
-
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
@@ -119,12 +110,10 @@ class UserController extends Controller
             DB::beginTransaction();
             $users = User::all();
 
-
             if (empty($users)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
-                $statusCode = Message::Unauthorized;
 
-                return new ErrorResource($request, $statusCode);
+                return new ErrorResource($request, Response::HTTP_NOT_FOUND);
             }
 
             return new UserAllCollection($users);
