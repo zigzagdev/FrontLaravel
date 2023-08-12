@@ -19,7 +19,6 @@ use App\Consts\Common;
 use App\Consts\Api\Message;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Resources\Api\AdminResource;
-use Illuminate\Support\Facades\Route;
 
 
 class AdminController extends Controller
@@ -119,7 +118,6 @@ class AdminController extends Controller
     function getAdmin(Request $request)
     {
         try {
-            DB::beginTransaction();
             $authentication = Admin::where('email', $request->email)->first();
 
             if (empty($authentication)) {

@@ -133,7 +133,6 @@ class ItemController extends Controller
     function allItems(Request $request)
     {
         try {
-            DB::beginTransaction();
             $displayItems = ItemFlag::onDateItems();
 
             if (empty($displayItems)) {
