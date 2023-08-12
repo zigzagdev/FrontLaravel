@@ -39,7 +39,7 @@ class ItemController extends Controller
 
             $existItem = Item::where([
                 'name' => $request->name,
-                'price' => number_format($request->price),
+                'price' => $request->price,
                 'category' => $request->category
             ])->first();
 
@@ -53,7 +53,7 @@ class ItemController extends Controller
             $Item = Item::create([
                 'name' => $request->input('name'),
                 'description' => $request->input('description'),
-                'price' => number_format($request->input('price')),
+                'price' => $request->input('price'),
                 'category' => $request->input('category'),
                 'admin_id' => $adminId,
                 'statusMessage' => Message::OK,
@@ -77,8 +77,6 @@ class ItemController extends Controller
             return new ItemResource($request);
         } catch (\Exception $e) {
             DB::rollBack();
-            $q = $e->getMessage();
-            var_dump($q);
             $request->merge(['statusMessage' => sprintf(Common::REGISTER_FAILED, 'アイテム')]);
 
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
