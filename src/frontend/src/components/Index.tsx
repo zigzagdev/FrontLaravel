@@ -25,10 +25,20 @@ export default function Index() {
             <div className="my-3 block text-sm text-gray-300 duration-700 hover:text-gray-100">
                 <Search/>
             </div>
-            <div>
+            <div className="my-24 mx-16">
                 {items.map(item => {
                     return (
-                        item.itemName
+                        <div className="my-8 mx-5 inline-block max-w-sm w-full lg:max-w-full lg:flex">
+                            <div
+                                className="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400
+                                bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col
+                                justify-between leading-normal"
+                            >
+                                <div className="mb-8">
+                                    {item.itemName}
+                                </div>
+                            </div>
+                        </div>
                     )
                 })}
             </div>
