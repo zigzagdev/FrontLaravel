@@ -63,18 +63,15 @@ class AdminController extends Controller
             $authentication = Admin::find($adminId);
 
             if (empty($authentication)) {
-                $request->merge(['statusMessage' => sprintf(Common::ERR_08)]);
-                $statusCode = Message::Unauthorized;
-
-                return new ErrorResource($request, $statusCode);
+                $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
+                return new ErrorResource($request, Response::HTTP_NOT_FOUND);
             }
 
             $expiration = $authentication->expiration;
             if ($expiration < Carbon::now('Asia/Tokyo')) {
                 $request->merge(['statusMessage' => Message::Unauthorized]);
-                $statusCode = Message::Unauthorized;
 
-                return new ErrorResource($request, $statusCode);
+                return new ErrorResource($request, Response::HTTP_UNAUTHORIZED);
             }
 
             Admin::where('id', $adminId)->update([
@@ -88,7 +85,6 @@ class AdminController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             $request->merge(['statusMessage' => sprintf(Common::UPDATE_FAILED, 'アカウント')]);
-
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
@@ -100,26 +96,21 @@ class AdminController extends Controller
             $adminId = $request->admin_id;
             $authentication = Admin::find($adminId);
 
-            if (!$authentication) {
+            if (empty($authentication)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
-                $statusCode = Message::Not_Acceptable;
-
-                return new ErrorResource($request, $statusCode);
+                return new ErrorResource($request, Response::HTTP_NOT_FOUND);
             }
 
             Admin::where('id', $adminId)->update([
                 'email' => $request->email,
                 'updated_at' => Carbon::now()
             ]);
-
             DB::commit();
 
             return new UpdateEmailResource($request);
-
         } catch (\Exception $e) {
             DB::rollBack();
             $request->merge(['statusMessage' => sprintf(Common::UPDATE_FAILED, 'メールアドレス')]);
-
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
@@ -132,10 +123,8 @@ class AdminController extends Controller
             $authentication = Admin::where('email', $request->email)->first();
 
             if (empty($authentication)) {
-                $request->merge(['statusMessage' => sprintf(Common::ERR_08)]);
-                $statusCode = Message::Unauthorized;
-
-                return new ErrorResource($request, $statusCode);
+                $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
+                return new ErrorResource($request, Response::HTTP_NOT_FOUND);
             }
 
             return new AdminResource($authentication);
