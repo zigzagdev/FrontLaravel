@@ -12,7 +12,6 @@ use App\Http\Resources\Api\ItemCollection;
 use App\Http\Resources\Api\ItemResource;
 use App\Http\Resources\Api\SearchCollection;
 use App\Models\Api\Admin;
-use App\Models\Api\Click;
 use App\Models\Api\ItemFlag;
 use App\Models\Api\Item;
 use Carbon\Carbon;
