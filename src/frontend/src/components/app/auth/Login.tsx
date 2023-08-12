@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import axios, {AxiosError} from "axios";
+import axios from "axios";
 import {useNavigate} from "react-router-dom";
 
 type Inputs = {
@@ -7,8 +7,8 @@ type Inputs = {
     password: string
 }
 
-interface IErrorResponse {
-    error: string
+type error = {
+    message: string
 }
 
 export default function Login() {
@@ -30,14 +30,8 @@ export default function Login() {
                     navigate('/')
                 )
             })
-            .catch((error) => {
-                if (error.response) {
-                    console.log(error.response);
-                } else if (error.request) {
-                    console.log("network error");
-                } else {
-                    console.log(error);
-                }
+            .catch((error: any) => {
+                console.log(error.response.statusText);
             });
     }
     return (
