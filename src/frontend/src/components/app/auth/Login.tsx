@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import axios from "axios";
+import axios, {AxiosError} from "axios";
 import {useNavigate} from "react-router-dom";
 
 type Inputs = {
@@ -7,7 +7,7 @@ type Inputs = {
     password: string
 }
 
-type errorMessage = {
+interface IErrorResponse {
     error: string
 }
 
@@ -20,26 +20,30 @@ export default function Login() {
 
     const AuthCheck = (e: React.FormEvent) => {
         e.preventDefault();
-        try {
-            axios.post<Inputs>(`${baseURL}./login`, {
+        axios
+            .post<Inputs>(`${baseURL}./login`, {
                 email,
                 password
             })
-                .then((res) => {
-                    return (
-                        navigate('/')
-                    )
-                })
-        } catch (e) {
-            console.error(error);
-
-        }
+            .then((res) => {
+                return (
+                    navigate('/')
+                )
+            })
+            .catch((error) => {
+                if (error.response) {
+                    console.log(error.response);
+                } else if (error.request) {
+                    console.log("network error");
+                } else {
+                    console.log(error);
+                }
+            });
     }
     return (
         <>
             <div className="my-5 mx-36">
                 <form action="" method="post" onSubmit={AuthCheck}>
-                    {error && <div>{error}</div>}
                     <h1 className="my-5">
                         <strong className="text-red-600">Login</strong>
                     </h1>
