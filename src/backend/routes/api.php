@@ -25,22 +25,22 @@ Route::middleware(['api', 'cors'])->group(function () {
     });
 
     Route::controller(AdminController::class)->group(function () {
-        Route::post('/create', 'createAdmin');
-        Route::put('/update', 'updateAdmin');
-        Route::get('/get', 'getAdmin');
-        Route::put('/update/email', 'updateAdminEmail');
+        Route::post('/admin/create', 'createAdmin');
+        Route::put('/admin/update', 'updateAdmin');
+        Route::get('/admin/get', 'getAdmin');
+        Route::put('/update/admin/email', 'updateAdminEmail');
     });
 
     Route::controller(UserController::class)->group(function () {
-        Route::post('/register', 'createUser');
-        Route::put('/update', 'updateUser');
+        Route::post('/user/create', 'createUser');
+        Route::put('/update/update', 'updateUser');
         Route::get('/users', 'allUser');
         Route::get('/user/:id', 'eachUser');
-        Route::put('/update/email', 'updateEmail');
+        Route::put('/update/user/email', 'updateEmail');
     });
 
     Route::controller(ItemController::class)->group(function () {
-        Route::post('/register', 'createItem');
+        Route::post('/create/item', 'createItem');
         // first display URL
         Route::get('/items', 'allItems');
         Route::get('/display/{id}', 'displayDetail');
