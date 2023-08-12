@@ -31,18 +31,19 @@ class ItemController extends Controller
             $adminId = $request->admin_id;
 
             $admin = Admin::find($adminId);
-            if (!$admin) {
+
+            if (empty($admin)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_08)]);
                 return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
             }
 
             $existItem = Item::where([
                 'name' => $request->name,
-                'price' => $request->price,
+                'price' => number_format($request->price),
                 'category' => $request->category
             ])->first();
 
-            if (!empty($existItem)) {
+            if (($existItem)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_08)]);
                 $statusCode = Message::Unauthorized;
 
@@ -52,7 +53,7 @@ class ItemController extends Controller
             $Item = Item::create([
                 'name' => $request->input('name'),
                 'description' => $request->input('description'),
-                'price' => $request->input('price'),
+                'price' => number_format($request->input('price')),
                 'category' => $request->input('category'),
                 'admin_id' => $adminId,
                 'statusMessage' => Message::OK,
@@ -76,6 +77,8 @@ class ItemController extends Controller
             return new ItemResource($request);
         } catch (\Exception $e) {
             DB::rollBack();
+            $q = $e->getMessage();
+            var_dump($q);
             $request->merge(['statusMessage' => sprintf(Common::REGISTER_FAILED, 'アイテム')]);
 
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
