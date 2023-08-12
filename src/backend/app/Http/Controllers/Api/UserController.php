@@ -107,21 +107,16 @@ class UserController extends Controller
     public function allUser(Request $request)
     {
         try {
-            DB::beginTransaction();
             $users = User::all();
-
             if (empty($users)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
-
                 return new ErrorResource($request, Response::HTTP_NOT_FOUND);
             }
 
             return new UserAllCollection($users);
-
         } catch (\Exception $e) {
             DB::rollBack();
             $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, 'ユーザーデータ')]);
-
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }

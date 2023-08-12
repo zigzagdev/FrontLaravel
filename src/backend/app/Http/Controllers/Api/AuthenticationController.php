@@ -45,7 +45,6 @@ class AuthenticationController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, 'アカウント')]);
-
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
