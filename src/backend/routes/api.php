@@ -24,6 +24,12 @@ Route::middleware(['api', 'cors'])->group(function () {
         Route::post('/logout', 'logoutAuth');
     });
 
+    Route::controller(UserController::class)->group(function () {
+        Route::get('/admin/users', 'allUser');
+    });
+
+    // Only user can see the page .
+
     Route::controller(AdminController::class)->group(function () {
         Route::post('/admin/create', 'createAdmin');
         Route::put('/admin/update', 'updateAdmin');
@@ -34,7 +40,6 @@ Route::middleware(['api', 'cors'])->group(function () {
     Route::controller(UserController::class)->group(function () {
         Route::post('/user/create', 'createUser');
         Route::put('/update/update', 'updateUser');
-        Route::get('/users', 'allUser');
         Route::get('/user/:id', 'eachUser');
         Route::put('/update/user/email', 'updateEmail');
     });
