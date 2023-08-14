@@ -7,14 +7,9 @@ type Inputs = {
     password: string
 }
 
-type error = {
-    message: string
-}
-
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState(false);
     const baseURL = process.env.REACT_APP_API_BASE_URL;
     const navigate = useNavigate();
 
