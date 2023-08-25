@@ -60,8 +60,8 @@ export default function Login() {
                         {errors.password?.type === "required" && (
                             <p role="alert" className="text-red-400">Email is required</p>
                         )}
-                        {errors.password?.type === "minLength" && (
-                            <p role="alert" className="text-red-400">input more than 8 characters.</p>
+                        {errors.password && errors.email.type === "minLength" && (
+                            <span className="text-blue-700">Min length exceeded</span>
                         )}
                     </p>
                     <p className="item">
