@@ -46,7 +46,6 @@ export default function Login() {
                         <label htmlFor="email">Email</label>
                         <input
                             {...register("email", { required: true, minLength: 4 })}
-
                         />
                         {errors.email?.type === "required" && (
                             <p role="alert" className="text-red-400">Email is required</p>
