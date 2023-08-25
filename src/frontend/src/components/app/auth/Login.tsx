@@ -45,7 +45,7 @@ export default function Login() {
                     <p className="item">
                         <label htmlFor="email">Email</label>
                         <input
-                            {...register("email", { required: true, minLength: 4 })}
+                            {...register("email", {required: true, minLength: 4})}
                         />
                         {errors.email?.type === "required" && (
                             <p role="alert" className="text-red-400">Email is required</p>
@@ -56,9 +56,9 @@ export default function Login() {
                     </p>
                     <p className="item">
                         <label htmlFor="password"> Password </label>
-                        <input type="password" {...register("password", {required: "emailを入力してください", minLength: 8})}/>
+                        <input type="password" {...register("password", {required: true, minLength: 8})}/>
                         {errors.password?.type === "required" && (
-                            <p role="alert" className="text-red-400">Email is required</p>
+                            <p role="alert" className="text-red-400">Password is required</p>
                         )}
                         {errors.password && errors.password.type === "minLength" && (
                             <span className="text-blue-700">Min length exceeded</span>
