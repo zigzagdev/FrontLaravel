@@ -15,25 +15,20 @@ export default function Login() {
     const navigate = useNavigate();
 
     const {register, handleSubmit, formState: {errors}} = useForm<Inputs>()
-    const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
-
-    const AuthCheck = (e: React.FormEvent) => {
-        e.preventDefault();
-        const login = (data: any) => {
-            axios
-                .post<Inputs>(`${baseURL}./login`, {
-                    email,
-                    password
-                })
-                .then((res) => {
-                    return (
-                        navigate('/')
-                    )
-                })
-                .catch((error: any) => {
-                    console.log(error.response.statusText);
-                });
-        }
+    const onSubmit: SubmitHandler<Inputs> = (data: any) => {
+        axios
+            .post<Inputs>(`${baseURL}./login`, {
+                email,
+                password
+            })
+            .then((res) => {
+                return (
+                    navigate('/')
+                )
+            })
+            .catch((error: any) => {
+                console.log(error.response.statusText);
+            });
     }
     return (
         <>
