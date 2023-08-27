@@ -23,7 +23,11 @@ export default function Login() {
                 )
             })
             .catch((error: any) => {
-                setError('Email or Password is wrong .');
+                if (error.response.statusText == 'Bad Request') {
+                    setError('Email or Password is wrong ...');
+                } else {
+                    setError('Internal server error is happened. Please do it again.');
+                }
             });
     }
     return (
@@ -63,7 +67,13 @@ export default function Login() {
                             Submit
                         </button>
                     </p>
-                    {error}
+                    {
+                        <div className="my-5">
+                            <span className="text-blue-400 text-lg">
+                                {error}
+                            </span>
+                        </div>
+                    }
                 </form>
             </div>
         </>
