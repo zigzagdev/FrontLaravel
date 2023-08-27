@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {useForm, SubmitHandler} from "react-hook-form";
@@ -9,8 +9,6 @@ type Inputs = {
 }
 
 export default function Login() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
     const baseURL = process.env.REACT_APP_API_BASE_URL;
     const navigate = useNavigate();
 
@@ -69,3 +67,10 @@ export default function Login() {
         </>
     )
 }
+
+
+
+
+
+
+
