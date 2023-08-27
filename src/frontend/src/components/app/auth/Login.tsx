@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {useForm, SubmitHandler} from "react-hook-form";
@@ -9,6 +9,7 @@ type Inputs = {
 }
 
 export default function Login() {
+    const [error, setError] = useState('');
     const baseURL = process.env.REACT_APP_API_BASE_URL;
     const navigate = useNavigate();
 
@@ -22,7 +23,11 @@ export default function Login() {
                 )
             })
             .catch((error: any) => {
-                console.log(error.response.statusText);
+                if (error.response.statusText == 'Bad Request') {
+                    setError('Email or Password is wrong ...');
+                } else {
+                    setError('Internal server error is happened. Please do it again.');
+                }
             });
     }
     return (
@@ -62,6 +67,13 @@ export default function Login() {
                             Submit
                         </button>
                     </p>
+                    {
+                        <div className="my-5">
+                            <span className="text-blue-400 text-lg">
+                                {error}
+                            </span>
+                        </div>
+                    }
                 </form>
             </div>
         </>
