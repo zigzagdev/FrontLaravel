@@ -22,7 +22,9 @@ export default function Index() {
     }, [])
     return (
         <>
-            <div className="my-3 block text-sm text-gray-300 duration-700 hover:text-gray-100">
+            <div
+                className="my-3 text-center block text-sm text-gray-300 sm:text-center
+                           duration-700 hover:text-gray-100">
                 <Search/>
             </div>
             <div className="my-24 mx-16">
