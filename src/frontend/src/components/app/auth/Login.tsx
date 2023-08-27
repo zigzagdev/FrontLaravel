@@ -15,12 +15,9 @@ export default function Login() {
     const navigate = useNavigate();
 
     const {register, handleSubmit, formState: {errors}} = useForm<Inputs>()
-    const onSubmit: SubmitHandler<Inputs> = (data: any) => {
+    const onSubmit: SubmitHandler<Inputs> = (data) => {
         axios
-            .post<Inputs>(`${baseURL}./login`, {
-                email,
-                password
-            })
+            .post<Inputs>(`${baseURL}./login`, data)
             .then((res) => {
                 return (
                     navigate('/')
