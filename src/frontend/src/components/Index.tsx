@@ -37,7 +37,9 @@ export default function Index() {
                                 justify-between leading-normal"
                             >
                                 <div className="mb-8">
-                                    {item.itemName}
+                                    <div className="text-black">
+                                        {item.itemName}
+                                    </div>
                                 </div>
                             </div>
                         </div>
