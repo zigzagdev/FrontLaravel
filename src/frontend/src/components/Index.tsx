@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
 import Search from "./app/input/Search";
+import {Link} from "react-router-dom";
 
 interface ItemInfo {
     id?: number,
@@ -30,6 +31,7 @@ export default function Index() {
             <div className="my-24 mx-16">
                 {items.map(item => {
                     return (
+                        <Link to={`/Posts/.${item.itemName}`}>
                         <div className="my-8 mx-5 inline-block max-w-sm w-full lg:max-w-full lg:flex">
                             <div
                                 className="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400
@@ -43,6 +45,7 @@ export default function Index() {
                                 </div>
                             </div>
                         </div>
+                        </Link>
                     )
                 })}
             </div>
