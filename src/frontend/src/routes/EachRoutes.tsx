@@ -27,7 +27,7 @@ export default function EachRoutes() {
                         <Route path="/Posts" element={<Posts/>}/>
                         <Route path="/Instagram" element={<Instagram/>}/>
                         <Route path="/Posts" element={<Posts/>}/>
-                        <Route path="/Posts/:slug" element={<PostSlug/>}/>
+                        <Route path="/Post/:slug" element={<PostSlug/>}/>
                         <Route path="/404" element={<NotFound/>}/>
                         <Route path="/Contact" element={<Contact/>}/>
                         <Route path="/Login" element={<Login/>}/>
