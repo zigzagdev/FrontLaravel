@@ -1,10 +1,13 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
+import axios from "axios/index";
+
 
 export default function PostSlug() {
+    console.log()
     return (
         <>
             <div>
-                Each post is displayed at here.
+
             </div>
 
         </>
