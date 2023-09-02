@@ -9,7 +9,7 @@ import Header from "../components/common/header/Header";
 import Posts from "../components/app/post/Posts";
 import Index from "../components/Index";
 import Instagram from "../components/common/footer/Instagram";
-import PostSlug from "../components/app/post/PostSlug";
+import {PostSlug} from "../components/app/post/PostSlug";
 import NotFound from "../components/app/exception/NotFound";
 import Contact from "../components/common/footer/Contact";
 import Login from "../components/app/auth/Login";

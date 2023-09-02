@@ -27,7 +27,8 @@ class SearchCollection extends ResourceCollection
                     'itemName' => $items['name'],
                     'content' => Str::limit($items['description'], 15, '...'),
                     'price' => $items['price'],
-                    'categoryName' => $items['categoryName']
+                    'categoryName' => $items['categoryName'],
+                    'slug' => $items['slug']
                 ];
             })
         ];

@@ -24,6 +24,7 @@ class ItemCollection extends ResourceCollection
                     'itemName' => $changeItems['name'],
                     'content' => Str::limit($changeItems['description'], 15, '...'),
                     'price' => $changeItems['price'],
+                    'slug' => $changeItems['slug'],
                     'categoryName' => $changeItems['categoryName']
                 ];
             })
