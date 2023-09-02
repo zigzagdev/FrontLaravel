@@ -13,7 +13,6 @@ export default function Search() {
                 const {data} = await axios.post(
                     `${baseURL}./search?q=${searchContent}`
                 );
-
                 setSearchContent(data.products);
             } catch (error) {
                 <NotFound/>
@@ -26,23 +25,23 @@ export default function Search() {
             <div>
                 <div>
                     <div className="">
-                    <input
-                        type="search"
-                        placeholder=" Search Something ..."
-                        className=" w-1/4 h-8 outline-double mx-4 text-black indent-4"
-                        value={searchContent}
-                        onChange={(e) => {
-                            setSearchContent(e.target.value);
-                        }}
-                    />
-                    <button
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-                        onClick={() => {
-                            navigate(`/Result?q=${searchContent}`)
-                        }}
-                    >
-                        Search
-                    </button>
+                        <input
+                            type="search"
+                            placeholder=" Search Something ..."
+                            className=" w-1/4 h-8 outline-double mx-4 text-black indent-4"
+                            value={searchContent}
+                            onChange={(e) => {
+                                setSearchContent(e.target.value);
+                            }}
+                        />
+                        <button
+                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                            onClick={() => {
+                                navigate(`/Result?q=${searchContent}`)
+                            }}
+                        >
+                            Search
+                        </button>
                     </div>
                 </div>
             </div>

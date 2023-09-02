@@ -48,9 +48,9 @@ Route::middleware(['api', 'cors'])->group(function () {
         Route::post('/create/item', 'createItem');
         // first display URL
         Route::get('/items', 'allItems');
-        Route::get('/display/{id}', 'displayDetail');
+        Route::get('/display/{slug}', 'displayDetail');
         Route::get('/search', 'searchItems');
-        Route::put('/update/{id}', 'updateItem');
+        Route::put('/update/{slug}', 'updateItem');
     });
 });
 
