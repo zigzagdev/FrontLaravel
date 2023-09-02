@@ -7,6 +7,7 @@ use App\Consts\Api\Message;
 use App\Consts\Common;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ItemRequest;
+use App\Http\Resources\Api\DetailItemResource;
 use App\Http\Resources\Api\ErrorResource;
 use App\Http\Resources\Api\ItemCollection;
 use App\Http\Resources\Api\ItemResource;
@@ -101,6 +102,18 @@ class ItemController extends Controller
                 return new ErrorResource($request, Response::HTTP_NOT_FOUND);
             }
 
+            $existItem = Item::where([
+                'name' => $request->name,
+                'price' => $request->price,
+                'category' => $request->category
+            ])->first();
+
+            if (($existItem)) {
+                $request->merge(['statusMessage' => sprintf(Common::ERR_08)]);
+                $statusCode = Message::Unauthorized;
+
+                return new ErrorResource($request, $statusCode);
+            }
             Item::where('id', $itemId)->update([
                 'name' => $request->input('name'),
                 'description' => $request->input('description'),
@@ -154,8 +167,8 @@ class ItemController extends Controller
     function searchItems(Request $request)
     {
         try {
-            $searchItem = $request->searchItem;
-            if (!($searchItem)) {
+            $searchItem = $request->q;
+            if (empty($searchItem)) {
                 $allItems = Item::search()->get();
                 $arrayResult = $allItems->toArray();
 
@@ -165,7 +178,7 @@ class ItemController extends Controller
                 }
                 return new SearchCollection($arrayResult);
             } else {
-                $resultItem = Item::search($request->searchItem)->get();
+                $resultItem = Item::search($request->q)->get();
                 $arrayResult = $resultItem->toArray();
 
                 foreach ($arrayResult as $key => $value) {
@@ -178,6 +191,23 @@ class ItemController extends Controller
             DB::rollBack();
             $request->merge(['statusMessage' => sprintf(Common::FAILED, 'アイテム取得')]);
             return new ErrorResource($request, Common::FAILED);
+        }
+    }
+
+    function displayDetail(Request $request, $slug)
+    {
+        try {
+            $fetchItem = Item::where('slug', $slug)->first();
+            if (!$fetchItem) {
+                $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
+                return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
+            }
+            $category = $fetchItem->category;
+            $fetchItem['categoryName'] = Category::genre[$category];
+
+            return new ItemResource($fetchItem);
+        } catch (\Exception $e) {
+
         }
     }
 }

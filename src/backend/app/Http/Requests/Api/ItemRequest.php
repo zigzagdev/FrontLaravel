@@ -22,7 +22,7 @@ class ItemRequest extends CommonRequest
     public function rules()
     {
         return [
-            "name" => "required|min:4||max:100|string",
+            "name" => "required|min:4||max:100|string|unique",
             "description" => "required|min:4|max:100|string",
             "price" => "required",
             "category" => "required",
@@ -38,6 +38,7 @@ class ItemRequest extends CommonRequest
             "name.min" => sprintf($message['min'], 4),
             "name.max" => sprintf($message['min'], 100),
             "name.string" => $message['string'],
+            "name.unique" => $message['unique'],
 
             //description
             "description.required" => $message['required'],
