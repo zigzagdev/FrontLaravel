@@ -8,7 +8,8 @@ interface ItemInfo {
     itemName?: string,
     content?: string,
     price?: number,
-    categoryName?: string
+    categoryName?: string,
+    slug?: string
 }
 
 
@@ -31,7 +32,7 @@ export default function Index() {
             <div className="my-24 mx-16">
                 {items.map(item => {
                     return (
-                        <Link to={`/Posts/.${item.itemName}`}>
+                        <Link to={`/Post/${item.slug}`} state={{slug: item.slug}}>
                         <div className="my-8 mx-5 inline-block max-w-sm w-full lg:max-w-full lg:flex">
                             <div
                                 className="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400
