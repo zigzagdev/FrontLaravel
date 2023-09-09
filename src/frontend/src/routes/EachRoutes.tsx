@@ -14,8 +14,7 @@ import Contact from "../components/common/footer/Contact";
 import Login from "../components/app/auth/Login";
 import UserIndex from "../components/app/user/Info";
 import Result from "../components/app/input/Result";
-import {PostSlug} from "../components/app/post/PostSlug";
-import {EditSlug} from "../components/app/post/PostSlug";
+import {ShowSlug, EditSlug, DeleteSlug} from "../components/app/post/PostSlug";
 
 export default function EachRoutes() {
     return (
@@ -27,8 +26,9 @@ export default function EachRoutes() {
                         <Route path="/" element={<Index/>}/>
                         <Route path="/Posts" element={<Posts/>}/>
                         <Route path="/Instagram" element={<Instagram/>}/>
-                        <Route path="/Post/:slug" element={<PostSlug/>}/>
+                        <Route path="/Post/:slug" element={<ShowSlug/>}/>
                         <Route path="/Post/:slug/Edit" element={<EditSlug/>}/>
+                        <Route path="/Post/:slug" element={<DeleteSlug/>}/>
                         <Route path="/404" element={<NotFound/>}/>
                         <Route path="/Contact" element={<Contact/>}/>
                         <Route path="/Login" element={<Login/>}/>
