@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ItemRequest;
 use App\Http\Resources\Api\DetailItemResource;
 use App\Http\Resources\Api\ErrorResource;
+use App\Http\Resources\Api\FetchItemResource;
 use App\Http\Resources\Api\ItemCollection;
 use App\Http\Resources\Api\ItemResource;
 use App\Http\Resources\Api\SearchCollection;
@@ -158,7 +159,6 @@ class ItemController extends Controller
 
             return new ItemCollection($changeItems);
         } catch (Exception $e) {
-            DB::rollBack();
             $request->merge(['statusMessage' => sprintf(Common::FAILED, 'アイテム取得')]);
             return new ErrorResource($request, Common::FAILED);
         }
@@ -188,7 +188,6 @@ class ItemController extends Controller
                 return new SearchCollection($arrayResult);
             }
         } catch (Exception $e) {
-            DB::rollBack();
             $request->merge(['statusMessage' => sprintf(Common::FAILED, 'アイテム取得')]);
             return new ErrorResource($request, Common::FAILED);
         }
@@ -197,7 +196,7 @@ class ItemController extends Controller
     function displayDetail(Request $request, $slug)
     {
         try {
-            $fetchItem = Item::where('slug', $slug)->first();
+            $fetchItem = ItemFlag::onDateItems()->where('slug', $slug)->first();
             if (!$fetchItem) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
                 return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
@@ -205,9 +204,10 @@ class ItemController extends Controller
             $category = $fetchItem->category;
             $fetchItem['categoryName'] = Category::genre[$category];
 
-            return new ItemResource($fetchItem);
+            return new FetchItemResource($fetchItem);
         } catch (\Exception $e) {
-
+            $request->merge(['statusMessage' => sprintf(Common::FAILED, 'アイテム取得')]);
+            return new ErrorResource($request, Common::FAILED);
         }
     }
 }
