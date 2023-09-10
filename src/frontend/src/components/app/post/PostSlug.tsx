@@ -4,7 +4,7 @@ import {useParams, useNavigate} from "react-router-dom";
 import {useForm, SubmitHandler} from "react-hook-form";
 import {Genre} from "./Genre";
 
-interface item {
+type item = {
     id: number,
     itemName: string,
     content: string,
@@ -18,7 +18,6 @@ export function ShowSlug() {
     const {slug} = useParams<{ slug: string }>()
     const [item, setItem] = useState<item>(({id: 0, itemName: "", content: "", price: 0, category: 0, slug: ""}));
     const baseURL = process.env.REACT_APP_API_BASE_URL;
-    console.log(Genre[item?.category].label);
 
     useEffect(() => {
         axios.get(`${baseURL}./display/` + slug)
@@ -45,9 +44,7 @@ export function ShowSlug() {
                     </div>
                     <div className="my-5">
                         <p className="my-3 mx-4">Item Category</p>
-                        <p className="mx-7">
-                            {Genre[item?.category].label}
-                        </p>
+                        <p className="mx-7">{Genre[item?.category].label}</p>
                     </div>
                 </div>
             </div>
@@ -58,10 +55,10 @@ export function ShowSlug() {
 export function EditSlug() {
     // const {slug} = useParams<{ slug: string }>();
     // const [error, setError] = useState('');
-    // const [item, setItem] = useState<ItemInfo>();
+    // const [item, setItem] = useState<item>(({id: 0, itemName: "", content: "", price: 0, category: 0, slug: ""}));
     // const baseURL = process.env.REACT_APP_API_BASE_URL;
     // const navigate = useNavigate();
-    // const {register, handleSubmit, formState: {errors}} = useForm<ItemInfo>()
+    // const {register, handleSubmit, formState: {errors}} = useForm<item>()
     //
     // const onSubmit: SubmitHandler<ItemInfo> = (data) => {
     //     axios

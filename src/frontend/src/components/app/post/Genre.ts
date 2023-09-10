@@ -1,14 +1,14 @@
-export interface Genre {
+interface Genre {
     id: number,
     label: string,
-    value: string
+    value: string,
 }
 
 export const Genre: Genre[] = [
     {id: 1, label: "Food", value: "1"},
     {id: 2, label: "Gift Card", value: "2"},
     {id: 3, label: "Large Appliances", value: "3"},
-    {id: 4, label: "Sports`", value: "4"},
+    {id: 4, label: "Sports", value: "4"},
     {id: 5, label: "Instrument", value: "5"},
     {id: 6, label: "Hobby", value: "6"},
     {id: 7, label: "Toy", value: "7"},
@@ -34,3 +34,4 @@ export const Genre: Genre[] = [
     {id: 27, label: "Beauty", value: "27"},
     {id: 28, label: "Drug Store", value: "28"},
 ];
+
