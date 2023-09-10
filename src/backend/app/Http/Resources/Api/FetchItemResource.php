@@ -3,11 +3,9 @@
 namespace App\Http\Resources\Api;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Str;
 
-class ItemResource extends JsonResource
+class FetchItemResource extends JsonResource
 {
-
     public function __construct($request, $statusCode = 200)
     {
         parent::__construct($request);
@@ -27,10 +25,10 @@ class ItemResource extends JsonResource
             'statusMessage' => 'OK',
             'profile' => [
                 'itemName' => $this->name,
-                'content' => Str::limit($this->description, 15, '...'),
+                'content' => $this->description,
                 'price' => number_format($this->price),
                 'slug' => $this->slug,
-                'category' => $this->categoryName,
+                'category' => $this->category
             ]
         ];
     }

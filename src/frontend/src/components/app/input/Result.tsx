@@ -22,7 +22,8 @@ export default function Result() {
 
     return (
         <>
-            <div>
+            <div className="my-3 text-center block text-sm text-gray-300 sm:text-center
+                           duration-700 hover:text-gray-100">
                 {searchContents.map(searchContent => {
                     return (
                         searchContent.itemName
