@@ -21,6 +21,7 @@ class ItemCollection extends ResourceCollection
             'statusMessage' => 'OK',
             'itemDetail' => $this->collection->map(function ($changeItems) {
                 return [
+                    'Id' => $changeItems['itemId'],
                     'itemName' => $changeItems['name'],
                     'content' => Str::limit($changeItems['description'], 15, '...'),
                     'price' => $changeItems['price'],

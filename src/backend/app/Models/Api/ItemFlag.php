@@ -22,10 +22,17 @@ class ItemFlag extends Model
     public static function onDateItems()
     {
         return self::select([
-            'items.name', 'items.description', 'items.category', 'items.price', 'items.expiration', 'items.slug'
+            'items.name'
+            , 'items.description'
+            , 'items.category'
+            , 'items.price'
+            , 'items.expiration'
+            , 'items.slug'
+            , 'items.id as itemId'
         ])->leftjoin('items', function ($join) {
             $join->on('item_display.item_id', '=', 'items.id');
         })->where('item_display.flag', '=', Number::Display_Flag)
+            ->orderBy('items.id', 'desc')
             ->get();
     }
 }
