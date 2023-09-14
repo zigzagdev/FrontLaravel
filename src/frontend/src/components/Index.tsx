@@ -13,16 +13,6 @@ type ItemInfos = {
 
 }
 
-type Item = {
-    id: number,
-    itemName: string,
-    content: string,
-    price: number,
-    categoryName: string,
-    slug: string
-}
-
-
 export function Index() {
     const [items, setItems] = useState<ItemInfos[]>([]);
     const baseURL = process.env.REACT_APP_API_BASE_URL;
