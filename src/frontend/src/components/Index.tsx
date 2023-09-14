@@ -10,10 +10,20 @@ type ItemInfos = {
     price?: number,
     categoryName?: string,
     slug?: string
+
+}
+
+type Item = {
+    id: number,
+    itemName: string,
+    content: string,
+    price: number,
+    categoryName: string,
+    slug: string
 }
 
 
-export default function Index() {
+export function Index() {
     const [items, setItems] = useState<ItemInfos[]>([]);
     const baseURL = process.env.REACT_APP_API_BASE_URL;
     useEffect(() => {
@@ -22,6 +32,7 @@ export default function Index() {
                 setItems(res.data.data.itemDetail)
             })
     }, [])
+    console.log(typeof items)
     return (
         <>
             <div
@@ -30,9 +41,9 @@ export default function Index() {
                 <Search/>
             </div>
             <div className="my-24 mx-16">
-                {items.map(item => {
+                {items.map((item, index) => {
                     return (
-                        <Link to={`/Post/${item.slug}`} state={{slug: item.slug}}>
+                        <Link to={`/Post/${item.slug}`} state={{slug: item.slug}} key={index}>
                             <div className="my-8 mx-5 inline-block max-w-sm w-full lg:max-w-full lg:flex">
                                 <div
                                     className="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400
