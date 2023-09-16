@@ -19,7 +19,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Index Prefix
+    | TopPage Prefix
     |--------------------------------------------------------------------------
     |
     | Here you may specify a prefix that will be applied to all search index

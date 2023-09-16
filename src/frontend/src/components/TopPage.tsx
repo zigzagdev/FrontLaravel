@@ -1,7 +1,7 @@
 import React from "react";
 import {Posts} from "./app/post/Posts";
 
-export default function Index() {
+export function TopPage() {
     return (
         <>
             <Posts/>

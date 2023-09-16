@@ -7,7 +7,7 @@ import {
 import Footer from "../components/common/footer/Footer";
 import Header from "../components/common/header/Header";
 import {Posts} from "../components/app/post/Posts";
-import Index from "../components/Index";
+import {TopPage} from "../components/TopPage";
 import Instagram from "../components/common/footer/Instagram";
 import NotFound from "../components/app/exception/NotFound";
 import Contact from "../components/common/footer/Contact";
@@ -23,7 +23,7 @@ export default function EachRoutes() {
                 <BrowserRouter>
                     <Header/>
                     <Routes>
-                        <Route path="/" element={<Index/>}/>
+                        <Route path="/" element={<TopPage/>}/>
                         <Route path="/Posts" element={<Posts/>}/>
                         <Route path="/Instagram" element={<Instagram/>}/>
                         <Route path="/Post/:slug" element={<ShowSlug/>}/>
