@@ -29,7 +29,7 @@ export default function EachRoutes() {
                         <Route path="/Post/:slug" element={<ShowSlug/>}/>
                         <Route path="/Post/:slug/Edit" element={<EditSlug/>}/>
                         <Route path="/Post/:slug" element={<DeleteSlug/>}/>
-                        <Route path="/404" element={<NotFound/>}/>
+                        <Route path="*" element={<NotFound/>}/>
                         <Route path="/Contact" element={<Contact/>}/>
                         <Route path="/Login" element={<Login/>}/>
                         <Route path="/UserIndex" element={<UserIndex/>}/>
