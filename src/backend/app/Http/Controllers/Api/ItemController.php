@@ -21,6 +21,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Mockery\Exception;
+use App\Consts\Api\Number;
 use Symfony\Component\HttpFoundation\Response;
 
 class ItemController extends Controller
@@ -65,7 +66,7 @@ class ItemController extends Controller
             $itemId = $Item->id;
 
             ItemFlag::create([
-                'flag' => 1,
+                'flag' => Number::Display_Flag,
                 'item_id' => $itemId,
                 'expired_at' => Carbon::now()->addMonth(6),
                 'created_at' => Carbon::now(),
@@ -146,7 +147,7 @@ class ItemController extends Controller
     function allItems(Request $request)
     {
         try {
-            $displayItems = ItemFlag::onDateItems();
+            $displayItems = ItemFlag::onDateAllItems();
 
             if (empty($displayItems)) {
                 return new ErrorResource($request);
@@ -167,10 +168,12 @@ class ItemController extends Controller
     function searchItems(Request $request)
     {
         try {
-            $searchItem = $request->q;
-            if (empty($searchItem)) {
-                $allItems = Item::search()->get();
-                $arrayResult = $allItems->toArray();
+            $searchQuery = $request->q;
+            $resultItem = ItemFlag::onDateSearchItems($searchQuery);
+
+            if (empty($searchQuery) || count($resultItem) == 0) {
+                $searchItems = ItemFlag::onDateAllItems();
+                $arrayResult = $searchItems->toArray();
 
                 foreach ($arrayResult as $key => $value) {
                     $insertNumber = $value['category'];
@@ -178,7 +181,6 @@ class ItemController extends Controller
                 }
                 return new SearchCollection($arrayResult);
             } else {
-                $resultItem = Item::search($request->q)->get();
                 $arrayResult = $resultItem->toArray();
 
                 foreach ($arrayResult as $key => $value) {
@@ -196,7 +198,7 @@ class ItemController extends Controller
     function displayDetail(Request $request, $slug)
     {
         try {
-            $fetchItem = ItemFlag::onDateItems()->where('slug', $slug)->first();
+            $fetchItem = ItemFlag::onDateAllItems()->where('slug', $slug)->first();
             if (!$fetchItem) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
                 return new ErrorResource($request, Response::HTTP_BAD_REQUEST);

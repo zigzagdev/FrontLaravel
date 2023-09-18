@@ -17,6 +17,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use App\Consts\Common;
 use App\Consts\Api\Message;
+use App\Consts\Api\Number;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Resources\Api\AdminResource;
 
@@ -42,7 +43,7 @@ class AdminController extends Controller
                 'password' => Hash::make($request->input('password')),
                 'statusMessage' => Message::OK,
                 'created_at' => Carbon::now(),
-                'expiration' => Carbon::now()->addDays(3)
+                'expiration' => Carbon::now()->addDays(Number::Three_Days)
             ]);
             DB::commit();
 
@@ -76,7 +77,7 @@ class AdminController extends Controller
             Admin::where('id', $adminId)->update([
                 'name' => $request->input('name'),
                 'updated_at' => Carbon::now(),
-                'expiration' => Carbon::now()->addDay(3)
+                'expiration' => Carbon::now()->addDays(Number::Three_Days),
             ]);
             DB::commit();
             return new UpdateAdminResource($request);

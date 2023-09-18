@@ -23,7 +23,7 @@ class SearchCollection extends ResourceCollection
             'statusMessage' => 'OK',
             'itemInformation' => $this->collection->map(function ($items) {
                 return [
-                    'id' => $items['id'],
+                    'Id' => $items['itemId'],
                     'itemName' => $items['name'],
                     'content' => Str::limit($items['description'], 15, '...'),
                     'price' => $items['price'],
