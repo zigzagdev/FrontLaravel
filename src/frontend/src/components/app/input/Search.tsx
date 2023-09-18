@@ -10,7 +10,7 @@ export default function Search() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const {data} = await axios.post(
+                const {data} = await axios.get(
                     `${baseURL}./search?q=${searchContent}`
                 );
                 setSearchContent(data.products);
