@@ -7,7 +7,6 @@ use App\Consts\Api\Message;
 use App\Consts\Common;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ItemRequest;
-use App\Http\Resources\Api\DetailItemResource;
 use App\Http\Resources\Api\ErrorResource;
 use App\Http\Resources\Api\FetchItemResource;
 use App\Http\Resources\Api\ItemCollection;
@@ -60,15 +59,15 @@ class ItemController extends Controller
                 'admin_id' => $adminId,
                 'statusMessage' => Message::OK,
                 'created_at' => Carbon::now(),
-                'expiration' => Carbon::now()->addYear(1),
-                'slug' => Str::slug($request->input('name'))
+                'expiration' => Carbon::now()->addYear(Number::One_Year),
+                'slug' => $request->input('name')
             ]);
             $itemId = $Item->id;
 
             ItemFlag::create([
                 'flag' => Number::Display_Flag,
                 'item_id' => $itemId,
-                'expired_at' => Carbon::now()->addMonth(6),
+                'expired_at' => Carbon::now()->addMonth(Number::Six_Years),
                 'created_at' => Carbon::now(),
             ]);
             DB::commit();
@@ -123,12 +122,12 @@ class ItemController extends Controller
                 'category' => $request->input('category'),
                 'admin_id' => $adminId,
                 'updated_at' => Carbon::now(),
-                'expiration' => Carbon::now()->addYear(1),
+                'expiration' => Carbon::now()->addYear(Number::One_Year),
                 'slug' => Str::slug($request->input('name'))
             ]);
 
             ItemFlag::where('item_id', $itemId)->update([
-                'flag' => 1,
+                'flag' => Number::Display_Flag,
                 'item_id' => $itemId,
                 'expired_at' => Carbon::now()->addMonth(6),
                 'updated_at' => Carbon::now(),
@@ -141,6 +140,7 @@ class ItemController extends Controller
             return new ItemResource($request);
         } catch (Exception $e) {
             DB::rollBack();
+
         }
     }
 
