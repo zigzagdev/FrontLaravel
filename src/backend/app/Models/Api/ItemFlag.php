@@ -19,7 +19,7 @@ class ItemFlag extends Model
         return $this->belongsTo(Item::class);
     }
 
-    public static function onDateItems()
+    public static function onDateAllItems()
     {
         return self::select([
             'items.name'
@@ -35,4 +35,27 @@ class ItemFlag extends Model
             ->orderBy('items.id', 'desc')
             ->get();
     }
+
+    public static function onDateSearchItems($searchQuery)
+    {
+        return self::select([
+            'items.name'
+            , 'items.description'
+            , 'items.category'
+            , 'items.price'
+            , 'items.expiration'
+            , 'items.slug'
+            , 'items.id as itemId'
+        ])->leftjoin('items', function ($join) {
+            $join->on('item_display.item_id', '=', 'items.id');
+        })->where('item_display.flag', '=', Number::Display_Flag)
+            ->where(function ($query) use ($searchQuery) {
+                $query->where('items.name', "like", "%" . $searchQuery . "%");
+                $query->orWhere('items.description', "like", "%" . $searchQuery . "%");
+                $query->orWhere('items.category', "like", "%" . $searchQuery . "%");
+            })
+            ->orderBy('items.id', 'desc')
+            ->get();
+    }
+
 }
