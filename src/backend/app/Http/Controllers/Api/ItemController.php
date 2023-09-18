@@ -167,10 +167,12 @@ class ItemController extends Controller
     function searchItems(Request $request)
     {
         try {
-            $searchItem = $request->q;
-            if (empty($searchItem)) {
-                $allItems = Item::search()->get();
-                $arrayResult = $allItems->toArray();
+            $searchQuery = $request->q;
+            $resultItem = ItemFlag::onDateSearchItems($searchQuery);
+
+            if (empty($searchQuery) || count($resultItem) == 0) {
+                $searchItems = ItemFlag::onDateAllItems();
+                $arrayResult = $searchItems->toArray();
 
                 foreach ($arrayResult as $key => $value) {
                     $insertNumber = $value['category'];
@@ -178,7 +180,6 @@ class ItemController extends Controller
                 }
                 return new SearchCollection($arrayResult);
             } else {
-                $resultItem = Item::search($request->q)->get();
                 $arrayResult = $resultItem->toArray();
 
                 foreach ($arrayResult as $key => $value) {
