@@ -43,7 +43,7 @@ class AdminController extends Controller
                 'password' => Hash::make($request->input('password')),
                 'statusMessage' => Message::OK,
                 'created_at' => Carbon::now(),
-                'expiration' => Carbon::now()->addDays(Number::Three_Days)
+                'expiration' => Carbon::today()->addDays(Number::Three_Days)
             ]);
             DB::commit();
 
@@ -77,7 +77,7 @@ class AdminController extends Controller
             Admin::where('id', $adminId)->update([
                 'name' => $request->input('name'),
                 'updated_at' => Carbon::now(),
-                'expiration' => Carbon::now()->addDays(Number::Three_Days),
+                'expiration' => Carbon::today()->addDays(Number::Three_Days),
             ]);
             DB::commit();
             return new UpdateAdminResource($request);

@@ -59,7 +59,7 @@ class ItemController extends Controller
                 'admin_id' => $adminId,
                 'statusMessage' => Message::OK,
                 'created_at' => Carbon::now(),
-                'expiration' => Carbon::now()->addYear(Number::One_Year),
+                'expiration' => Carbon::today()->addYear(Number::One_Year),
                 'slug' => $request->input('name')
             ]);
             $itemId = $Item->id;
@@ -67,7 +67,7 @@ class ItemController extends Controller
             ItemFlag::create([
                 'flag' => Number::Display_Flag,
                 'item_id' => $itemId,
-                'expired_at' => Carbon::now()->addMonth(Number::Six_Years),
+                'expired_at' => Carbon::today()->addMonth(Number::Six_Years),
                 'created_at' => Carbon::now(),
             ]);
             DB::commit();
@@ -115,14 +115,14 @@ class ItemController extends Controller
                 'category' => $request->input('category'),
                 'admin_id' => $adminId,
                 'updated_at' => Carbon::now(),
-                'expiration' => Carbon::now()->addYear(Number::One_Year),
+                'expiration' => Carbon::today()->addYear(Number::One_Year),
                 'slug' => Str::slug($request->input('name'))
             ]);
 
             ItemFlag::where('item_id', $itemId)->update([
                 'flag' => Number::Display_Flag,
                 'item_id' => $itemId,
-                'expired_at' => Carbon::now()->addMonth(6),
+                'expired_at' => Carbon::today()->addMonth(6),
                 'updated_at' => Carbon::now(),
             ]);
             DB::commit();
