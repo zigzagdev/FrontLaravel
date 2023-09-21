@@ -79,7 +79,6 @@ class ItemController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             $request->merge(['statusMessage' => sprintf(Common::REGISTER_FAILED, 'アイテム')]);
-
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
@@ -135,10 +134,7 @@ class ItemController extends Controller
         } catch (Exception $e) {
             DB::rollBack();
             $request->merge(['statusMessage' => sprintf(Common::REGISTER_FAILED, 'アイテム')]);
-            $kk = $e->getMessage();
-            var_dump($kk);
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
-
         }
     }
 
