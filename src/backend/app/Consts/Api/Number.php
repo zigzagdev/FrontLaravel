@@ -20,4 +20,8 @@ class Number
     public const Four_Days = 4;
     public const Five_Days = 5;
     public const Six_Days = 6;
+
+    public const One_Year = 1;
+    public const Two_Years = 2;
+    public const Six_Years = 6;
 }

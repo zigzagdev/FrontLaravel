@@ -22,7 +22,7 @@ class ItemRequest extends CommonRequest
     public function rules()
     {
         return [
-            "name" => "required|min:4||max:100|string|unique:items",
+            "name" => "required|min:4||max:100|string",
             "description" => "required|min:4|max:100|string",
             "price" => "required",
             "category" => "required",
