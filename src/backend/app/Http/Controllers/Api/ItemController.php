@@ -39,9 +39,9 @@ class ItemController extends Controller
             }
 
             $existItem = Item::where([
-                'name' => $request->name,
-                'price' => $request->price,
-                'category' => $request->category
+                'name', '=', [$request->name],
+                'price', '=', [$request->price],
+                'category', '=', [$request->category]
             ])->first();
 
             if (($existItem)) {
@@ -90,11 +90,11 @@ class ItemController extends Controller
         try {
             DB::beginTransaction();
             $adminId = $request->admin_id;
-            $itemId = $request->item_id;
+            $itemId = $request->id;
             $authentication = Item::find($itemId);
 
             if (!$authentication) {
-                $request->merge(['statusMessage' => sprintf(Common::ERR_08)]);
+                $request->merge(['statusMessage' => sprintf(Common::ERR_09)]);
                 return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
             }
 
@@ -103,13 +103,7 @@ class ItemController extends Controller
                 return new ErrorResource($request, Response::HTTP_NOT_FOUND);
             }
 
-            $existItem = Item::where([
-                'name' => $request->name,
-                'price' => $request->price,
-                'category' => $request->category
-            ])->first();
-
-            if (($existItem)) {
+            if (($authentication->name === $request->name)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_08)]);
                 $statusCode = Message::Unauthorized;
 
@@ -140,6 +134,10 @@ class ItemController extends Controller
             return new ItemResource($request);
         } catch (Exception $e) {
             DB::rollBack();
+            $request->merge(['statusMessage' => sprintf(Common::REGISTER_FAILED, 'アイテム')]);
+            $kk = $e->getMessage();
+            var_dump($kk);
+            return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
 
         }
     }
