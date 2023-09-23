@@ -97,12 +97,7 @@ class ItemController extends Controller
                 return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
             }
 
-            if ($authentication->slug !== $authentication->name) {
-                $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
-                return new ErrorResource($request, Response::HTTP_NOT_FOUND);
-            }
-
-            if (($authentication->name === $request->name)) {
+            if ($authentication->name === $request->name) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_08)]);
                 $statusCode = Message::Unauthorized;
 
