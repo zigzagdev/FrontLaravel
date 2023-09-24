@@ -24,10 +24,12 @@ class FetchItemResource extends JsonResource
             'statusCode' => $this->statusCode,
             'statusMessage' => 'OK',
             'profile' => [
+                'id' => $this->itemId,
                 'itemName' => $this->name,
                 'content' => $this->description,
                 'price' => number_format($this->price),
                 'slug' => $this->slug,
+                'admin_id' => $this->adminId,
                 'category' => $this->category
             ]
         ];
