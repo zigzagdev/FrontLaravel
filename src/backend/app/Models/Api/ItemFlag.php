@@ -29,6 +29,7 @@ class ItemFlag extends Model
             , 'items.expiration'
             , 'items.slug'
             , 'items.id as itemId'
+            , 'items.admin_id as adminId'
         ])->leftjoin('items', function ($join) {
             $join->on('item_display.item_id', '=', 'items.id');
         })->where('item_display.flag', '=', Number::Display_Flag)
