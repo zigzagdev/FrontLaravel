@@ -26,6 +26,8 @@ class ItemResource extends JsonResource
             'statusCode' => $this->statusCode,
             'statusMessage' => 'OK',
             'profile' => [
+                'id' => $this->id,
+                'adminId' => $this->admin_id,
                 'itemName' => $this->name,
                 'content' => Str::limit($this->description, 15, '...'),
                 'price' => number_format($this->price),

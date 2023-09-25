@@ -6,17 +6,30 @@ import {Genre} from "./Genre";
 
 type item = {
     id: number,
-    itemName: string,
+    name: string,
+    description: string,
     content: string,
     price: number,
+    categoryName: string,
     category: number,
-    slug: string
+    slug: string,
+    admin_id: number
 }
 
 
 export function ShowSlug() {
     const {slug} = useParams<{ slug: string }>()
-    const [item, setItem] = useState<item>(({id: 0, itemName: "", content: "", price: 0, category: 0, slug: ""}));
+    const [item, setItem] = useState<item>({
+        id: 0,
+        name: "",
+        description: "",
+        content: "",
+        price: 0,
+        categoryName: "",
+        category: 0,
+        slug: "",
+        admin_id: 0
+    });
     const baseURL = process.env.REACT_APP_API_BASE_URL;
 
     useEffect(() => {
@@ -25,6 +38,7 @@ export function ShowSlug() {
                 setItem(res.data.data.profile)
             })
     }, [])
+    console.log(item)
     return (
         <>
             <div className="my-4 mx-32 block text-lg
@@ -32,19 +46,19 @@ export function ShowSlug() {
                 <div className="my-3 mx-4">
                     <div className="my-5">
                         <p className="my-3 mx-4">Item Name</p>
-                        <p className="mx-7">{item?.itemName}</p>
+                        <p className="mx-7">{item.name}</p>
                     </div>
                     <div className="my-5">
                         <p className="my-3 mx-4">Item Content</p>
-                        <p className="mx-7">{item?.content}</p>
+                        <p className="mx-7">{item.content}</p>
                     </div>
                     <div className="my-5">
                         <p className="my-3 mx-4">Item Price</p>
-                        <p className="mx-7">{item?.price}</p>
+                        <p className="mx-7">{item.price}</p>
                     </div>
                     <div className="my-5">
                         <p className="my-3 mx-4">Item Category</p>
-                        <p className="mx-7">{Genre[item?.category].label}</p>
+                        <p className="mx-7">{Genre[item.category].label}</p>
                     </div>
                 </div>
             </div>
@@ -53,75 +67,119 @@ export function ShowSlug() {
 }
 
 export function EditSlug() {
-    // const {slug} = useParams<{ slug: string }>();
-    // const [error, setError] = useState('');
-    // const [item, setItem] = useState<item>(({id: 0, itemName: "", content: "", price: 0, category: 0, slug: ""}));
-    // const baseURL = process.env.REACT_APP_API_BASE_URL;
-    // const navigate = useNavigate();
-    // const {register, handleSubmit, formState: {errors}} = useForm<item>()
-    //
-    // const onSubmit: SubmitHandler<ItemInfo> = (data) => {
-    //     axios
-    //         .put<ItemInfo>(`${baseURL}./display/` + slug, data)
-    //         .then((res) => {
-    //             return (
-    //                 navigate(`${baseURL}./display/` + slug)
-    //             )
-    //         })
-    //         .catch((error: any) => {
-    //             if (error.response.statusText == 'Bad Request') {
-    //                 setError('Item Information could not updated ...');
-    //             } else {
-    //                 setError('Internal server error is happened. Please do it again.');
-    //             }
-    //         });
-    // }
+
+    const {slug} = useParams<{ slug: string }>();
+    const [error, setError] = useState('');
+    const [item, setItem] = useState<item>(({
+        id: 0,
+        name: "",
+        content: "",
+        description: "",
+        price: 0,
+        category: 0,
+        categoryName: "",
+        slug: "",
+        admin_id: 0
+    }));
+    const baseURL = process.env.REACT_APP_API_BASE_URL;
+    const navigate = useNavigate();
+    const {register, handleSubmit, formState: {errors}} = useForm<item>()
+
+    useEffect(() => {
+        axios.get(`${baseURL}./display/` + slug)
+            .then(res => {
+                setItem(res.data.data.profile)
+            })
+    }, [])
+
+    const onSubmit: SubmitHandler<item> = (data: item) => {
+        console.log(data)
+        axios
+            .put<item>(`${baseURL}./update/` + slug, {
+                id: item.id,
+                name: data.name,
+                description: data.description,
+                price: data.price,
+                category: data.categoryName,
+                slug: data.slug,
+                admin_id: item.admin_id
+            })
+            .then((res) => {
+                return (
+                    navigate('/')
+                )
+            })
+            .catch((error: any) => {
+                if (error.response.statusText == 'Bad Request') {
+                    setError('Item Information could not updated ...');
+                } else {
+                    setError('Internal server error is happened. Please do it again.');
+                }
+            });
+    }
     return (
         <>
-            {/*<div className="my-3 text-center block text-m  sm:text-center*/}
-            {/*               duration-700 ">*/}
-            {/*    <form>*/}
-            {/*        <div className="my-3 mx-4">*/}
-            {/*            <div className="my-5">*/}
-            {/*                <p className="my-3 mx-4">Item Name</p>*/}
-            {/*                <p className="mx-7">*/}
-            {/*                    <input*/}
-            {/*                        {...register("itemName", {required: true, maxLength: 200})}*/}
-            {/*                    />*/}
-            {/*                </p>*/}
-            {/*                {errors.itemName && errors.itemName.type === "maxLength" && (*/}
-            {/*                    <span*/}
-            {/*                        className="text-red-400 my-1 mx-2 text-md"*/}
-            {/*                    >*/}
-            {/*                    Item name must be within 200 characters.*/}
-            {/*                </span>*/}
-            {/*                )}*/}
-            {/*            </div>*/}
-            {/*            <div className="my-5">*/}
-            {/*                <p className="my-3 mx-4">Item Content</p>*/}
-            {/*                <p className="mx-7">{item?.content}</p>*/}
-            {/*            </div>*/}
-            {/*            <div className="my-5">*/}
-            {/*                <p className="my-3 mx-4">Item Price</p>*/}
-            {/*                <p className="mx-7">*/}
-            {/*                    <input*/}
-            {/*                        value={item?.price}*/}
-            {/*                    />*/}
-            {/*                </p>*/}
-            {/*            </div>*/}
-            {/*            <div className="my-5">*/}
-            {/*                <p className="my-3 mx-4">Item Category</p>*/}
-            {/*                <p className="mx-7 text-black">{item?.category}</p>*/}
-            {/*            </div>*/}
-            {/*            <select id="genre">*/}
-            {/*                <option value="" selected className="text-black">選択してください</option>*/}
-            {/*                {Genre.map((genre: Genre) => (*/}
-            {/*                    <option value={genre.id}>{genre.label}</option>*/}
-            {/*                ))}*/}
-            {/*            </select>*/}
-            {/*        </div>*/}
-            {/*    </form>*/}
-            {/*</div>*/}
+            <div className="my-3 text-center block text-m  sm:text-center
+                           duration-700 ">
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <div className="my-3 mx-4">
+                        <div className="my-5">
+                            <p className="item">
+                                <label htmlFor="itemName" className="mx-4">ItemName</label>
+                                <input
+                                    {...register("name", {required: true, minLength: 4})}
+                                />
+                                {errors.name?.type === "required" && (
+                                    <p role="alert" className="text-red-400">itemName is required</p>
+                                )}
+                                {errors.name && errors.name.type === "minLength" && (
+                                    <p role="alert" className="text-red-400">Min length exceeded</p>
+                                )}
+                            </p>
+                            {errors.name && errors.name.type === "maxLength" && (
+                                <span
+                                    className="text-red-400 my-1 mx-2 text-md"
+                                >
+                                Item name must be within 200 characters.
+                            </span>
+                            )}
+                        </div>
+                        <div className="my-5">
+                            <p className="my-3 mx-4">Item Content</p>
+                            <p className="mx-7">
+                                <label htmlFor="description" className="mx-4">ItemContent</label>
+                                <input
+                                    {...register("description", {required: true, minLength: 4})}
+                                />
+                            </p>
+                        </div>
+                        <div className="my-5">
+                            <p className="my-3 mx-4">Item Price</p>
+                            <p className="mx-7">
+                                <label htmlFor="price" className="mx-4">ItemPrice</label>
+                                <input
+                                    {...register("price", {required: true})}
+                                />
+                            </p>
+                        </div>
+                        <div className="my-5">
+                            <p className="my-3 mx-4">Item Category</p>
+                        </div>
+                        <select id="genre" {...register("categoryName")}>
+                            <option className="text-black">選択してください</option>
+                            {Genre.map((genre) => (
+                                <option value={genre.id} key={genre.id}>{genre.label}</option>
+                            ))}
+                        </select><br/>
+                        <button
+                            className="btn btn-outline-primary text-center shadow-none mb-3"
+                            type="submit"
+                        >
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
         </>
     )
 }
