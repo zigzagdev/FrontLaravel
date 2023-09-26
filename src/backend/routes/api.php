@@ -53,4 +53,3 @@ Route::middleware(['api', 'cors'])->group(function () {
         Route::put('/update/{slug}', 'updateItem');
     });
 });
-
