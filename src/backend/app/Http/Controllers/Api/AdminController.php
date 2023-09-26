@@ -94,9 +94,10 @@ class AdminController extends Controller
         try {
             DB::beginTransaction();
             $adminId = $request->admin_id;
-            $authentication = Admin::find($adminId);
+            $currentEmail = Admin::find($adminId)->value('email');
 
-            if (empty($authentication)) {
+
+            if (empty($currentEmail)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
                 return new ErrorResource($request, Response::HTTP_NOT_FOUND);
             }
@@ -105,6 +106,7 @@ class AdminController extends Controller
                 'email' => $request->email,
                 'updated_at' => Carbon::now()
             ]);
+
             DB::commit();
 
             return new UpdateEmailResource($request);
@@ -119,7 +121,8 @@ class AdminController extends Controller
     function getAdmin(Request $request)
     {
         try {
-            $authentication = Admin::where('email', $request->email)->first();
+            $adminId = $request->admin_id;
+            $authentication = Admin::where('id', $adminId)->first();
 
             if (empty($authentication)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);

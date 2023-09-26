@@ -56,9 +56,9 @@ class UserController extends Controller
         try {
             DB::beginTransaction();
             $userId = $request->user_id;
-            $authentication = User::find($userId);
+            $userName = User::find($userId)->value('name');
 
-            if (empty($authentication)) {
+            if (empty($userName)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
                 return new ErrorResource($request, Response::HTTP_NOT_FOUND);
             }
@@ -82,9 +82,9 @@ class UserController extends Controller
         try {
             DB::beginTransaction();
             $userId = $request->user_id;
-            $authentication = User::find($userId);
+            $userEmail = User::find($userId)->value('email');
 
-            if (empty($authentication)) {
+            if (empty($userEmail)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
                 return new ErrorResource($request, Response::HTTP_NOT_FOUND);
             }
