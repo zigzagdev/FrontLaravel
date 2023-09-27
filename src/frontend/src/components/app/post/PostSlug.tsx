@@ -67,7 +67,6 @@ export function ShowSlug() {
 }
 
 export function EditSlug() {
-
     const {slug} = useParams<{ slug: string }>();
     const [error, setError] = useState('');
     const [item, setItem] = useState<item>(({
@@ -93,7 +92,6 @@ export function EditSlug() {
     }, [])
 
     const onSubmit: SubmitHandler<item> = (data: item) => {
-        console.log(data)
         axios
             .put<item>(`${baseURL}./update/` + slug, {
                 id: item.id,
