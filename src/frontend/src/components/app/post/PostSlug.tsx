@@ -38,11 +38,10 @@ export function ShowSlug() {
                 setItem(res.data.data.profile)
             })
     }, [])
-    console.log(item)
+
     return (
         <>
-            <div className="my-4 mx-32 block text-lg
-                           duration-700">
+            <div className="my-4 mx-32 block text-lg duration-700">
                 <div className="my-3 mx-4">
                     <div className="my-5">
                         <p className="my-3 mx-4">Item Name</p>

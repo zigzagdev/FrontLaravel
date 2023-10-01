@@ -15,7 +15,7 @@ import Login from "../components/app/auth/Login";
 import UserIndex from "../components/app/user/Info";
 import Result from "../components/app/input/Result";
 import {ShowSlug, EditSlug, DeleteSlug} from "../components/app/post/PostSlug";
-import {UpdateEmail, AdminData} from "../components/app/admin/Admin";
+import {AdminData} from "../components/app/admin/Admin";
 
 
 export default function EachRoutes() {
@@ -25,6 +25,7 @@ export default function EachRoutes() {
                 <BrowserRouter>
                     <Header/>
                     <Routes>
+                        <Route path="/Login" element={<Login/>}/>
                         <Route path="/" element={<TopPage/>}/>
                         <Route path="/Posts" element={<Posts/>}/>
                         <Route path="/Instagram" element={<Instagram/>}/>
@@ -33,10 +34,8 @@ export default function EachRoutes() {
                         <Route path="/Post/:slug" element={<DeleteSlug/>}/>
                         <Route path="*" element={<NotFound/>}/>
                         <Route path="/Contact" element={<Contact/>}/>
-                        <Route path="/Login" element={<Login/>}/>
                         <Route path="/UserIndex" element={<UserIndex/>}/>
                         <Route path="/Result" element={<Result/>}/>
-                        <Route path="/Admin/Email/Update" element={<UpdateEmail/>}/>
                         <Route path="/Admin" element={<AdminData/>}/>
                     </Routes>
                     <Footer/>
