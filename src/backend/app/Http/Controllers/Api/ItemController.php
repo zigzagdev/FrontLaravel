@@ -90,19 +90,19 @@ class ItemController extends Controller
             DB::beginTransaction();
             $adminId = $request->admin_id;
             $itemId = $request->id;
-            $authentication = Item::find($adminId);
+            $currentItemName = Item::find($itemId);
 
-            if (!$authentication) {
+            if (!$currentItemName) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_09)]);
                 return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
             }
 
-//            if ($authentication->name === $request->name) {
-//                $request->merge(['statusMessage' => sprintf(Common::ERR_08)]);
-//                $statusCode = Message::Unauthorized;
-//
-//                return new ErrorResource($request, $statusCode);
-//            }
+            if ($currentItemName === $request->name) {
+                $request->merge(['statusMessage' => sprintf(Common::ERR_08)]);
+                $statusCode = Message::Unauthorized;
+
+                return new ErrorResource($request, $statusCode);
+            }
             Item::where('id', $itemId)->update([
                 'name' => $request->input('name'),
                 'description' => $request->input('description'),

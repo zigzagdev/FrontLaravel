@@ -94,9 +94,10 @@ class AdminController extends Controller
         try {
             DB::beginTransaction();
             $adminId = $request->admin_id;
-            $authentication = Admin::find($adminId);
+            $currentAdminEmail = Admin::find($adminId)->value('email');
 
-            if (empty($authentication)) {
+
+            if (empty($currentAdminEmail)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
                 return new ErrorResource($request, Response::HTTP_NOT_FOUND);
             }
@@ -115,21 +116,19 @@ class AdminController extends Controller
         }
     }
 
-
-    function getAdmin(Request $request)
+    public function getAdmin(Request $request)
     {
         try {
-            $authentication = Admin::where('email', $request->email)->first();
+            $authentication = Admin::query()->first();
 
             if (empty($authentication)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
                 return new ErrorResource($request, Response::HTTP_NOT_FOUND);
             }
-
             return new AdminResource($authentication);
-
         } catch (\Exception $e) {
-            DB::rollBack();
+            $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, '管理者データ')]);
+            return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
 }
