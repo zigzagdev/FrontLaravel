@@ -116,8 +116,7 @@ class AdminController extends Controller
         }
     }
 
-
-    function getAdmin(Request $request)
+    public function getAdmin(Request $request)
     {
         try {
             $authentication = Admin::query()->first();

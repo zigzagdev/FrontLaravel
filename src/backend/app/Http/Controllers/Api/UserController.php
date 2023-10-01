@@ -40,8 +40,8 @@ class UserController extends Controller
                 'statusMessage' => Message::OK,
                 'created_at' => Carbon::now(),
             ]);
-            DB::commit();
 
+            DB::commit();
             return new UserResource($request);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -67,9 +67,9 @@ class UserController extends Controller
                 'name' => $request->input('name'),
                 'updated_at' => Carbon::now(),
             ]);
+
             DB::commit();
             return new UpdateAdminResource($request);
-
         } catch (\Exception $e) {
             DB::rollBack();
             $request->merge(['statusMessage' => sprintf(Common::REGISTER_FAILED, 'ユーザーアカウント')]);
@@ -88,15 +88,12 @@ class UserController extends Controller
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
                 return new ErrorResource($request, Response::HTTP_NOT_FOUND);
             }
-
             User::where('id', $userId)->update([
                 'email' => $request->email,
                 'updated_at' => Carbon::now()
             ]);
             DB::commit();
-
             return new UpdateEmailResource($request);
-
         } catch (\Exception $e) {
             DB::rollBack();
             $request->merge(['statusMessage' => sprintf(Common::UPDATE_FAILED, 'メールアドレス')]);
@@ -104,10 +101,11 @@ class UserController extends Controller
         }
     }
 
-    public function allUser(Request $request)
+    public function allUser($request)
     {
         try {
             $users = User::all();
+
             if (empty($users)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
                 return new ErrorResource($request, Response::HTTP_NOT_FOUND);
@@ -115,7 +113,6 @@ class UserController extends Controller
 
             return new UserAllCollection($users);
         } catch (\Exception $e) {
-            DB::rollBack();
             $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, 'ユーザーデータ')]);
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
