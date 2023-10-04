@@ -167,7 +167,8 @@ export function EditSlug() {
                             {Genre.map((genre) => (
                                 <option value={genre.id} key={genre.id}>{genre.label}</option>
                             ))}
-                        </select><br/>
+                        </select><br/><br/><br/>
+                        {error}
                         <button
                             className="btn btn-outline-primary text-center shadow-none mb-3"
                             type="submit"
@@ -181,12 +182,12 @@ export function EditSlug() {
     )
 }
 
-export function DeleteSlug() {
-    return (
-        <>
-            <div>
-
-            </div>
-        </>
-    )
-}
+// export function DeleteSlug() {
+//     return (
+//         <>
+//             <div>
+//
+//             </div>
+//         </>
+//     )
+// }
