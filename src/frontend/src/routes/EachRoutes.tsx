@@ -20,27 +20,23 @@ import {AdminData, UpdateEmail} from "../components/app/admin/Admin";
 
 export default function EachRoutes() {
     return (
-        <>
-            <div>
-                <BrowserRouter>
-                    <Header/>
-                    <Routes>
-                        <Route path="/Login" element={<Login/>}/>
-                        <Route path="/" element={<TopPage/>}/>
-                        <Route path="/Posts" element={<Posts/>}/>
-                        <Route path="/Instagram" element={<Instagram/>}/>
-                        <Route path="/Post/:slug" element={<ShowSlug/>}/>
-                        <Route path="/Post/:slug/Edit" element={<EditSlug/>}/>
-                        <Route path="*" element={<NotFound/>}/>
-                        <Route path="/Contact" element={<Contact/>}/>
-                        <Route path="/UserIndex" element={<UserIndex/>}/>
-                        <Route path="/Result" element={<Result/>}/>
-                        <Route path="/Admin" element={<AdminData/>}/>
-                        <Route path="/Admin/Email/Update" element={<UpdateEmail/>}/>
-                    </Routes>
-                    <Footer/>
-                </BrowserRouter>
-            </div>
-        </>
+        <BrowserRouter>
+            <Header/>
+            <Routes>
+                <Route path="/Login" element={<Login/>}/>
+                <Route path="/" element={<TopPage/>}/>
+                <Route path="/Posts" element={<Posts/>}/>
+                <Route path="/Instagram" element={<Instagram/>}/>
+                <Route path="/Post/:slug" element={<ShowSlug/>}/>
+                <Route path="/Post/:slug/Edit" element={<EditSlug/>}/>
+                <Route path="*" element={<NotFound/>}/>
+                <Route path="/Contact" element={<Contact/>}/>
+                <Route path="/UserIndex" element={<UserIndex/>}/>
+                <Route path="/Result" element={<Result/>}/>
+                <Route path="/Admin" element={<AdminData/>}/>
+                <Route path="/Admin/Email/Update" element={<UpdateEmail/>}/>
+            </Routes>
+            <Footer/>
+        </BrowserRouter>
     )
 }
