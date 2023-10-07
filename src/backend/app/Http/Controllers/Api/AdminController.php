@@ -93,14 +93,13 @@ class AdminController extends Controller
     {
         try {
             DB::beginTransaction();
-            $adminId = $request->admin_id;
-            $currentAdminEmail = Admin::find($adminId)->value('email');
+            $currentAdminData = Admin::query()->first();
 
-
-            if (empty($currentAdminEmail)) {
+            if (empty($currentAdminData)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
                 return new ErrorResource($request, Response::HTTP_NOT_FOUND);
             }
+            $adminId = $currentAdminData->id;
 
             Admin::where('id', $adminId)->update([
                 'email' => $request->email,
