@@ -34,7 +34,7 @@ Route::middleware(['api', 'cors'])->group(function () {
         Route::post('/admin/create', 'createAdmin');
         Route::put('/admin/update', 'updateAdmin');
         Route::get('/admin/profile', 'getAdmin');
-        Route::put('/update/admin/email', 'updateAdminEmail');
+        Route::put('/admin/update/email', 'updateAdminEmail');
     });
 
     Route::controller(UserController::class)->group(function () {

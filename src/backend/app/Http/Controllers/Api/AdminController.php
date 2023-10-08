@@ -59,15 +59,15 @@ class AdminController extends Controller
     {
         try {
             DB::beginTransaction();
-            $adminId = $request->admin_id;
-            $authentication = Admin::find($adminId);
+            $currentAdminData = Admin::query()->first();
 
-            if (empty($authentication)) {
+            if (empty($currentAdminData)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
                 return new ErrorResource($request, Response::HTTP_NOT_FOUND);
             }
 
-            $expiration = $authentication->expiration;
+            $expiration = $currentAdminData->expiration;
+            $adminId = $currentAdminData->id;
             if ($expiration < Carbon::now('Asia/Tokyo')) {
                 $request->merge(['statusMessage' => Message::Unauthorized]);
 
@@ -103,7 +103,8 @@ class AdminController extends Controller
 
             Admin::where('id', $adminId)->update([
                 'email' => $request->email,
-                'updated_at' => Carbon::now()
+                'updated_at' => Carbon::now(),
+                'expiration' => Carbon::today()->addDays(Number::Three_Days),
             ]);
             DB::commit();
 
