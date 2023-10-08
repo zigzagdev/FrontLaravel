@@ -86,7 +86,7 @@ export function UpdateEmail() {
                         placeholder=""
                         value={AdminData.email}
                         {...register("email", {required: true, minLength: 4, maxLength: 100})}
-                        onChange={(eachData) => setAdminData({...AdminData, email: eachData.target.value})}
+                        onChange={(e) => setAdminData({...AdminData, email: e.target.value})}
                     />
                     {errors.email?.type === "required" && (
                         <p role="alert" className="text-red-300">ItemName is required</p>
