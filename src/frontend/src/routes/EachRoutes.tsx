@@ -27,16 +27,14 @@ export default function EachRoutes() {
                 <Route path="/" element={<TopPage/>}/>
                 <Route path="/Posts" element={<Posts/>}/>
                 <Route path="/Instagram" element={<Instagram/>}/>
-                <Route path="/Post/:slug" element={<ShowSlug/>}>
-                    <Route path="Edit" element={<EditSlug/>}/>
-                </Route>
-                <Route path="*" element={<NotFound/>}/>
+                <Route path="/Post/:slug" element={<ShowSlug/>}/>
+                <Route path="/Post/:slug/Edit" element={<EditSlug/>}/>
                 <Route path="/Contact" element={<Contact/>}/>
                 <Route path="/UserIndex" element={<UserIndex/>}/>
                 <Route path="/Result" element={<Result/>}/>
-                <Route path="/Admin" element={<AdminData/>}>
-                    <Route path="Email/Update" element={<UpdateEmail/>}/>
-                </Route>
+                <Route path="/Admin" element={<AdminData/>}/>
+                <Route path="Admin/Update/Email" element={<UpdateEmail/>}/>
+                <Route path="*" element={<NotFound/>}/>
             </Routes>
             <Footer/>
         </BrowserRouter>
