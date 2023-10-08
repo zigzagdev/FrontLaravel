@@ -38,6 +38,16 @@ export function AdminData() {
     )
 }
 
+export function UpdateName() {
+    return (
+        <>
+            <div>
+                update admin name
+            </div>
+        </>
+    )
+}
+
 export function UpdateEmail() {
     const [AdminData, setAdminData] = useState<adminData>({
         id: 0,
@@ -111,10 +121,6 @@ export function UpdateEmail() {
         </>
     )
 }
-
-// export function UpdateAdminName() {
-//
-// }
 
 
 // export function DeleteAdmin() {
