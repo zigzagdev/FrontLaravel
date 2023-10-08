@@ -34,8 +34,9 @@ export default function EachRoutes() {
                 <Route path="/Contact" element={<Contact/>}/>
                 <Route path="/UserIndex" element={<UserIndex/>}/>
                 <Route path="/Result" element={<Result/>}/>
-                <Route path="/Admin" element={<AdminData/>}/>
-                <Route path="/Admin/Email/Update" element={<UpdateEmail/>}/>
+                <Route path="/Admin" element={<AdminData/>}>
+                    <Route path="Email/Update" element={<UpdateEmail/>}/>
+                </Route>
             </Routes>
             <Footer/>
         </BrowserRouter>
