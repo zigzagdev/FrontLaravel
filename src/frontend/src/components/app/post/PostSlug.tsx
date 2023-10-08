@@ -127,7 +127,7 @@ export function EditSlug() {
                                     {...register("name", {required: true, minLength: 4})}
                                 />
                                 {errors.name?.type === "required" && (
-                                    <p role="alert" className="text-red-400">itemName is required</p>
+                                    <p role="alert" className="text-red-400">ItemName is required</p>
                                 )}
                                 {errors.name && errors.name.type === "minLength" && (
                                     <p role="alert" className="text-red-400">Min length exceeded</p>
@@ -167,9 +167,10 @@ export function EditSlug() {
                             {Genre.map((genre) => (
                                 <option value={genre.id} key={genre.id}>{genre.label}</option>
                             ))}
-                        </select><br/>
+                        </select><br/><br/><br/>
+                        {error}
                         <button
-                            className="btn btn-outline-primary text-center shadow-none mb-3"
+                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
                             type="submit"
                         >
                             Submit
@@ -181,12 +182,12 @@ export function EditSlug() {
     )
 }
 
-export function DeleteSlug() {
-    return (
-        <>
-            <div>
-
-            </div>
-        </>
-    )
-}
+// export function DeleteSlug() {
+//     return (
+//         <>
+//             <div>
+//
+//             </div>
+//         </>
+//     )
+// }
