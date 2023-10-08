@@ -55,7 +55,7 @@ class AdminController extends Controller
         }
     }
 
-    function updateAdmin(UpdateNameRequest $request)
+    function updateAdminName(UpdateNameRequest $request)
     {
         try {
             DB::beginTransaction();
@@ -67,13 +67,12 @@ class AdminController extends Controller
             }
 
             $expiration = $currentAdminData->expiration;
-            $adminId = $currentAdminData->id;
             if ($expiration < Carbon::now('Asia/Tokyo')) {
                 $request->merge(['statusMessage' => Message::Unauthorized]);
-
                 return new ErrorResource($request, Response::HTTP_UNAUTHORIZED);
             }
 
+            $adminId = $currentAdminData->id;
             Admin::where('id', $adminId)->update([
                 'name' => $request->input('name'),
                 'updated_at' => Carbon::now(),
