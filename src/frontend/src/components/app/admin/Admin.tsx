@@ -97,6 +97,10 @@ export function UpdateName() {
                 <div className="my-4 mx-32 block text-lg duration-700">
                     <input
                         type="name"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                                   focus:ring-blue-500 focus:border-blue-500 block w-80 p-2.5 dark:bg-gray-700
+                                   dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
+                                   dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder=""
                         value={AdminName.name}
                         {...register("name", {required: true, minLength: 4, maxLength: 100})}
@@ -105,13 +109,13 @@ export function UpdateName() {
                     <div className="my-10 mx-5 text-red-600 font-mono text-lg">
                         {error}
                     </div>
+                    <button
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                        type="submit"
+                    >
+                        Submit
+                    </button>
                 </div>
-                <button
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-                    type="submit"
-                >
-                    Submit
-                </button>
             </form>
         </>
     )
@@ -158,6 +162,10 @@ export function UpdateEmail() {
                     <input
                         type="email"
                         placeholder=""
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                                   focus:ring-blue-500 focus:border-blue-500 block w-80 p-2.5 dark:bg-gray-700
+                                   dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
+                                   dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         value={AdminEmail.email}
                         {...register("email", {required: true, minLength: 4, maxLength: 100})}
                         onChange={(e) => setAdminEmail({...AdminEmail, email: e.target.value})}
@@ -171,17 +179,17 @@ export function UpdateEmail() {
                     {errors.email && errors.email.type === "maxLength" && (
                         <p role="alert" className="text-red-500">You have to written in less than 100 characters.</p>
                     )}
+                    <div className="my-10 mx-5 text-red-600 font-mono text-lg">
+                        {error}
+                    </div>
+                    <button
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                        type="submit"
+                    >
+                        Submit
+                    </button>
                 </div>
-                <button
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-                    type="submit"
-                >
-                    Submit
-                </button>
             </form>
-            <div className="my-10 mx-5 text-red-600 font-mono text-lg">
-                {error}
-            </div>
         </>
     )
 }
