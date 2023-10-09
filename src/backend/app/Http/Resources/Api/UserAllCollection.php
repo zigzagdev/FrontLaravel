@@ -15,14 +15,15 @@ class UserAllCollection extends ResourceCollection
      */
     public function toArray($request)
     {
+
         return [
             'statusCode' => Response::HTTP_OK,
             'statusMessage' => 'OK',
-            'userInformation' => $this->collection->map(function ($users) {
+            'userInformation' => $this->collection->map(function ($user) {
                 return [
-                    'id' => $users->id,
-                    'userName' => $users->name,
-                    'emailAddress' => $users->email
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email
                 ];
             })
         ];

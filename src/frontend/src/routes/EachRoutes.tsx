@@ -12,10 +12,9 @@ import Instagram from "../components/common/footer/Instagram";
 import NotFound from "../components/app/exception/NotFound";
 import Contact from "../components/common/footer/Contact";
 import Login from "../components/app/auth/Login";
-import UserIndex from "../components/app/user/Info";
 import Result from "../components/app/input/Result";
 import {ShowSlug, EditSlug} from "../components/app/post/PostSlug";
-import {AdminData, UpdateEmail, UpdateName} from "../components/app/admin/Admin";
+import {AdminData, AllUsers, UpdateEmail, UpdateName} from "../components/app/admin/Admin";
 
 
 export default function EachRoutes() {
@@ -30,11 +29,11 @@ export default function EachRoutes() {
                 <Route path="/Post/:slug" element={<ShowSlug/>}/>
                 <Route path="/Post/:slug/Edit" element={<EditSlug/>}/>
                 <Route path="/Contact" element={<Contact/>}/>
-                <Route path="/UserIndex" element={<UserIndex/>}/>
                 <Route path="/Result" element={<Result/>}/>
                 <Route path="/Admin" element={<AdminData/>}/>
                 <Route path="Admin/Update/Email" element={<UpdateEmail/>}/>
                 <Route path="Admin/Update/Name" element={<UpdateName/>}/>
+                <Route path="Admin/Users" element={<AllUsers/>}/>
                 <Route path="*" element={<NotFound/>}/>
             </Routes>
             <Footer/>
