@@ -116,14 +116,17 @@ export function EditSlug() {
     }
     return (
         <>
-            <div className="my-3 text-center block text-m  sm:text-center
-                           duration-700 ">
+            <div className="my-6 mx-7 text-center block text-m  sm:text-center duration-700 ">
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="my-3 mx-4">
                         <div className="my-5">
                             <p className="item">
                                 <label htmlFor="itemName" className="mx-4">ItemName</label>
                                 <input
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                                   focus:ring-blue-500 focus:border-blue-500 block w-80 p-2.5 dark:bg-gray-700
+                                   dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
+                                   dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     {...register("name", {required: true, minLength: 4})}
                                 />
                                 {errors.name?.type === "required" && (
@@ -146,6 +149,10 @@ export function EditSlug() {
                             <p className="mx-7">
                                 <label htmlFor="description" className="mx-4">ItemContent</label>
                                 <input
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                                   focus:ring-blue-500 focus:border-blue-500 block w-80 p-2.5 dark:bg-gray-700
+                                   dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
+                                   dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     {...register("description", {required: true, minLength: 4})}
                                 />
                             </p>
@@ -155,6 +162,10 @@ export function EditSlug() {
                             <p className="mx-7">
                                 <label htmlFor="price" className="mx-4">ItemPrice</label>
                                 <input
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                                   focus:ring-blue-500 focus:border-blue-500 block w-80 p-2.5 dark:bg-gray-700
+                                   dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
+                                   dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     {...register("price", {required: true})}
                                 />
                             </p>
@@ -167,8 +178,10 @@ export function EditSlug() {
                             {Genre.map((genre) => (
                                 <option value={genre.id} key={genre.id}>{genre.label}</option>
                             ))}
-                        </select><br/><br/><br/>
-                        {error}
+                        </select>
+                        <div className="my-10 mx-5 text-red-600 font-mono text-lg">
+                            {error}
+                        </div>
                         <button
                             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
                             type="submit"
