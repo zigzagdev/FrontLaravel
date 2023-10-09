@@ -116,8 +116,7 @@ export function EditSlug() {
     }
     return (
         <>
-            <div className="my-3 text-center block text-m  sm:text-center
-                           duration-700 ">
+            <div className="my-6 mx-7 text-center block text-m  sm:text-center duration-700 ">
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="my-3 mx-4">
                         <div className="my-5">
