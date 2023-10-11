@@ -214,8 +214,15 @@ export function AllUsers() {
             <div className="grid grid-cols-3 gap-4 mx-24">
                 {users.map((user: userData) => {
                     return (
-                        <div className="grid grid-cols-5 grid-rows-3 gap-16 bg-blue-700 rounded-md" key={user.id}>
-                            <div className="col-span-2 row-span-2">ss</div>
+                        <div className="grid grid-rows-5 gap-4 bg-blue-400 rounded-md px-8 pb-8" key={user.id}>
+                            <div className="font-bold pt-6">User Name</div>
+                            <div className="font-bold pt-2">{user.name}</div>
+                            <div className="font-bold pt-2">User Email</div>
+                            <div className="font-bold  pt-2">{user.email}</div>
+                            <button
+                                className="items-center bg-blue-500 hover:bg-blue-700
+                                text-white font-bold px-4 rounded-full"
+                            >More Detail</button>
                         </div>
                     )
                 })}
