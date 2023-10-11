@@ -19,6 +19,12 @@ type nameData = {
     name: string,
 }
 
+type userData = {
+    id: number,
+    name: string,
+    email: string,
+}
+
 // export function CreateAdmin() {
 //
 // }
@@ -194,6 +200,29 @@ export function UpdateEmail() {
     )
 }
 
+export function AllUsers() {
+    const [users, setUsers] = useState<userData[]>([]);
+    const baseURL = process.env.REACT_APP_API_BASE_URL;
+    useEffect(() => {
+        axios.get(`${baseURL}./admin/user/all`)
+            .then(res => {
+                setUsers(res.data.data.userInformation)
+            })
+    }, [])
+    return (
+        <>
+            <div className="grid grid-cols-3 gap-4 mx-24">
+                {users.map((user: userData) => {
+                    return (
+                        <div className="grid grid-cols-5 grid-rows-3 gap-16 bg-blue-700 rounded-md" key={user.id}>
+                            <div className="col-span-2 row-span-2">ss</div>
+                        </div>
+                    )
+                })}
+            </div>
+        </>
+    )
+}
 
 // export function DeleteAdmin() {
 
