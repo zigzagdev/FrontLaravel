@@ -1,37 +1,20 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 
-interface Info {
-    id?: number,
-    userName?: string,
-    emailAddress?: string
+
+type userData = {
+    id: number,
+    name: string,
+    email: string,
 }
 
 
-export default function UserIndex() {
-    const [users, setUsers] = useState<Info[]>([]);
-    const baseURL = process.env.REACT_APP_API_BASE_URL;
-    useEffect(() => {
-        axios.get(`${baseURL}./userAll`)
-            .then(res => {
-                setUsers(res.data.data.userInformation)
-            })
-    }, [])
-    console.log(users);
-    return (
-        <>
-            <div className="my-3 block text-sm text-gray-300 duration-700 hover:text-gray-100">
-                Top Page
-            </div>
-            <div>
-                {users.map(user => {
-                    return (
-                        <>
-                            {user.userName}
-                        </>
-                    )
-                })}
-            </div>
-        </>
-    )
-}
+// export function UserUpdate() {
+//     return (
+//         <>
+//             <div>
+//                 User Update Page
+//             </div>
+//         </>
+//     )
+// }

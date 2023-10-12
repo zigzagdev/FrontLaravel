@@ -7,7 +7,9 @@ use App\Http\Requests\Api\UpdateNameRequest;
 use App\Http\Requests\Api\UpdateEmailRequest;
 use App\Http\Resources\Api\UpdateAdminResource;
 use App\Http\Resources\Api\UpdateEmailResource;
+use App\Http\Resources\Api\UserAllCollection;
 use App\Models\Api\Admin;
+use App\Models\Api\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\Api\AdminRequest;
@@ -127,6 +129,22 @@ class AdminController extends Controller
             return new AdminResource($authentication);
         } catch (\Exception $e) {
             $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, '管理者データ')]);
+            return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    public function allUser(Request $request)
+    {
+        try {
+            $users = User::all();
+            if (empty($users)) {
+                $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
+                return new ErrorResource($request, Response::HTTP_NOT_FOUND);
+            }
+
+            return new UserAllCollection($users);
+        } catch (\Exception $e) {
+            $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, 'ユーザーデータ')]);
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }

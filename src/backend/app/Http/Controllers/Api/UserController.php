@@ -100,22 +100,4 @@ class UserController extends Controller
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
-
-    public function allUser($request)
-    {
-        try {
-            $users = User::all();
-
-            if (empty($users)) {
-                $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
-                return new ErrorResource($request, Response::HTTP_NOT_FOUND);
-            }
-
-            return new UserAllCollection($users);
-        } catch (\Exception $e) {
-            $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, 'ユーザーデータ')]);
-            return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
-        }
-    }
-
 }
