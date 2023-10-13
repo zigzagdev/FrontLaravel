@@ -26,7 +26,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ItemController extends Controller
 {
-     protected function createItem(ItemRequest $request)
+    protected function createItem(ItemRequest $request)
     {
         try {
             DB::beginTransaction();
@@ -38,11 +38,13 @@ class ItemController extends Controller
                 return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
             }
 
-            $existItem = Item::where([
-                ['name', '=', $request->name],
-                ['price', '=', $request->price],
-                ['category', '=', $request->category]
-            ])->first();
+            $existItem = Item::where(
+                [
+                    ['name', '=', $request->name],
+                    ['price', '=', $request->price],
+                    ['category', '=', $request->category]
+                ]
+            )->first();
 
             if (($existItem)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_08)]);
@@ -51,25 +53,29 @@ class ItemController extends Controller
                 return new ErrorResource($request, $statusCode);
             }
 
-            $Item = Item::create([
-                'name' => $request->input('name'),
-                'description' => $request->input('description'),
-                'price' => $request->input('price'),
-                'category' => $request->input('category'),
-                'admin_id' => $adminId,
-                'statusMessage' => Message::OK,
-                'created_at' => Carbon::now(),
-                'expiration' => Carbon::today()->addYear(Number::One_Year),
-                'slug' => $request->input('name')
-            ]);
+            $Item = Item::create(
+                [
+                    'name' => $request->input('name'),
+                    'description' => $request->input('description'),
+                    'price' => $request->input('price'),
+                    'category' => $request->input('category'),
+                    'admin_id' => $adminId,
+                    'statusMessage' => Message::OK,
+                    'created_at' => Carbon::now(),
+                    'expiration' => Carbon::today()->addYear(Number::One_Year),
+                    'slug' => $request->input('name')
+                ]
+            );
             $itemId = $Item->id;
 
-            ItemFlag::create([
-                'flag' => Number::Display_Flag,
-                'item_id' => $itemId,
-                'expired_at' => Carbon::today()->addMonth(Number::Six_Years),
-                'created_at' => Carbon::now(),
-            ]);
+            ItemFlag::create(
+                [
+                    'flag' => Number::Display_Flag,
+                    'item_id' => $itemId,
+                    'expired_at' => Carbon::today()->addMonth(Number::Six_Years),
+                    'created_at' => Carbon::now(),
+                ]
+            );
             DB::commit();
 
             $categoryNumber = intval($request->input('category'));
@@ -79,8 +85,6 @@ class ItemController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             $request->merge(['statusMessage' => sprintf(Common::REGISTER_FAILED, 'アイテム')]);
-            $rr = $e->getMessage();
-            var_dump($rr);
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
@@ -105,23 +109,27 @@ class ItemController extends Controller
 
                 return new ErrorResource($request, $statusCode);
             }
-            Item::where('id', $itemId)->update([
-                'name' => $request->input('name'),
-                'description' => $request->input('description'),
-                'price' => $request->input('price'),
-                'category' => $request->input('category'),
-                'admin_id' => $adminId,
-                'updated_at' => Carbon::now(),
-                'expiration' => Carbon::today()->addYear(Number::One_Year),
-                'slug' => Str::slug($request->input('name'))
-            ]);
+            Item::where('id', $itemId)->update(
+                [
+                    'name' => $request->input('name'),
+                    'description' => $request->input('description'),
+                    'price' => $request->input('price'),
+                    'category' => $request->input('category'),
+                    'admin_id' => $adminId,
+                    'updated_at' => Carbon::now(),
+                    'expiration' => Carbon::today()->addYear(Number::One_Year),
+                    'slug' => Str::slug($request->input('name'))
+                ]
+            );
 
-            ItemFlag::where('item_id', $itemId)->update([
-                'flag' => Number::Display_Flag,
-                'item_id' => $itemId,
-                'expired_at' => Carbon::today()->addMonth(6),
-                'updated_at' => Carbon::now(),
-            ]);
+            ItemFlag::where('item_id', $itemId)->update(
+                [
+                    'flag' => Number::Display_Flag,
+                    'item_id' => $itemId,
+                    'expired_at' => Carbon::today()->addMonth(6),
+                    'updated_at' => Carbon::now(),
+                ]
+            );
             DB::commit();
 
             $categoryNumber = intval($request->input('category'));
@@ -204,31 +212,37 @@ class ItemController extends Controller
         }
     }
 
-    public function deleteItem(Request $request)
+    protected function deleteItem(Request $request)
     {
         try {
             DB::beginTransaction();
-
-            $itemId = $request->id;
+            $itemId = $request->route('id');
             if (!$itemId) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
                 return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
             }
-            // Item_display にはflagを2とする。
-            ItemFlag::where('item_id', $itemId)->updateOrCreate([
-                'flag' => Number::Expired_Flag,
-                'expired_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ]);
-            Item::where('id', $itemId)->updateOrCreate([
-                'expiration' => today(),
-                'updated_at' => Carbon::now(),
-                'deleted_at' => Carbon::now(),
-            ]);
 
+            Item::where('id', $itemId)->update(
+                [
+                    'expiration' => today(),
+                    'updated_at' => Carbon::now(),
+                    'deleted_at' => Carbon::now(),
+                ]
+            );
+            // Item_display にはflagを2とする。
+            ItemFlag::where('item_id', $itemId)->update(
+                [
+                    'flag' => Number::Expired_Flag,
+                    'expired_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ]
+            );
+            DB::commit();
             return new DeleteResource($request);
         } catch (\Exception $e) {
             DB::rollBack();
+            $request->merge(['statusMessage' => sprintf(Common::UPDATE_FAILED, 'アイテム')]);
+            return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
 }

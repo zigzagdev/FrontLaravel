@@ -195,12 +195,12 @@ export function EditSlug() {
     )
 }
 
-// export function DeleteSlug() {
-//     return (
-//         <>
-//             <div>
-//
-//             </div>
-//         </>
-//     )
-// }
+export function DeleteSlug() {
+    return (
+        <>
+            <div>
+
+            </div>
+        </>
+    )
+}

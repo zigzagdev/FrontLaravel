@@ -8,12 +8,6 @@ use Illuminate\Support\Str;
 class ItemResource extends JsonResource
 {
 
-    public function __construct($request, $statusCode = 200)
-    {
-        parent::__construct($request);
-        $this->statusCode = $statusCode;
-    }
-
     /**
      * Transform the resource into an array.
      *
@@ -23,15 +17,13 @@ class ItemResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'statusCode' => $this->statusCode,
+            'statusCode' => 200,
             'statusMessage' => 'OK',
             'profile' => [
-                'id' => $this->id,
-                'adminId' => $this->admin_id,
                 'itemName' => $this->name,
                 'content' => Str::limit($this->description, 15, '...'),
                 'price' => number_format($this->price),
-                'slug' => $this->slug,
+                'slug' => $this->name,
                 'category' => $this->categoryName,
             ]
         ];

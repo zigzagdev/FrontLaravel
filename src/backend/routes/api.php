@@ -36,7 +36,7 @@ Route::middleware(['api', 'cors'])->group(function () {
     Route::controller(UserController::class)->group(function () {
         Route::post('/user/create', 'createUser');
         Route::put('/user/update', 'updateUser');
-        Route::get('/user/:id', 'eachUser');
+        Route::get('/user/{id}', 'eachUser');
         Route::put('/user/update/email', 'updateEmail');
     });
 
@@ -47,5 +47,6 @@ Route::middleware(['api', 'cors'])->group(function () {
         Route::get('/display/{slug}', 'displayDetail');
         Route::get('/search', 'searchItems');
         Route::put('/update/{slug}', 'updateItem');
+        Route::post('/item/{id}', 'deleteItem');
     });
 });
