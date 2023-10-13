@@ -7,6 +7,7 @@ use App\Consts\Api\Message;
 use App\Consts\Common;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ItemRequest;
+use App\Http\Resources\Api\DeleteResource;
 use App\Http\Resources\Api\ErrorResource;
 use App\Http\Resources\Api\FetchItemResource;
 use App\Http\Resources\Api\ItemCollection;
@@ -25,12 +26,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ItemController extends Controller
 {
-    function createItem(ItemRequest $request)
+     protected function createItem(ItemRequest $request)
     {
         try {
             DB::beginTransaction();
             $adminId = $request->admin_id;
-
             $admin = Admin::find($adminId);
 
             if (empty($admin)) {
@@ -39,9 +39,9 @@ class ItemController extends Controller
             }
 
             $existItem = Item::where([
-                'name', '=', [$request->name],
-                'price', '=', [$request->price],
-                'category', '=', [$request->category]
+                ['name', '=', $request->name],
+                ['price', '=', $request->price],
+                ['category', '=', $request->category]
             ])->first();
 
             if (($existItem)) {
@@ -79,6 +79,8 @@ class ItemController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             $request->merge(['statusMessage' => sprintf(Common::REGISTER_FAILED, 'アイテム')]);
+            $rr = $e->getMessage();
+            var_dump($rr);
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
@@ -199,6 +201,34 @@ class ItemController extends Controller
         } catch (\Exception $e) {
             $request->merge(['statusMessage' => sprintf(Common::FAILED, 'アイテム取得')]);
             return new ErrorResource($request, Common::FAILED);
+        }
+    }
+
+    public function deleteItem(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $itemId = $request->id;
+            if (!$itemId) {
+                $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
+                return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
+            }
+            // Item_display にはflagを2とする。
+            ItemFlag::where('item_id', $itemId)->updateOrCreate([
+                'flag' => Number::Expired_Flag,
+                'expired_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ]);
+            Item::where('id', $itemId)->updateOrCreate([
+                'expiration' => today(),
+                'updated_at' => Carbon::now(),
+                'deleted_at' => Carbon::now(),
+            ]);
+
+            return new DeleteResource($request);
+        } catch (\Exception $e) {
+            DB::rollBack();
         }
     }
 }
