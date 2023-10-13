@@ -170,7 +170,7 @@ class ItemController extends Controller
             $searchQuery = $request->q;
             $resultItem = ItemFlag::onDateSearchItems($searchQuery);
 
-            if (empty($searchQuery) || count($resultItem) == 0) {
+            if (empty($searchQuery) || count($resultItem) === 0) {
                 $searchItems = ItemFlag::onDateAllItems();
                 $arrayResult = $searchItems->toArray();
 
