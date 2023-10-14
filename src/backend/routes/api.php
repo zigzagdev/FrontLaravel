@@ -27,7 +27,7 @@ Route::middleware(['api', 'cors'])->group(function () {
     // Only user can see the page .
     Route::controller(AdminController::class)->group(function () {
         Route::post('/admin/create', 'createAdmin');
-        Route::put('/admin/update', 'updateAdminName');
+        Route::put('/admin/update/name', 'updateAdminName');
         Route::get('/admin/profile', 'getAdmin');
         Route::put('/admin/update/email', 'updateAdminEmail');
         Route::get('/admin/user/all', 'allUser');
@@ -35,8 +35,8 @@ Route::middleware(['api', 'cors'])->group(function () {
 
     Route::controller(UserController::class)->group(function () {
         Route::post('/user/create', 'createUser');
-        Route::put('/user/update', 'updateUser');
         Route::get('/user/{id}', 'eachUser');
+        Route::put('/user/{id}/update/name', 'updateUserName');
         Route::put('/user/update/email', 'updateEmail');
     });
 
