@@ -75,7 +75,7 @@ export function UpdateName() {
     const {register, handleSubmit, formState: {errors}} = useForm<nameData>();
     const onSubmit: SubmitHandler<nameData> = (data: nameData) => {
         axios
-            .put<nameData>(`${baseURL}./admin/update`, {
+            .put<nameData>(`${baseURL}./admin/update/name`, {
                 name: AdminName.name,
             })
             .then((res) => {

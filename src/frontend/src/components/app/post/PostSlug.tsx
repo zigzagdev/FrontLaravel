@@ -33,7 +33,7 @@ export function ShowSlug() {
     const baseURL = process.env.REACT_APP_API_BASE_URL;
 
     useEffect(() => {
-        axios.get(`${baseURL}./display/` + slug)
+        axios.get(`${baseURL}./item/` + slug)
             .then(res => {
                 setItem(res.data.data.profile)
             })
@@ -84,7 +84,7 @@ export function EditSlug() {
     const {register, handleSubmit, formState: {errors}} = useForm<item>()
 
     useEffect(() => {
-        axios.get(`${baseURL}./display/` + slug)
+        axios.get(`${baseURL}./item/` + slug)
             .then(res => {
                 setItem(res.data.data.profile)
             })
@@ -92,7 +92,7 @@ export function EditSlug() {
 
     const onSubmit: SubmitHandler<item> = (data: item) => {
         axios
-            .put<item>(`${baseURL}./update/` + slug, {
+            .put<item>(`${baseURL}./item/${slug}/update`, {
                 id: item.id,
                 name: data.name,
                 description: data.description,
