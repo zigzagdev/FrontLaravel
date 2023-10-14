@@ -194,7 +194,7 @@ class ItemController extends Controller
         }
     }
 
-    function displayDetail(Request $request, $slug)
+    function displayItem(Request $request, $slug)
     {
         try {
             $fetchItem = ItemFlag::onDateAllItems()->where('slug', $slug)->first();

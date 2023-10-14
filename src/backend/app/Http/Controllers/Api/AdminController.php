@@ -39,14 +39,16 @@ class AdminController extends Controller
                 return new ErrorResource($request, $statusCode);
             }
 
-            Admin::create([
-                'name' => $request->input('name'),
-                'email' => $request->input('email'),
-                'password' => Hash::make($request->input('password')),
-                'statusMessage' => Message::OK,
-                'created_at' => Carbon::now(),
-                'expiration' => Carbon::today()->addDays(Number::Three_Days)
-            ]);
+            Admin::create(
+                [
+                    'name' => $request->input('name'),
+                    'email' => $request->input('email'),
+                    'password' => Hash::make($request->input('password')),
+                    'statusMessage' => Message::OK,
+                    'created_at' => Carbon::now(),
+                    'expiration' => Carbon::today()->addDays(Number::Three_Days)
+                ]
+            );
             DB::commit();
 
             return new RegisterAdminResource($request);
@@ -70,16 +72,19 @@ class AdminController extends Controller
 
             $expiration = $currentAdminData->expiration;
             if ($expiration < Carbon::now('Asia/Tokyo')) {
-                $request->merge(['statusMessage' => Message::Unauthorized]);
+                $request->merge(['statusMessage' => sprintf(Common::ERR_09)]);
                 return new ErrorResource($request, Response::HTTP_UNAUTHORIZED);
             }
 
             $adminId = $currentAdminData->id;
-            Admin::where('id', $adminId)->update([
-                'name' => $request->input('name'),
-                'updated_at' => Carbon::now(),
-                'expiration' => Carbon::today()->addDays(Number::Three_Days),
-            ]);
+
+            Admin::where('id', $adminId)->update(
+                [
+                    'name' => $request->input('name'),
+                    'updated_at' => Carbon::now(),
+                    'expiration' => Carbon::today()->addDays(Number::Three_Days),
+                ]
+            );
             DB::commit();
             return new UpdateAdminResource($request);
 
@@ -102,11 +107,13 @@ class AdminController extends Controller
             }
             $adminId = $currentAdminData->id;
 
-            Admin::where('id', $adminId)->update([
-                'email' => $request->email,
-                'updated_at' => Carbon::now(),
-                'expiration' => Carbon::today()->addDays(Number::Three_Days),
-            ]);
+            Admin::where('id', $adminId)->update(
+                [
+                    'email' => $request->email,
+                    'updated_at' => Carbon::now(),
+                    'expiration' => Carbon::today()->addDays(Number::Three_Days),
+                ]
+            );
             DB::commit();
 
             return new UpdateEmailResource($request);
