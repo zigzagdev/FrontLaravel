@@ -110,6 +110,7 @@ class UserController extends Controller
     {
         try {
             $userId = $request->route('id');
+
             if (empty($userId)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
                 return new ErrorResource($request, Response::HTTP_NOT_FOUND);

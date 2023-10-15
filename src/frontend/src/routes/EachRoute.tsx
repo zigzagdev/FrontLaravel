@@ -14,10 +14,11 @@ import Contact from "../components/common/footer/Contact";
 import Login from "../components/app/auth/Login";
 import Result from "../components/app/input/Result";
 import {ShowSlug, EditSlug} from "../components/app/post/PostSlug";
-import {AdminData, AllUsers, UpdateEmail, UpdateName} from "../components/app/admin/Admin";
+import {AdminData, AllUsers, UpdateAdminEmail} from "../components/app/admin/Admin";
+import {EachUserData, UpdateUserEmail, UpdateUserName} from "../components/app/user/Info";
 
 
-export default function EachRoutes() {
+export default function EachRoute() {
     return (
         <BrowserRouter>
             <Header/>
@@ -31,9 +32,12 @@ export default function EachRoutes() {
                 <Route path="/Contact" element={<Contact/>}/>
                 <Route path="/Result" element={<Result/>}/>
                 <Route path="/Admin" element={<AdminData/>}/>
-                <Route path="Admin/Update/Email" element={<UpdateEmail/>}/>
-                <Route path="Admin/Update/Name" element={<UpdateName/>}/>
+                <Route path="Admin/Update/Email" element={<UpdateAdminEmail/>}/>
+                <Route path="Admin/Update/Name" element={<UpdateAdminEmail/>}/>
                 <Route path="Admin/Users" element={<AllUsers/>}/>
+                <Route path="User/:id" element={<EachUserData/>}/>
+                <Route path="User/:id/Name" element={<UpdateUserName/>}/>
+                <Route path="User/:id/Email" element={<UpdateUserEmail/>}/>
                 <Route path="*" element={<NotFound/>}/>
             </Routes>
             <Footer/>
