@@ -64,7 +64,7 @@ export function AdminData() {
     )
 }
 
-export function UpdateName() {
+export function UpdateAdminName() {
     const [AdminName, setAdminName] = useState<nameData>({
         id: 0,
         name: "",
@@ -127,7 +127,7 @@ export function UpdateName() {
     )
 }
 
-export function UpdateEmail() {
+export function UpdateAdminEmail() {
     const [AdminEmail, setAdminEmail] = useState<emailData>({
         id: 0,
         email: "",
@@ -222,7 +222,8 @@ export function AllUsers() {
                             <button
                                 className="items-center bg-blue-500 hover:bg-blue-700
                                 text-white font-bold px-4 rounded-full"
-                            >More Detail</button>
+                            >More Detail
+                            </button>
                         </div>
                     )
                 })}
