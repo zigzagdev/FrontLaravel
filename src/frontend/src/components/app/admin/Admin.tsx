@@ -65,7 +65,7 @@ export function AdminData() {
 }
 
 export function UpdateAdminName() {
-    const [AdminName, setAdminName] = useState<nameData>({
+    const [adminName, setAdminName] = useState<nameData>({
         id: 0,
         name: "",
     });
@@ -76,7 +76,7 @@ export function UpdateAdminName() {
     const onSubmit: SubmitHandler<nameData> = (data: nameData) => {
         axios
             .put<nameData>(`${baseURL}./admin/update/name`, {
-                name: AdminName.name,
+                name: adminName.name,
             })
             .then((res) => {
                 return (
@@ -108,10 +108,19 @@ export function UpdateAdminName() {
                                    dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
                                    dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder=""
-                        value={AdminName.name}
+                        value={adminName.name}
                         {...register("name", {required: true, minLength: 4, maxLength: 100})}
-                        onChange={(e) => setAdminName({...AdminName, name: e.target.value})}
+                        onChange={(e) => setAdminName({...adminName, name: e.target.value})}
                     />
+                    {errors.name?.type === "required" && (
+                        <p role="alert" className="text-red-300">MasterData name is required</p>
+                    )}
+                    {errors.name && errors.name.type === "minLength" && (
+                        <p role="alert" className="text-red-400">You need more than 4 characters.</p>
+                    )}
+                    {errors.name && errors.name.type === "maxLength" && (
+                        <p role="alert" className="text-red-500">You have to written in less than 100 characters.</p>
+                    )}
                     <div className="my-10 mx-5 text-red-600 font-mono text-lg">
                         {error}
                     </div>
@@ -128,7 +137,7 @@ export function UpdateAdminName() {
 }
 
 export function UpdateAdminEmail() {
-    const [AdminEmail, setAdminEmail] = useState<emailData>({
+    const [adminEmail, setAdminEmail] = useState<emailData>({
         id: 0,
         email: "",
     });
@@ -146,7 +155,7 @@ export function UpdateAdminEmail() {
     const onSubmit: SubmitHandler<emailData> = (data: emailData) => {
         axios
             .put<emailData>(`${baseURL}./admin/update/email`, {
-                email: AdminEmail.email,
+                email: adminEmail.email,
             })
             .then((res) => {
                 return (
@@ -172,12 +181,12 @@ export function UpdateAdminEmail() {
                                    focus:ring-blue-500 focus:border-blue-500 block w-80 p-2.5 dark:bg-gray-700
                                    dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
                                    dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        value={AdminEmail.email}
+                        value={adminEmail.email}
                         {...register("email", {required: true, minLength: 4, maxLength: 100})}
-                        onChange={(e) => setAdminEmail({...AdminEmail, email: e.target.value})}
+                        onChange={(e) => setAdminEmail({...adminEmail, email: e.target.value})}
                     />
                     {errors.email?.type === "required" && (
-                        <p role="alert" className="text-red-300">ItemName is required</p>
+                        <p role="alert" className="text-red-300">Email is required</p>
                     )}
                     {errors.email && errors.email.type === "minLength" && (
                         <p role="alert" className="text-red-400">You need more than 4 characters.</p>
