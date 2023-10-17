@@ -1,12 +1,23 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {useNavigate, useParams} from "react-router-dom";
+import {SubmitHandler, useForm} from "react-hook-form";
 
 
 type userData = {
     id: number,
     name: string,
     email: string,
+}
+
+type emailData = {
+    id: number,
+    email: string,
+}
+
+type nameData = {
+    id: number,
+    name: string,
 }
 
 export function EachUserData() {
@@ -25,7 +36,6 @@ export function EachUserData() {
                 setUserData(res.data.data.profile)
             })
     }, [])
-    console.log(userData);
     return (
         <>
             <div className="my-4 mx-32 block text-lg duration-700">
@@ -49,11 +59,75 @@ export function EachUserData() {
 }
 
 export function UpdateUserName() {
+    const [userName, setUserName] = useState<nameData>({
+        id: 0,
+        name: "",
+    });
+    const baseURL = process.env.REACT_APP_API_BASE_URL;
+    const navigate = useNavigate();
+    const [error, setError] = useState('');
+    const {register, handleSubmit, formState: {errors}} = useForm<nameData>();
+    const {id} = useParams<{ id: string }>();
+
+    const onSubmit: SubmitHandler<nameData> = (data: nameData) => {
+        axios
+            .put<nameData>(`${baseURL}./user/${id}/update/name`, {
+                name: userName.name,
+            })
+            .then((res) => {
+                return (
+                    navigate(`/User/${id}`)
+                )
+            })
+            .catch((error: any) => {
+                if (error.response.statusText == 'Bad Request') {
+                    setError('Item Information could not updated ...');
+                } else {
+                    setError('Internal server error is happened. Please do it again.');
+                }
+            })
+    };
+    useEffect(() => {
+        axios.get(`${baseURL}./user/${id}`)
+            .then(res => {
+                setUserName(res.data.data.profile)
+            })
+    }, [])
     return (
         <>
-            <div>
-                name
-            </div>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <div className="my-4 mx-32 block text-lg duration-700">
+                    <input
+                        type="name"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                                   focus:ring-blue-500 focus:border-blue-500 block w-80 p-2.5 dark:bg-gray-700
+                                   dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
+                                   dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder=""
+                        value={userName.name}
+                        {...register("name", {required: true, minLength: 4, maxLength: 100})}
+                        onChange={(e) => setUserName({...userName, name: e.target.value})}
+                    />
+                    {errors.name?.type === "required" && (
+                        <p role="alert" className="text-red-300">User name is required</p>
+                    )}
+                    {errors.name && errors.name.type === "minLength" && (
+                        <p role="alert" className="text-red-400">You need more than 4 characters.</p>
+                    )}
+                    {errors.name && errors.name.type === "maxLength" && (
+                        <p role="alert" className="text-red-500">You have to written in less than 100 characters.</p>
+                    )}
+                    <div className="my-10 mx-5 text-red-600 font-mono text-lg">
+                        {error}
+                    </div>
+                    <button
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                        type="submit"
+                    >
+                        Submit
+                    </button>
+                </div>
+            </form>
         </>
     )
 }

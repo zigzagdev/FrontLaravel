@@ -80,7 +80,7 @@ class UserController extends Controller
         }
     }
 
-    public function updateEmail(UpdateEmailRequest $request)
+    public function updateUserEmail(UpdateEmailRequest $request)
     {
         try {
             DB::beginTransaction();
@@ -123,5 +123,4 @@ class UserController extends Controller
             return new ErrorResource($request, Common::FAILED);
         }
     }
-
 }

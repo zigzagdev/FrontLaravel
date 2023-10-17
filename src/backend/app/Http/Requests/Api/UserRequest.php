@@ -23,7 +23,7 @@ class UserRequest extends CommonRequest
     {
         return [
             "name" => "required|min:4|max:100|string",
-            "email" => "required|min:4|max:100|email|unique:admins|unique:users",
+            "email" => "required|max:100|email:strict|unique:admins|unique:users",
             "password" => "min:8|max:255|required",
         ];
     }

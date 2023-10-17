@@ -14,7 +14,7 @@ import Contact from "../components/common/footer/Contact";
 import Login from "../components/app/auth/Login";
 import Result from "../components/app/input/Result";
 import {ShowSlug, EditSlug} from "../components/app/post/PostSlug";
-import {AdminData, AllUsers, UpdateAdminEmail} from "../components/app/admin/Admin";
+import {AdminData, AllUsers, UpdateAdminEmail, UpdateAdminName} from "../components/app/admin/Admin";
 import {EachUserData, UpdateUserEmail, UpdateUserName} from "../components/app/user/Info";
 
 
@@ -32,7 +32,7 @@ export default function EachRoute() {
                 <Route path="/Contact" element={<Contact/>}/>
                 <Route path="/Result" element={<Result/>}/>
                 <Route path="/Admin" element={<AdminData/>}/>
-                <Route path="Admin/Update/Email" element={<UpdateAdminEmail/>}/>
+                <Route path="Admin/Update/Email" element={<UpdateAdminName/>}/>
                 <Route path="Admin/Update/Name" element={<UpdateAdminEmail/>}/>
                 <Route path="Admin/Users" element={<AllUsers/>}/>
                 <Route path="User/:id" element={<EachUserData/>}/>
