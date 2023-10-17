@@ -22,7 +22,7 @@ class UpdateEmailRequest extends CommonRequest
     public function rules()
     {
         return [
-            "email" => "required|min:4|max:100|email|unique:admins|unique:users"
+            "email" => "required|min:4|max:100|email:strict|unique:admins|unique:users"
         ];
     }
 
