@@ -24,4 +24,7 @@ class Number
     public const One_Year = 1;
     public const Two_Years = 2;
     public const Six_Years = 6;
+
+    public const Is_Admin_True = 1;
+    public const Is_Admin_False = 2;
 }
