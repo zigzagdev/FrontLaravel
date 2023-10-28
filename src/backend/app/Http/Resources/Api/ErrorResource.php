@@ -26,7 +26,7 @@ class ErrorResource extends JsonResource
     {
         return [
             'statusCode' => $this->statusCode,
-            'statusMessage' => $this->statusMessage
+            'statusMessage' => $this->Response
         ];
     }
 

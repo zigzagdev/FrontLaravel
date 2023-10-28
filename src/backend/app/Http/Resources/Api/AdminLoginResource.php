@@ -7,10 +7,9 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class AdminLoginResource extends JsonResource
 {
 
-    public function __construct($request, $statusCode = 200)
+    public function __construct($resource)
     {
-        parent::__construct($request);
-        $this->statusCode = $statusCode;
+        parent::__construct($resource);
     }
     /**
      * Transform the resource into an array.
@@ -23,6 +22,7 @@ class AdminLoginResource extends JsonResource
         return [
             'statusCode' => '200',
             'statusMessage' => 'OK',
+            'token' => $this->api_token
         ];
     }
 }
