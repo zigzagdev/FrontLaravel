@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->string('name', 100);
             $table->string('email', 100)->unique();
             $table->string('password', 255)->unique();
-            $table->string('null', 80)->unique()->nullable()->default(null);
+            $table->string('token', 80)->unique()->nullable()->default(null);
             $table->boolean('is_admin')->default(true)->comment('trueだとadmin権限を持つ');
             $table->timestamps();
             $table->softDeletes();
