@@ -10,9 +10,9 @@ class ErrorResource extends JsonResource
 
     public $statusCode;
 
-    public function __construct($request, $statusCode = 401)
+    public function __construct($resource, $statusCode = 401)
     {
-        parent::__construct($request);
+        parent::__construct($resource);
         $this->statusCode = $statusCode;
     }
 
@@ -24,6 +24,7 @@ class ErrorResource extends JsonResource
      */
     public function toArray($request)
     {
+
         return [
             'statusCode' => $this->statusCode,
             'statusMessage' => $this->statusMessage

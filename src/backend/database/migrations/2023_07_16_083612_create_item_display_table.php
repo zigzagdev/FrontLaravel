@@ -14,11 +14,11 @@ return new class extends Migration {
     {
         Schema::create('item_display', function (Blueprint $table) {
             $table->id()->autoIncrement();
-            $table->integer('flag')->comment('表示させるかどうかの基準');
+            $table->boolean('is_display')->default(true)->comment('trueだとアイテム表示させる');
             $table->unsignedBigInteger('item_id')->unsigned();
             $table->foreign('item_id')->references('id')->on('items')
                 ->onUpdate('cascade')->onDelete('cascade');
-            $table->timestamp('expired_at');
+            $table->date('expired_at');
             $table->timestamps();
         });
     }
