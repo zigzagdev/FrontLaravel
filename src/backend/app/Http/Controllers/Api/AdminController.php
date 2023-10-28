@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Consts\Common;
 use App\Consts\Api\Message;
 use App\Consts\Api\Number;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Resources\Api\AdminResource;
 
@@ -38,15 +39,14 @@ class AdminController extends Controller
 
                 return new ErrorResource($request, $statusCode);
             }
-
             Admin::create(
                 [
                     'name' => $request->input('name'),
                     'email' => $request->input('email'),
                     'password' => Hash::make($request->input('password')),
-                    'statusMessage' => Message::OK,
+                    'token' => Str::random(60),
+                    'is_admin' => Number::Is_Admin_True,
                     'created_at' => Carbon::now(),
-                    'expiration' => Carbon::today()->addDays(Number::Three_Days)
                 ]
             );
             DB::commit();

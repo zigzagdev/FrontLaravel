@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Consts\Api\Message;
+use App\Consts\Api\Number;
 use App\Consts\Common;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\UpdateEmailRequest;
@@ -17,6 +18,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
@@ -37,7 +39,8 @@ class UserController extends Controller
                     'name' => $request->input('name'),
                     'email' => $request->input('email'),
                     'password' => Hash::make($request->input('password')),
-                    'statusMessage' => Message::OK,
+                    'token' => Str::random(60),
+                    'is_admin' => Number::Is_Admin_False,
                     'created_at' => Carbon::now()
                 ]
             );
@@ -63,14 +66,12 @@ class UserController extends Controller
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
                 return new ErrorResource($request, Response::HTTP_NOT_FOUND);
             }
-
             User::where('id', $userId)->update(
                 [
                     'name' => $request->input('name'),
                     'updated_at' => Carbon::now(),
                 ]
             );
-
             DB::commit();
             return new UpdateAdminResource($request);
         } catch (\Exception $e) {

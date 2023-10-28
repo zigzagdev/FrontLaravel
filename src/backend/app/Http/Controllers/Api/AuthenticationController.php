@@ -7,8 +7,10 @@ use App\Consts\Common;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\LoginRequest;
 use App\Http\Resources\Api\AdminLoginResource;
+use App\Http\Resources\Api\UserLoginResource;
 use App\Http\Resources\Api\ErrorResource;
 use App\Models\Api\Admin;
+use App\Models\Api\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,9 +18,10 @@ use Illuminate\Support\Facades\DB;
 
 class AuthenticationController extends Controller
 {
-    public function loginAuth(LoginRequest $request)
+    public function adminLogin(LoginRequest $request)
     {
         try {
+            DB::beginTransaction();
             $credentials = $request->only(['email', 'password']);
             if (!Auth::guard('admin')->attempt($credentials)) {
                 $request->merge(['statusMessage' => sprintf(Common::LOGIN_FAILED, '管理者')]);
@@ -26,12 +29,13 @@ class AuthenticationController extends Controller
             }
             $adminData = Admin::where('email', $request->email)->first();
             if ($adminData->is_admin !== Number::Is_Admin_True) {
-                $request->merge(['statusMessage' => sprintf(Common::LOGIN_FAILED, '管理者')]);
+                $request->merge(['statusMessage' => sprintf(Common::STATUS_NOT_FOUND, '管理者')]);
                 return new ErrorResource($request, Response::HTTP_NOT_ACCEPTABLE);
             }
-            $adminData->api_token = Str::random(60);
+            $adminData->token = Str::random(60);
             $adminData->save();
 
+            DB::commit();
             return new AdminLoginResource($adminData);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -40,16 +44,41 @@ class AuthenticationController extends Controller
         }
     }
 
-
-    public function logoutAuth($request)
+    public function userLogin(LoginRequest $request)
     {
         try {
             DB::beginTransaction();
+            $credentials = $request->only(['email', 'password']);
+            if (!Auth::guard('user')->attempt($credentials)) {
+                $request->merge(['statusMessage' => sprintf(Common::LOGIN_FAILED, 'ユーザー')]);
+                return new ErrorResource($request, Response::HTTP_NOT_ACCEPTABLE);
+            }
+            $userData = User::where('email', $request->email)->first();
+            if ($userData->is_admin !== Number::Is_Admin_False) {
+                $request->merge(['statusMessage' => sprintf(Common::STATUS_NOT_FOUND, 'ユーザー')]);
+                return new ErrorResource($request, Response::HTTP_NOT_ACCEPTABLE);
+            }
+            $userData->token = Str::random(60);
+            $userData->save();
+
+            DB::commit();
+            return new UserLoginResource($userData);
         } catch (\Exception $e) {
             DB::rollBack();
-
-            $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, 'アカウント')]);
+            $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, 'ユーザー')]);
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
+
+//    public function logoutAuth($request)
+//    {
+//        try {
+//            DB::beginTransaction();
+//        } catch (\Exception $e) {
+//            DB::rollBack();
+//
+//            $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, '管理者')]);
+//            return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
+//        }
+//    }
 }
