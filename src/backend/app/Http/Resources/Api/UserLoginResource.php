@@ -16,7 +16,8 @@ class UserLoginResource extends JsonResource
     {
         return [
             'statusCode' => '200',
-            'statusMessage' => 'Hello'.$this->name. '!'
+            'statusMessage' => 'OK',
+            'token' => $this->token,
         ];
     }
 }
