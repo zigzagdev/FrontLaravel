@@ -64,3 +64,18 @@ Route::middleware('user')->group(function () {
         Route::post('/logout', 'logoutAction');
     });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
