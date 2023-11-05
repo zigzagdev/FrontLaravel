@@ -23,6 +23,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('user')->except('createUser');
+    }
+
     function createUser(UserRequest $request)
     {
         try {
@@ -34,16 +40,7 @@ class UserController extends Controller
                 return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
             }
 
-            User::create(
-                [
-                    'name' => $request->input('name'),
-                    'email' => $request->input('email'),
-                    'password' => Hash::make($request->input('password')),
-                    'token' => Str::random(60),
-                    'is_admin' => Number::Is_Admin_False,
-                    'created_at' => Carbon::now()
-                ]
-            );
+            $this->createUserData($request);
 
             DB::commit();
             return new UserResource($request);
@@ -124,4 +121,20 @@ class UserController extends Controller
             return new ErrorResource($request, Common::FAILED);
         }
     }
+
+    private function createUserData($request)
+    {
+        User::create(
+            [
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'password' => Hash::make($request->input('password')),
+                'token' => Str::random(60),
+                'is_admin' => Number::Is_Admin_False,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ]
+        );
+    }
+
 }
