@@ -66,7 +66,12 @@ class AuthenticationController extends Controller
                 $request->merge(['statusMessage' => sprintf(Common::STATUS_NOT_FOUND, 'ユーザー')]);
                 return new ErrorResource($request, Response::HTTP_NOT_ACCEPTABLE);
             }
-            $userData->token = Str::random(60);
+            $userData->update(
+                [
+                    'token' => Str::random(60),
+                    'updated_at' => Carbon::now()
+                ]
+            );
             $userData->save();
 
             DB::commit();

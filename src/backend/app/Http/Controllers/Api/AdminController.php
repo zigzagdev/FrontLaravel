@@ -30,7 +30,7 @@ class AdminController extends Controller
 
     public function __construct()
     {
-        $this->middleware('admin')->except('createAdmin');
+        $this->middleware('admin')->except('createAdmin', 'adminCreateData');
     }
 
     function createAdmin(AdminRequest $request)
@@ -41,20 +41,16 @@ class AdminController extends Controller
 
             if (!empty($existUser)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_08)]);
-                $statusCode = Message::Unauthorized;
-
-                return new ErrorResource($request, $statusCode);
+                return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
             }
 
-            $this->deedAdminCreate($request);
+            $this->adminCreateData($request);
             DB::commit();
 
             return new RegisterAdminResource($request);
         } catch (\Exception $e) {
             DB::rollBack();
             $request->merge(['statusMessage' => sprintf(Common::REGISTER_FAILED, 'アカウント')]);
-            $u = $e->getMessage();
-            var_dump($u);
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
@@ -77,14 +73,7 @@ class AdminController extends Controller
             }
 
             $adminId = $currentAdminData->id;
-
-            Admin::where('id', $adminId)->update(
-                [
-                    'name' => $request->input('name'),
-                    'updated_at' => Carbon::now(),
-                    'expiration' => Carbon::today()->addDays(Number::Three_Days),
-                ]
-            );
+            $this->updateAdminNameData($request, $adminId);
             DB::commit();
             return new UpdateAdminResource($request);
 
@@ -106,14 +95,7 @@ class AdminController extends Controller
                 return new ErrorResource($request, Response::HTTP_NOT_FOUND);
             }
             $adminId = $currentAdminData->id;
-
-            Admin::where('id', $adminId)->update(
-                [
-                    'email' => $request->email,
-                    'updated_at' => Carbon::now(),
-                    'expiration' => Carbon::today()->addDays(Number::Three_Days),
-                ]
-            );
+            $this->updateAdminEmailData($request, $adminId);
             DB::commit();
 
             return new UpdateEmailResource($request);
@@ -157,7 +139,7 @@ class AdminController extends Controller
         }
     }
 
-    private function deedAdminCreate($request)
+    private function adminCreateData($request)
     {
         Admin::create(
             [
@@ -167,8 +149,30 @@ class AdminController extends Controller
                 'token' => Str::random(60),
                 'is_admin' => Number::Is_Admin_True,
                 'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
             ]
         );
     }
 
+    private function updateAdminNameData($request, $adminId)
+    {
+        Admin::where('id', $adminId)->update(
+            [
+                'name' => $request->input('name'),
+                'updated_at' => Carbon::now(),
+                'expiration' => Carbon::today()->addDays(Number::Three_Days),
+            ]
+        );
+    }
+
+    private function updateAdminEmailData($request, $adminId)
+    {
+        Admin::where('id', $adminId)->update(
+            [
+                'email' => $request->input('email'),
+                'updated_at' => Carbon::now(),
+                'expiration' => Carbon::today()->addDays(Number::Three_Days),
+            ]
+        );
+    }
 }

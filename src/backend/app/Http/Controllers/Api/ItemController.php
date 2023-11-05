@@ -199,7 +199,7 @@ class ItemController extends Controller
 
             Item::where('id', $itemId)->update(
                 [
-                    'expiration' => today(),
+                    'expiration' => Carbon::today(),
                     'updated_at' => Carbon::now(),
                     'deleted_at' => Carbon::now(),
                 ]
@@ -231,6 +231,7 @@ class ItemController extends Controller
                 'category' => $request->input('category'),
                 'admin_id' => $adminId,
                 'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
                 'expiration' => Carbon::today()->addMonth(Number::Six_Months),
                 'slug' => $request->input('name')
             ]
@@ -255,5 +256,4 @@ class ItemController extends Controller
             ]
         );
     }
-
 }
