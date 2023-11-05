@@ -27,6 +27,12 @@ use App\Http\Resources\Api\AdminResource;
 
 class AdminController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('admin')->except('createAdmin', 'adminCreateData');
+    }
+
     function createAdmin(AdminRequest $request)
     {
         try {
@@ -35,20 +41,10 @@ class AdminController extends Controller
 
             if (!empty($existUser)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_08)]);
-                $statusCode = Message::Unauthorized;
-
-                return new ErrorResource($request, $statusCode);
+                return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
             }
-            Admin::create(
-                [
-                    'name' => $request->input('name'),
-                    'email' => $request->input('email'),
-                    'password' => Hash::make($request->input('password')),
-                    'token' => Str::random(60),
-                    'is_admin' => Number::Is_Admin_True,
-                    'created_at' => Carbon::now(),
-                ]
-            );
+
+            $this->adminCreateData($request);
             DB::commit();
 
             return new RegisterAdminResource($request);
@@ -63,7 +59,7 @@ class AdminController extends Controller
     {
         try {
             DB::beginTransaction();
-            $currentAdminData = Admin::query()->first();
+            $currentAdminData = Admin::where('id', $request->admin_id)->first();
 
             if (empty($currentAdminData)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
@@ -77,14 +73,7 @@ class AdminController extends Controller
             }
 
             $adminId = $currentAdminData->id;
-
-            Admin::where('id', $adminId)->update(
-                [
-                    'name' => $request->input('name'),
-                    'updated_at' => Carbon::now(),
-                    'expiration' => Carbon::today()->addDays(Number::Three_Days),
-                ]
-            );
+            $this->updateAdminNameData($request, $adminId);
             DB::commit();
             return new UpdateAdminResource($request);
 
@@ -99,21 +88,14 @@ class AdminController extends Controller
     {
         try {
             DB::beginTransaction();
-            $currentAdminData = Admin::query()->first();
+            $currentAdminData = Admin::where('id', $request->admin_id)->first();
 
             if (empty($currentAdminData)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
                 return new ErrorResource($request, Response::HTTP_NOT_FOUND);
             }
             $adminId = $currentAdminData->id;
-
-            Admin::where('id', $adminId)->update(
-                [
-                    'email' => $request->email,
-                    'updated_at' => Carbon::now(),
-                    'expiration' => Carbon::today()->addDays(Number::Three_Days),
-                ]
-            );
+            $this->updateAdminEmailData($request, $adminId);
             DB::commit();
 
             return new UpdateEmailResource($request);
@@ -127,8 +109,7 @@ class AdminController extends Controller
     public function getAdmin(Request $request)
     {
         try {
-            $authentication = Admin::query()->first();
-
+            $authentication = Admin::where('id', $request->admin_id)->first();
             if (empty($authentication)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
                 return new ErrorResource($request, Response::HTTP_NOT_FOUND);
@@ -136,6 +117,8 @@ class AdminController extends Controller
             return new AdminResource($authentication);
         } catch (\Exception $e) {
             $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, '管理者データ')]);
+            $oo = $e->getMessage();
+            var_dump($oo);
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
@@ -154,5 +137,42 @@ class AdminController extends Controller
             $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, 'ユーザーデータ')]);
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
+    }
+
+    private function adminCreateData($request)
+    {
+        Admin::create(
+            [
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'password' => Hash::make($request->input('password')),
+                'token' => Str::random(60),
+                'is_admin' => Number::Is_Admin_True,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ]
+        );
+    }
+
+    private function updateAdminNameData($request, $adminId)
+    {
+        Admin::where('id', $adminId)->update(
+            [
+                'name' => $request->input('name'),
+                'updated_at' => Carbon::now(),
+                'expiration' => Carbon::today()->addDays(Number::Three_Days),
+            ]
+        );
+    }
+
+    private function updateAdminEmailData($request, $adminId)
+    {
+        Admin::where('id', $adminId)->update(
+            [
+                'email' => $request->input('email'),
+                'updated_at' => Carbon::now(),
+                'expiration' => Carbon::today()->addDays(Number::Three_Days),
+            ]
+        );
     }
 }

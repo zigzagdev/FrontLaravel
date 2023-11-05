@@ -11,6 +11,7 @@ use App\Http\Resources\Api\UserLoginResource;
 use App\Http\Resources\Api\ErrorResource;
 use App\Models\Api\Admin;
 use App\Models\Api\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,7 +33,12 @@ class AuthenticationController extends Controller
                 $request->merge(['statusMessage' => sprintf(Common::STATUS_NOT_FOUND, '管理者')]);
                 return new ErrorResource($request, Response::HTTP_NOT_ACCEPTABLE);
             }
-            $adminData->token = Str::random(60);
+            $adminData->update(
+                [
+                    'token' => Str::random(60),
+                    'updated_at' => Carbon::now()
+                ]
+            );
             $adminData->save();
 
             DB::commit();
@@ -40,6 +46,8 @@ class AuthenticationController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, 'アカウント')]);
+            $jj = $e->getMessage();
+            var_dump($jj);
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
@@ -58,7 +66,12 @@ class AuthenticationController extends Controller
                 $request->merge(['statusMessage' => sprintf(Common::STATUS_NOT_FOUND, 'ユーザー')]);
                 return new ErrorResource($request, Response::HTTP_NOT_ACCEPTABLE);
             }
-            $userData->token = Str::random(60);
+            $userData->update(
+                [
+                    'token' => Str::random(60),
+                    'updated_at' => Carbon::now()
+                ]
+            );
             $userData->save();
 
             DB::commit();
