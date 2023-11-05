@@ -26,6 +26,10 @@ class AdminAuth extends Middleware
     public function handle(Request $request, Closure $next)
     {
         $adminData = Admin::where('id', $request->admin_id)->first();
+        if (empty($adminData)) {
+            $request->merge(['statusMessage' => sprintf(Common::LOGIN_FAILED, '管理者')]);
+            return new ErrorResource($request, Response::HTTP_UNAUTHORIZED);
+        }
         if ($adminData->updated_at->addDays(Number::Two_Days) < Carbon::today()) {
             $request->merge(['statusMessage' => sprintf(Common::LOGIN_FAILED, '管理者')]);
             return new ErrorResource($request, Response::HTTP_UNAUTHORIZED);

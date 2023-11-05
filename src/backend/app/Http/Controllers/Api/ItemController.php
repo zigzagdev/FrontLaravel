@@ -54,7 +54,6 @@ class ItemController extends Controller
                 $request->merge(['statusMessage' => sprintf(Common::ERR_08)]);
                 return new ErrorResource($request, Response::HTTP_UNAUTHORIZED);
             }
-
             $itemId = $this->createItemData($request, $adminId);
             ItemFlag::create(
                 [
