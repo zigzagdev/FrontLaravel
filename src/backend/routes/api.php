@@ -35,7 +35,7 @@ Route::controller(ItemController::class)->group(function () {
     Route::get('/search', 'searchItems');
 });
 
-Route::middleware('auth.admin')->group(function () {
+//Route::middleware('admin')->group(function () {
     Route::controller(AdminController::class)->group(function () {
         Route::get('/admin/profile', 'getAdmin');
         Route::put('/admin/update/name', 'updateAdminName');
@@ -52,7 +52,7 @@ Route::middleware('auth.admin')->group(function () {
     Route::controller(AuthenticationController::class)->group(function () {
         Route::post('/logout', 'logoutAction');
     });
-});
+//});
 
 Route::middleware('user')->group(function () {
     Route::controller(UserController::class)->group(function () {
