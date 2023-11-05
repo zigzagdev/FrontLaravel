@@ -21,9 +21,10 @@ class Number
     public const Five_Days = 5;
     public const Six_Days = 6;
 
-    public const One_Year = 1;
-    public const Two_Years = 2;
-    public const Six_Years = 6;
+    public const One_Month = 1;
+    public const Two_Months = 2;
+    public const Three_Months = 3;
+    public const Six_Months = 6;
 
     public const Is_Admin_True = 1;
     public const Is_Admin_False = 2;
