@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Consts\Api\Category;
-use App\Consts\Api\Message;
 use App\Consts\Common;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ItemRequest;
@@ -26,6 +25,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ItemController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('admin');
+    }
+
     protected function createItem(ItemRequest $request)
     {
         try {
@@ -34,7 +38,7 @@ class ItemController extends Controller
             $admin = Admin::find($adminId);
 
             if (empty($admin)) {
-                $request->merge(['statusMessage' => sprintf(Common::ERR_08)]);
+                $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
                 return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
             }
 
@@ -48,31 +52,15 @@ class ItemController extends Controller
 
             if (($existItem)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_08)]);
-                $statusCode = Message::Unauthorized;
-
-                return new ErrorResource($request, $statusCode);
+                return new ErrorResource($request, Response::HTTP_UNAUTHORIZED);
             }
 
-            $Item = Item::create(
-                [
-                    'name' => $request->input('name'),
-                    'description' => $request->input('description'),
-                    'price' => $request->input('price'),
-                    'category' => $request->input('category'),
-                    'admin_id' => $adminId,
-                    'statusMessage' => Message::OK,
-                    'created_at' => Carbon::now(),
-                    'expiration' => Carbon::today()->addYear(Number::One_Year),
-                    'slug' => $request->input('name')
-                ]
-            );
-            $itemId = $Item->id;
-
+            $itemId = $this->createItemData($request, $adminId);
             ItemFlag::create(
                 [
                     'flag' => Number::Display_Flag,
                     'item_id' => $itemId,
-                    'expired_at' => Carbon::today()->addMonth(Number::Six_Years),
+                    'expired_at' => Carbon::today()->addMonth(Number::Six_Months),
                     'created_at' => Carbon::now(),
                 ]
             );
@@ -105,28 +93,16 @@ class ItemController extends Controller
 
             if ($currentItemName === $request->name) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_08)]);
-                $statusCode = Message::Unauthorized;
-
-                return new ErrorResource($request, $statusCode);
+                return new ErrorResource($request, Response::HTTP_UNAUTHORIZED);
             }
-            Item::where('id', $itemId)->update(
-                [
-                    'name' => $request->input('name'),
-                    'description' => $request->input('description'),
-                    'price' => $request->input('price'),
-                    'category' => $request->input('category'),
-                    'admin_id' => $adminId,
-                    'updated_at' => Carbon::now(),
-                    'expiration' => Carbon::today()->addYear(Number::One_Year),
-                    'slug' => Str::slug($request->input('name'))
-                ]
-            );
+
+            $this->updateItemData($request, $adminId, $itemId);
 
             ItemFlag::where('item_id', $itemId)->update(
                 [
                     'flag' => Number::Display_Flag,
                     'item_id' => $itemId,
-                    'expired_at' => Carbon::today()->addMonth(6),
+                    'expired_at' => Carbon::today()->addMonth(Number::Three_Months),
                     'updated_at' => Carbon::now(),
                 ]
             );
@@ -189,7 +165,7 @@ class ItemController extends Controller
                 return new SearchCollection($arrayResult);
             }
         } catch (Exception $e) {
-            $request->merge(['statusMessage' => sprintf(Common::FAILED, 'アイテム取得')]);
+            $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, 'アイテム')]);
             return new ErrorResource($request, Common::FAILED);
         }
     }
@@ -207,7 +183,7 @@ class ItemController extends Controller
 
             return new FetchItemResource($fetchItem);
         } catch (\Exception $e) {
-            $request->merge(['statusMessage' => sprintf(Common::FAILED, 'アイテム取得')]);
+            $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, 'アイテム')]);
             return new ErrorResource($request, Common::FAILED);
         }
     }
@@ -245,4 +221,40 @@ class ItemController extends Controller
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
+
+    private function createItemData($request, $adminId)
+    {
+        $Item = Item::create(
+            [
+                'name' => $request->input('name'),
+                'description' => $request->input('description'),
+                'price' => $request->input('price'),
+                'category' => $request->input('category'),
+                'admin_id' => $adminId,
+                'created_at' => Carbon::now(),
+                'expiration' => Carbon::today()->addMonth(Number::Six_Months),
+                'slug' => $request->input('name')
+            ]
+        );
+        $itemId = $Item->id;
+
+        return $itemId;
+    }
+
+    private function updateItemData($request, $itemId, $adminId)
+    {
+        Item::where('id', $itemId)->update(
+            [
+                'name' => $request->input('name'),
+                'description' => $request->input('description'),
+                'price' => $request->input('price'),
+                'category' => $request->input('category'),
+                'admin_id' => $adminId,
+                'updated_at' => Carbon::now(),
+                'expiration' => Carbon::today()->addMonth(Number::Three_Months),
+                'slug' => Str::slug($request->input('name'))
+            ]
+        );
+    }
+
 }
