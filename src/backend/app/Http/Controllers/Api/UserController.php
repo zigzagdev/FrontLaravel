@@ -26,7 +26,7 @@ class UserController extends Controller
 
     public function __construct()
     {
-        $this->middleware('user')->except('createUser');
+        $this->middleware('user')->except('createUser', 'createUserData');
     }
 
     function createUser(UserRequest $request)
@@ -107,7 +107,7 @@ class UserController extends Controller
     protected function eachUser(Request $request)
     {
         try {
-            $userId = $request->route('id');
+            $userId = $request->user_id;
 
             if (empty($userId)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
