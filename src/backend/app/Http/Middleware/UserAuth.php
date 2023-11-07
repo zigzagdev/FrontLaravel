@@ -25,11 +25,11 @@ class UserAuth extends Middleware
     {
         $userData = User::where('id', $request->user_id)->first();
         if (empty($userData)) {
-            $request->merge(['statusMessage' => sprintf(Common::LOGIN_FAILED, 'ユーザー')]);
+            $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, 'ユーザーデータ')]);
             return new ErrorResource($request, Response::HTTP_UNAUTHORIZED);
         }
         if ($userData->updated_at->addDays(Number::Two_Days) < Carbon::today()) {
-            $request->merge(['statusMessage' => sprintf(Common::LOGIN_FAILED, 'ユーザー')]);
+            $request->merge(['statusMessage' => sprintf(Common::SESSION_FAILED, 'ユーザー')]);
             return new ErrorResource($request, Response::HTTP_UNAUTHORIZED);
         }
         $userData->update(['updated_at' => Carbon::now()]);
