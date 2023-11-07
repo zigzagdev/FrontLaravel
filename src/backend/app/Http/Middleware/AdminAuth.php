@@ -31,6 +31,7 @@ class AdminAuth extends Middleware
         }
         if ($adminData->updated_at->addDays(Number::Two_Days) < Carbon::today()) {
             $request->merge(['statusMessage' => sprintf(Common::SESSION_FAILED, '管理者')]);
+            $adminData->update(['token' => null]);
             return new ErrorResource($request, Response::HTTP_UNAUTHORIZED);
         }
         $adminData->update(['updated_at' => Carbon::now()]);
