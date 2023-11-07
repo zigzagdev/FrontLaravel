@@ -30,7 +30,7 @@ class ItemController extends Controller
         $this->middleware('admin')->except('searchItems');
     }
 
-    protected function createItem(ItemRequest $request)
+    public function createItem(ItemRequest $request)
     {
         try {
             DB::beginTransaction();
@@ -135,7 +135,7 @@ class ItemController extends Controller
             return new ItemCollection($changeItems);
         } catch (Exception $e) {
             $request->merge(['statusMessage' => sprintf(Common::FAILED, 'アイテム取得')]);
-            return new ErrorResource($request, Common::FAILED);
+            return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
 
@@ -165,7 +165,7 @@ class ItemController extends Controller
             }
         } catch (Exception $e) {
             $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, 'アイテム')]);
-            return new ErrorResource($request, Common::FAILED);
+            return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
 
@@ -183,15 +183,18 @@ class ItemController extends Controller
             return new FetchItemResource($fetchItem);
         } catch (\Exception $e) {
             $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, 'アイテム')]);
-            return new ErrorResource($request, Common::FAILED);
+            $jj = $e->getMessage();
+            var_dump($jj);
+            return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
 
-    protected function deleteItem(Request $request)
+    function deleteItem(Request $request)
     {
         try {
             DB::beginTransaction();
             $itemId = $request->route('id');
+            var_dump($itemId);
             if (!$itemId) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
                 return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
@@ -200,16 +203,14 @@ class ItemController extends Controller
             Item::where('id', $itemId)->update(
                 [
                     'expiration' => Carbon::today(),
-                    'updated_at' => Carbon::now(),
                     'deleted_at' => Carbon::now(),
                 ]
             );
-            // Item_display にはflagを2とする。
+
             ItemFlag::where('item_id', $itemId)->update(
                 [
-                    'flag' => Number::Expired_Flag,
+                    'is_display' => Number::Expired_Flag,
                     'expired_at' => Carbon::now(),
-                    'updated_at' => Carbon::now(),
                 ]
             );
             DB::commit();

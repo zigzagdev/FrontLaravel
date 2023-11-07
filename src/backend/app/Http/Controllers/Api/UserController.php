@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Consts\Api\Message;
 use App\Consts\Api\Number;
 use App\Consts\Common;
 use App\Http\Controllers\Controller;
@@ -29,7 +28,7 @@ class UserController extends Controller
         $this->middleware('user')->except('createUser', 'createUserData');
     }
 
-    function createUser(UserRequest $request)
+    public function createUser(UserRequest $request)
     {
         try {
             DB::beginTransaction();
@@ -52,7 +51,7 @@ class UserController extends Controller
         }
     }
 
-    function updateUserName(UpdateNameRequest $request)
+    public function updateUserName(UpdateNameRequest $request)
     {
         try {
             DB::beginTransaction();
@@ -63,12 +62,7 @@ class UserController extends Controller
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
                 return new ErrorResource($request, Response::HTTP_NOT_FOUND);
             }
-            User::where('id', $userId)->update(
-                [
-                    'name' => $request->input('name'),
-                    'updated_at' => Carbon::now(),
-                ]
-            );
+            $this->updateUserNameData($request, $userId);
             DB::commit();
             return new UpdateAdminResource($request);
         } catch (\Exception $e) {
@@ -89,12 +83,7 @@ class UserController extends Controller
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
                 return new ErrorResource($request, Response::HTTP_NOT_FOUND);
             }
-            User::where('id', $userId)->update(
-                [
-                    'email' => $request->email,
-                    'updated_at' => Carbon::now()
-                ]
-            );
+            $this->updateUserEmailData($request, $userId);
             DB::commit();
             return new UpdateEmailResource($request);
         } catch (\Exception $e) {
@@ -137,4 +126,23 @@ class UserController extends Controller
         );
     }
 
+    private function updateUserNameData($request, $userId)
+    {
+        User::where('id', $userId)->update(
+            [
+                'name' => $request->input('name'),
+                'updated_at' => Carbon::now(),
+            ]
+        );
+    }
+
+    private function updateUserEmailData($request, $userId)
+    {
+        User::where('id', $userId)->update(
+            [
+                'email' => $request->input('email'),
+                'updated_at' => Carbon::now(),
+            ]
+        );
+    }
 }
