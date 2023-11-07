@@ -35,7 +35,7 @@ Route::controller(ItemController::class)->group(function () {
     Route::get('/search', 'searchItems');
 });
 
-Route::middleware('admin')->group(function () {
+Route::group(['middleware' => ['admin']], function () {
     Route::controller(AdminController::class)->group(function () {
         Route::get('/admin/profile', 'getAdmin');
         Route::put('/admin/update/name', 'updateAdminName');
