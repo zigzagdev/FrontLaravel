@@ -39,3 +39,4 @@ class AdminAuth extends Middleware
         return $next($request);
     }
 }
+
