@@ -124,7 +124,8 @@ class ItemController extends Controller
             $displayItems = ItemFlag::onDateAllItems();
 
             if (empty($displayItems)) {
-                return new ErrorResource($request);
+                $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
+                return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
             }
             $changeItems = $displayItems->toArray();
             foreach ($changeItems as $key => $value) {
@@ -134,7 +135,7 @@ class ItemController extends Controller
 
             return new ItemCollection($changeItems);
         } catch (Exception $e) {
-            $request->merge(['statusMessage' => sprintf(Common::FAILED, 'アイテム取得')]);
+            $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, 'アイテム')]);
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
@@ -169,9 +170,10 @@ class ItemController extends Controller
         }
     }
 
-    function displayItem(Request $request, $slug)
+    function displayItem(Request $request)
     {
         try {
+            $slug = $request->route('slug');
             $fetchItem = ItemFlag::onDateAllItems()->where('slug', $slug)->first();
             if (!$fetchItem) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
@@ -183,8 +185,6 @@ class ItemController extends Controller
             return new FetchItemResource($fetchItem);
         } catch (\Exception $e) {
             $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, 'アイテム')]);
-            $jj = $e->getMessage();
-            var_dump($jj);
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
@@ -193,14 +193,20 @@ class ItemController extends Controller
     {
         try {
             DB::beginTransaction();
-            $itemId = $request->route('id');
-            var_dump($itemId);
-            if (!$itemId) {
+            $itemSlug = $request->route('slug');
+            $itemId = Item::where('slug', $itemSlug)->value('id');
+            $itemExpiration  = Item::where('slug', $itemSlug)->value('delete_at');
+            if (!$itemSlug) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
                 return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
             }
 
-            Item::where('id', $itemId)->update(
+            if ($itemExpiration < Carbon::now()) {
+                $request->merge(['statusMessage' => sprintf(Common::ERR_15)]);
+                return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
+            }
+
+            Item::where('slug', $itemSlug)->update(
                 [
                     'expiration' => Carbon::today(),
                     'deleted_at' => Carbon::now(),
@@ -232,7 +238,6 @@ class ItemController extends Controller
                 'category' => $request->input('category'),
                 'admin_id' => $adminId,
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
                 'expiration' => Carbon::today()->addMonth(Number::Six_Months),
                 'slug' => $request->input('name')
             ]

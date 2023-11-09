@@ -106,8 +106,8 @@ class UserController extends Controller
 
             return new UserResource($fetchUserData);
         } catch (\Exception $e) {
-            $request->merge(['statusMessage' => sprintf(Common::FAILED, 'ユーザー')]);
-            return new ErrorResource($request, Common::FAILED);
+            $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, 'ユーザー')]);
+            return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
 
