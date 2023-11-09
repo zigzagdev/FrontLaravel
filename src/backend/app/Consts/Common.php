@@ -29,7 +29,8 @@ class Common
     public const ERR_09 = "有効期限が切れています。";
     public const ERR_10 = "既にメールアドレスは利用されています。別のメールアドレスを利用してください。";
     public const ERR_11 = "この管理者ツールは現在閲覧出来ません。";
-    public const ERR_12 = "このUserは現在閲覧出来ません。";
+    public const ERR_12 = "このユーザーは現在閲覧出来ません。";
     public const ERR_13 = "既にアカウント登録されています。ログイン画面からログインしてください。";
     public const ERR_14 = "セッションが切れています。もう一度ログインし直してください。";
+    public const ERR_15 = "このデータは既に削除済みとなっています。";
 }

@@ -32,7 +32,7 @@ class ItemFlag extends Model
             , 'items.admin_id as adminId'
         ])->leftjoin('items', function ($join) {
             $join->on('item_display.item_id', '=', 'items.id');
-        })->where('item_display.flag', '=', Number::Display_Flag)
+        })->where('item_display.is_display', '=', Number::Display_Flag)
             ->orderBy('items.id', 'desc')
             ->get();
     }
@@ -49,14 +49,13 @@ class ItemFlag extends Model
             , 'items.id as itemId'
         ])->leftjoin('items', function ($join) {
             $join->on('item_display.item_id', '=', 'items.id');
-        })->where('item_display.flag', '=', Number::Display_Flag)
+        })->where('item_display.is_display', '=', Number::Display_Flag)
             ->where(function ($query) use ($searchQuery) {
                 $query->where('items.name', "like", "%" . $searchQuery . "%");
                 $query->orWhere('items.description', "like", "%" . $searchQuery . "%");
                 $query->orWhere('items.category', "like", "%" . $searchQuery . "%");
             })
-            ->orderBy('items.id', 'desc')
+            ->orderBy('items.id', 'asc')
             ->get();
     }
-
 }

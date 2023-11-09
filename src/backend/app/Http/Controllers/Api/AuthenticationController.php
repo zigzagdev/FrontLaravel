@@ -39,15 +39,12 @@ class AuthenticationController extends Controller
                     'updated_at' => Carbon::now()
                 ]
             );
-            $adminData->save();
 
             DB::commit();
             return new AdminLoginResource($adminData);
         } catch (\Exception $e) {
             DB::rollBack();
             $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, 'アカウント')]);
-            $jj = $e->getMessage();
-            var_dump($jj);
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }

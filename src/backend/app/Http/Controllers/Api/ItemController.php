@@ -27,10 +27,10 @@ class ItemController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('admin');
+        $this->middleware('admin')->except('searchItems');
     }
 
-    protected function createItem(ItemRequest $request)
+    public function createItem(ItemRequest $request)
     {
         try {
             DB::beginTransaction();
@@ -124,7 +124,8 @@ class ItemController extends Controller
             $displayItems = ItemFlag::onDateAllItems();
 
             if (empty($displayItems)) {
-                return new ErrorResource($request);
+                $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
+                return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
             }
             $changeItems = $displayItems->toArray();
             foreach ($changeItems as $key => $value) {
@@ -134,8 +135,8 @@ class ItemController extends Controller
 
             return new ItemCollection($changeItems);
         } catch (Exception $e) {
-            $request->merge(['statusMessage' => sprintf(Common::FAILED, 'アイテム取得')]);
-            return new ErrorResource($request, Common::FAILED);
+            $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, 'アイテム')]);
+            return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
 
@@ -165,13 +166,14 @@ class ItemController extends Controller
             }
         } catch (Exception $e) {
             $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, 'アイテム')]);
-            return new ErrorResource($request, Common::FAILED);
+            return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
 
-    function displayItem(Request $request, $slug)
+    function displayItem(Request $request)
     {
         try {
+            $slug = $request->route('slug');
             $fetchItem = ItemFlag::onDateAllItems()->where('slug', $slug)->first();
             if (!$fetchItem) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
@@ -183,33 +185,38 @@ class ItemController extends Controller
             return new FetchItemResource($fetchItem);
         } catch (\Exception $e) {
             $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, 'アイテム')]);
-            return new ErrorResource($request, Common::FAILED);
+            return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
 
-    protected function deleteItem(Request $request)
+    function deleteItem(Request $request)
     {
         try {
             DB::beginTransaction();
-            $itemId = $request->route('id');
-            if (!$itemId) {
+            $itemSlug = $request->route('slug');
+            $itemId = Item::where('slug', $itemSlug)->value('id');
+            $itemExpiration  = Item::where('slug', $itemSlug)->value('delete_at');
+            if (!$itemSlug) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
                 return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
             }
 
-            Item::where('id', $itemId)->update(
+            if ($itemExpiration < Carbon::now()) {
+                $request->merge(['statusMessage' => sprintf(Common::ERR_15)]);
+                return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
+            }
+
+            Item::where('slug', $itemSlug)->update(
                 [
                     'expiration' => Carbon::today(),
-                    'updated_at' => Carbon::now(),
                     'deleted_at' => Carbon::now(),
                 ]
             );
-            // Item_display にはflagを2とする。
+
             ItemFlag::where('item_id', $itemId)->update(
                 [
-                    'flag' => Number::Expired_Flag,
+                    'is_display' => Number::Expired_Flag,
                     'expired_at' => Carbon::now(),
-                    'updated_at' => Carbon::now(),
                 ]
             );
             DB::commit();
@@ -231,7 +238,6 @@ class ItemController extends Controller
                 'category' => $request->input('category'),
                 'admin_id' => $adminId,
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
                 'expiration' => Carbon::today()->addMonth(Number::Six_Months),
                 'slug' => $request->input('name')
             ]
