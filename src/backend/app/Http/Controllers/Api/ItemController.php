@@ -35,20 +35,14 @@ class ItemController extends Controller
         try {
             DB::beginTransaction();
             $adminId = $request->admin_id;
-            $admin = Admin::find($adminId);
+            $admin = Admin::where('id', $adminId)->first();
 
             if (empty($admin)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
                 return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
             }
 
-            $existItem = Item::where(
-                [
-                    ['name', '=', $request->name],
-                    ['price', '=', $request->price],
-                    ['category', '=', $request->category]
-                ]
-            )->first();
+            $existItem = Item::where('name', $request->name)->first();
 
             if (($existItem)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_08)]);
@@ -57,7 +51,7 @@ class ItemController extends Controller
             $itemId = $this->createItemData($request, $adminId);
             ItemFlag::create(
                 [
-                    'flag' => Number::Display_Flag,
+                    'is_display' => Number::Display_Flag,
                     'item_id' => $itemId,
                     'expired_at' => Carbon::today()->addMonth(Number::Six_Months),
                     'created_at' => Carbon::now(),
@@ -70,48 +64,6 @@ class ItemController extends Controller
 
             return new ItemResource($request);
         } catch (\Exception $e) {
-            DB::rollBack();
-            $request->merge(['statusMessage' => sprintf(Common::REGISTER_FAILED, 'アイテム')]);
-            return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
-        }
-    }
-
-
-    function updateItem(ItemRequest $request)
-    {
-        try {
-            DB::beginTransaction();
-            $adminId = $request->admin_id;
-            $itemId = $request->id;
-            $currentItemName = Item::find($itemId);
-
-            if (!$currentItemName) {
-                $request->merge(['statusMessage' => sprintf(Common::ERR_09)]);
-                return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
-            }
-
-            if ($currentItemName === $request->name) {
-                $request->merge(['statusMessage' => sprintf(Common::ERR_08)]);
-                return new ErrorResource($request, Response::HTTP_UNAUTHORIZED);
-            }
-
-            $this->updateItemData($request, $adminId, $itemId);
-
-            ItemFlag::where('item_id', $itemId)->update(
-                [
-                    'flag' => Number::Display_Flag,
-                    'item_id' => $itemId,
-                    'expired_at' => Carbon::today()->addMonth(Number::Three_Months),
-                    'updated_at' => Carbon::now(),
-                ]
-            );
-            DB::commit();
-
-            $categoryNumber = intval($request->input('category'));
-            $request->merge(['categoryName' => Category::genre[$categoryNumber]]);
-
-            return new ItemResource($request);
-        } catch (Exception $e) {
             DB::rollBack();
             $request->merge(['statusMessage' => sprintf(Common::REGISTER_FAILED, 'アイテム')]);
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
@@ -189,19 +141,60 @@ class ItemController extends Controller
         }
     }
 
-    function deleteItem(Request $request)
+    public function updateItem(ItemRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+            $adminId = $request->admin_id;
+            $itemSlug = $request->route('slug');
+            $targetItemName = Item::where('slug', $itemSlug)->first();
+
+            if (!$targetItemName) {
+                $request->merge(['statusMessage' => sprintf(Common::ERR_09)]);
+                return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
+            }
+
+            $itemId = $targetItemName->id;
+
+            if ($targetItemName === $request->name) {
+                $request->merge(['statusMessage' => sprintf(Common::ERR_08)]);
+                return new ErrorResource($request, Response::HTTP_UNAUTHORIZED);
+            }
+
+            $this->updateItemData($request, $adminId, $itemSlug);
+
+            ItemFlag::where('item_id', $itemId)->update(
+                [
+                    'is_display' => Number::Display_Flag,
+                    'expired_at' => Carbon::today()->addMonth(Number::Three_Months),
+                    'updated_at' => Carbon::now(),
+                ]
+            );
+            DB::commit();
+
+            $categoryNumber = intval($request->input('category'));
+            $request->merge(['categoryName' => Category::genre[$categoryNumber]]);
+
+            return new ItemResource($request);
+        } catch (Exception $e) {
+            DB::rollBack();
+            $request->merge(['statusMessage' => sprintf(Common::REGISTER_FAILED, 'アイテム')]);
+            return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    public function deleteItem(Request $request)
     {
         try {
             DB::beginTransaction();
             $itemSlug = $request->route('slug');
-            $itemId = Item::where('slug', $itemSlug)->value('id');
-            $itemExpiration  = Item::where('slug', $itemSlug)->value('delete_at');
             if (!$itemSlug) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
                 return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
             }
+            $itemData = Item::where('slug', $itemSlug);
 
-            if ($itemExpiration < Carbon::now()) {
+            if ($itemData->deleted_at < Carbon::now()) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_15)]);
                 return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
             }
@@ -213,7 +206,7 @@ class ItemController extends Controller
                 ]
             );
 
-            ItemFlag::where('item_id', $itemId)->update(
+            ItemFlag::where('item_id', $itemData->id)->update(
                 [
                     'is_display' => Number::Expired_Flag,
                     'expired_at' => Carbon::now(),
@@ -230,7 +223,7 @@ class ItemController extends Controller
 
     private function createItemData($request, $adminId)
     {
-        $Item = Item::create(
+        $itemData = Item::create(
             [
                 'name' => $request->input('name'),
                 'description' => $request->input('description'),
@@ -242,14 +235,14 @@ class ItemController extends Controller
                 'slug' => $request->input('name')
             ]
         );
-        $itemId = $Item->id;
+        $itemId = $itemData->id;
 
         return $itemId;
     }
 
-    private function updateItemData($request, $itemId, $adminId)
+    private function updateItemData($request, string $itemSlug, $adminId)
     {
-        Item::where('id', $itemId)->update(
+        Item::where('slug', $itemSlug)->update(
             [
                 'name' => $request->input('name'),
                 'description' => $request->input('description'),
