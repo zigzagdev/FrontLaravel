@@ -223,7 +223,7 @@ class ItemController extends Controller
 
     private function createItemData($request, $adminId)
     {
-        $Item = Item::create(
+        $itemData = Item::create(
             [
                 'name' => $request->input('name'),
                 'description' => $request->input('description'),
@@ -235,7 +235,7 @@ class ItemController extends Controller
                 'slug' => $request->input('name')
             ]
         );
-        $itemId = $Item->id;
+        $itemId = $itemData->id;
 
         return $itemId;
     }
