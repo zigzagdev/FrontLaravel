@@ -37,14 +37,13 @@ Route::controller(ItemController::class)->group(function () {
 
 Route::group(['middleware' => ['admin']], function () {
     Route::controller(AdminController::class)->group(function () {
-        Route::get('/admin/profile', 'getAdmin');
-        Route::put('/admin/update/name', 'updateAdminName');
-        Route::put('/admin/update/email', 'updateAdminEmail');
-        Route::get('/admin/user/all', 'allUser');
+        Route::get('/admin/{id}/profile', 'getAdmin');
+        Route::put('/admin/{id}/update/name', 'updateAdminName');
+        Route::put('/admin/{id}/update/email', 'updateAdminEmail');
+        Route::get('/admin/{id}/user/all', 'allUser');
     });
     Route::controller(ItemController::class)->group(function () {
         Route::post('/create/item', 'createItem');
-        // first display URL
         Route::get('/item/{slug}', 'displayItem');
         Route::post('/item/{slug}', 'deleteItem');
         Route::put('/item/{slug}/update', 'updateItem');

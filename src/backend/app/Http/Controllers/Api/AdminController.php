@@ -18,7 +18,6 @@ use App\Http\Resources\Api\RegisterAdminResource;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use App\Consts\Common;
-use App\Consts\Api\Message;
 use App\Consts\Api\Number;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,6 +36,7 @@ class AdminController extends Controller
     {
         try {
             DB::beginTransaction();
+
             $existUser = Admin::where('email', $request->email)->first();
 
             if (!empty($existUser)) {
@@ -59,7 +59,8 @@ class AdminController extends Controller
     {
         try {
             DB::beginTransaction();
-            $currentAdminData = Admin::where('id', $request->admin_id)->first();
+            $adminId = $request->route('id');
+            $currentAdminData = Admin::where('id', $adminId)->first();
 
             if (empty($currentAdminData)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
@@ -88,7 +89,8 @@ class AdminController extends Controller
     {
         try {
             DB::beginTransaction();
-            $currentAdminData = Admin::where('id', $request->admin_id)->first();
+            $adminId = $request->route('id');
+            $currentAdminData = Admin::where('id', $adminId)->first();
 
             if (empty($currentAdminData)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
@@ -106,10 +108,11 @@ class AdminController extends Controller
         }
     }
 
-    public function getAdmin(Request $request)
+    function getAdmin(Request $request)
     {
         try {
-            $authentication = Admin::where('id', $request->admin_id)->first();
+            $adminId = $request->route('id');
+            $authentication = Admin::where('id', $adminId)->first();
             if (empty($authentication)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
                 return new ErrorResource($request, Response::HTTP_NOT_FOUND);
@@ -117,15 +120,19 @@ class AdminController extends Controller
             return new AdminResource($authentication);
         } catch (\Exception $e) {
             $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, '管理者データ')]);
-            $oo = $e->getMessage();
-            var_dump($oo);
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
 
-    public function allUser(Request $request)
+    function allUser(Request $request)
     {
         try {
+            $adminId = $request->route('id');
+            $currentAdminData = Admin::where('id', $adminId)->first();
+            if (empty($currentAdminData)) {
+                $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
+                return new ErrorResource($request, Response::HTTP_NOT_FOUND);
+            }
             $users = User::all();
             if (empty($users)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
