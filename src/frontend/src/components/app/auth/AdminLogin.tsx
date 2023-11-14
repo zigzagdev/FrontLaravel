@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import axios from "axios";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useForm, SubmitHandler} from "react-hook-form";
 
 type Inputs = {
@@ -8,25 +8,35 @@ type Inputs = {
     password: string
 }
 
-export default function Login() {
+type resData = {
+    id: number
+}
+
+export default function AdminLogin() {
     const [error, setError] = useState('');
     const baseURL = process.env.REACT_APP_API_BASE_URL;
     const navigate = useNavigate();
-
     const {register, handleSubmit, formState: {errors}} = useForm<Inputs>()
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         axios
-            .post<Inputs>(`${baseURL}./admin/login`, data)
+            .post(`${baseURL}./admin/login`, data)
             .then((res) => {
+                const id = res.data.data.id
                 return (
-                    navigate('/')
+                    navigate(`/Admin/${id}/Profile`)
                 )
             })
             .catch((error: any) => {
                 if (error.response.statusText == 'Bad Request') {
                     setError('Email or Password is wrong ...');
+                    return (
+                        navigate(`${baseURL}./admin/login`)
+                    )
                 } else {
                     setError('Internal server error is happened. Please do it again.');
+                    return (
+                        navigate(`${baseURL}./admin/login`)
+                    )
                 }
             });
     }
