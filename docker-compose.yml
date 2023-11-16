@@ -46,7 +46,10 @@ services:
 
   react:
     container_name: react
-    build: ./src/frontend
+    build:
+      context: ./src/frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend:/usr/src/app
     ports:
       - '3007:3000'
-    tty: true

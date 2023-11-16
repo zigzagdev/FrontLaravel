@@ -1,7 +1,7 @@
 FROM node:16.15.0-alpine
 
-WORKDIR ./src/frontend
-COPY package.json .
+WORKDIR /usr/src/frontend
+COPY . .
 RUN npm install
-
-ENTRYPOINT [ "npm", "start" ]
+RUN npm run build
+ENTRYPOINT npm start
