@@ -96,7 +96,7 @@ class UserController extends Controller
     protected function eachUser(Request $request)
     {
         try {
-            $userId = $request->user_id;
+            $userId = $request->route('id');
 
             if (empty($userId)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);

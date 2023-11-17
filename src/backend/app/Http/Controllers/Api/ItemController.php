@@ -27,7 +27,7 @@ class ItemController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('admin')->except('searchItems');
+        $this->middleware('admin')->except('searchItems', 'allItems');
     }
 
     public function createItem(ItemRequest $request)

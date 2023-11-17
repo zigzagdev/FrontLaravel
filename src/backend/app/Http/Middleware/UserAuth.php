@@ -23,7 +23,8 @@ class UserAuth extends Middleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $userData = User::where('id', $request->user_id)->first();
+        $userId = $request->route('id');
+        $userData = User::where('id', $userId)->first();
         if (empty($userData)) {
             $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, 'ユーザーデータ')]);
             return new ErrorResource($request, Response::HTTP_UNAUTHORIZED);

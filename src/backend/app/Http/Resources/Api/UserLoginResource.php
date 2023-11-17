@@ -18,6 +18,7 @@ class UserLoginResource extends JsonResource
             'statusCode' => '200',
             'statusMessage' => 'OK',
             'token' => $this->token,
+            'id' => $this->id
         ];
     }
 }

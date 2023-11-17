@@ -2,6 +2,8 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {useNavigate, useParams} from "react-router-dom";
 import {SubmitHandler, useForm} from "react-hook-form";
+import Footer from "../../common/footer/Footer";
+import Header from "../../common/header/Header";
 
 
 type userData = {
@@ -20,7 +22,20 @@ type nameData = {
     name: string,
 }
 
+export function CreateUser() {
+    return(
+        <>
+            <Header/>
+            <div>
+
+            </div>
+            <Footer/>
+        </>
+    )
+}
+
 export function EachUserData() {
+    const [error, setError] = useState("");
     const [userData, setUserData] = useState<userData>({
         id: 0,
         email: '',
@@ -28,16 +43,30 @@ export function EachUserData() {
     });
     const baseURL = process.env.REACT_APP_API_BASE_URL;
     const navigate = useNavigate();
-    let {id} = useParams();
+    const {id} = useParams();
 
     useEffect(() => {
-        axios.get(`${baseURL}./user/` + id)
+        axios.get(`${baseURL}./user/${id}`)
             .then(res => {
                 setUserData(res.data.data.profile)
+            })
+            .catch((error: any) => {
+                if (error.response.statusText == 'Bad Request') {
+                    setError('Email or Password is wrong ...');
+                    return (
+                        navigate(`/Login`)
+                    )
+                } else {
+                    setError('Internal server error is happened. Please do it again.');
+                    return (
+                        navigate(`/Login`)
+                    )
+                }
             })
     }, [])
     return (
         <>
+            <Header/>
             <div className="my-4 mx-32 block text-lg duration-700">
                 <div>{userData.name}</div>
                 <button
@@ -54,11 +83,12 @@ export function EachUserData() {
                     <a href={`/User/` + id + `/Email`}>Email</a>
                 </button>
             </div>
+            <Footer/>
         </>
     )
 }
 
-export function UpdateUserName() {
+export function EditUserName() {
     const [userName, setUserName] = useState<nameData>({
         id: 0,
         name: "",
@@ -92,9 +122,17 @@ export function UpdateUserName() {
             .then(res => {
                 setUserName(res.data.data.profile)
             })
+            .catch((error: any) => {
+                if (error.response.statusText == 'Bad Request') {
+                    setError('Item Information could not updated ...');
+                } else {
+                    setError('Internal server error is happened. Please do it again.');
+                }
+            })
     }, [])
     return (
         <>
+            <Header/>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="my-4 mx-32 block text-lg duration-700">
                     <input
@@ -128,11 +166,12 @@ export function UpdateUserName() {
                     </button>
                 </div>
             </form>
+            <Footer/>
         </>
     )
 }
 
-export function UpdateUserEmail() {
+export function EditUserEmail() {
     return (
         <>
             <div>

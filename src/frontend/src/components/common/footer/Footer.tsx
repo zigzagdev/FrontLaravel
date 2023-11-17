@@ -14,6 +14,9 @@ export default function Footer() {
                 <Link to='/' className='text-black-500 xxs:text-gray-500 xxs:py-3'>
                     TopPage
                 </Link>
+                <Link to='/Signup' className='text-black-500 xxs:text-gray-500 xxs:py-3'>
+                    Signup
+                </Link>
             </div>
         </>
     )
