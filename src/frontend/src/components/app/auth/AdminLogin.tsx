@@ -2,17 +2,15 @@ import React, {useState} from "react";
 import axios from "axios";
 import {useNavigate, useParams} from "react-router-dom";
 import {useForm, SubmitHandler} from "react-hook-form";
+import AdminHeader from "../../common/header/AdminHeader";
+import AdminFooter from "../../common/footer/AdminFooter";
 
 type Inputs = {
     email: string,
     password: string
 }
 
-type resData = {
-    id: number
-}
-
-export default function AdminLogin() {
+export function AdminLogin() {
     const [error, setError] = useState('');
     const baseURL = process.env.REACT_APP_API_BASE_URL;
     const navigate = useNavigate();
@@ -42,6 +40,7 @@ export default function AdminLogin() {
     }
     return (
         <>
+            <AdminHeader/>
             <div className="my-5 mx-36">
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <h1 className="my-5">
@@ -86,6 +85,7 @@ export default function AdminLogin() {
                     }
                 </form>
             </div>
+            <AdminFooter/>
         </>
     )
 }
