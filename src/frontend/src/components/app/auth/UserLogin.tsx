@@ -26,13 +26,18 @@ export function UserLogin() {
                 )
             })
             .catch((error: any) => {
-                if (error.response.statusText == 'Bad Request') {
+                if (error.response.statusText === 'Bad Request') {
                     setError('Email or Password is wrong ...');
                     return (
                         navigate(`/Login`)
                     )
+                } else if (error.response.statusText === 'Not Acceptable') {
+                    setError('Email or Password is wrong... Please do it again');
+                    return (
+                        navigate(`/Login`)
+                    )
                 } else {
-                    setError('Internal server error is happened. Please do it again.');
+                    setError('Internal server error is happened. Please do it again.')
                     return (
                         navigate(`/Login`)
                     )
@@ -53,7 +58,7 @@ export function UserLogin() {
                             {...register("email", {required: true, minLength: 4})}
                         />
                         {errors.email?.type === "required" && (
-                            <p role="alert" className="text-red-400">Email is required</p>
+                            <span role="alert" className="text-red-400">Email is required</span>
                         )}
                         {errors.email && errors.email.type === "minLength" && (
                             <span className="text-blue-700">Min length exceeded</span>
@@ -63,7 +68,7 @@ export function UserLogin() {
                         <label htmlFor="password"> Password </label>
                         <input type="password" {...register("password", {required: true, minLength: 8})}/>
                         {errors.password?.type === "required" && (
-                            <p role="alert" className="text-red-400">Password is required</p>
+                            <span role="alert" className="text-red-400">Password is required</span>
                         )}
                         {errors.password && errors.password.type === "minLength" && (
                             <span className="text-blue-700">Min length exceeded</span>
