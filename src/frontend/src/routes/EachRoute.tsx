@@ -14,7 +14,7 @@ import {UserLogin} from "../components/app/auth/UserLogin";
 import Result from "../components/app/input/Result";
 import {ShowSlug, EditSlug} from "../components/app/post/PostSlug";
 import {AdminData, AllUsers, EditAdminEmail, EditAdminName} from "../components/app/admin/Admin";
-import {EachUserData, EditUserEmail, EditUserName} from "../components/app/user/Info";
+import {CreateUser, EachUserData, EditUserEmail, EditUserName} from "../components/app/user/Info";
 
 
 export default function EachRoute() {
@@ -28,6 +28,7 @@ export default function EachRoute() {
                 <Route path="/Contact" element={<Contact/>}/>
                 <Route path="/Posts" element={<Posts/>}/>
                 <Route path="/Result" element={<Result/>}/>
+                <Route path="/User/Create" element={<CreateUser/>}/>
                 <Route path="*" element={<NotFound/>}/>
                 //AdminProvider
                 <Route path="/Admin/:id/Profile" element={<AdminData/>}/>

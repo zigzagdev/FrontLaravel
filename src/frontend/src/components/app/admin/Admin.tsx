@@ -2,8 +2,8 @@ import React, {useState, useEffect} from "react";
 import axios from "axios";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {useNavigate, useParams} from "react-router-dom";
-import {Simulate} from "react-dom/test-utils";
-import error = Simulate.error;
+import AdminHeader from "../../common/header/AdminHeader";
+import AdminFooter from "../../common/footer/AdminFooter";
 
 type adminData = {
     id: number,
@@ -33,7 +33,7 @@ type userData = {
 
 export function AdminData() {
     const baseURL = process.env.REACT_APP_API_BASE_URL;
-    const {id} = useParams();
+    const {id} = useParams<{ id: string }>();
     const [error, setError] = useState("");
     const navigate = useNavigate();
     const [adminData, setAdminData] = useState<adminData>({
@@ -50,18 +50,19 @@ export function AdminData() {
                 if (error.response.statusText == 'Bad Request') {
                     setError('Email or Password is wrong ...');
                     return (
-                        navigate(`${baseURL}./admin/login`)
+                        navigate(`/Admin/Login`)
                     )
                 } else {
                     setError('Internal server error is happened. Please do it again.');
                     return (
-                        navigate(`${baseURL}./admin/login`)
+                        navigate(`/Admin/Login`)
                     )
                 }
             })
     }, [])
     return (
         <>
+            <AdminHeader/>
             <div className="my-4 mx-32 block text-lg duration-700">
                 <div>{adminData.name}</div>
                 <button
@@ -78,6 +79,7 @@ export function AdminData() {
                     <a href="/Admin/Update/Email">Email</a>
                 </button>
             </div>
+            <AdminFooter/>
         </>
     )
 }
@@ -90,7 +92,7 @@ export function EditAdminName() {
     const baseURL = process.env.REACT_APP_API_BASE_URL;
     const navigate = useNavigate();
     const [error, setError] = useState('');
-    const {id} = useParams();
+    const {id} = useParams<{ id: string }>();
     const {register, handleSubmit, formState: {errors}} = useForm<nameData>();
     const onSubmit: SubmitHandler<nameData> = (data: nameData) => {
         axios
@@ -106,10 +108,13 @@ export function EditAdminName() {
                 if (error.response.statusText == 'Bad Request') {
                     setError('Item Information could not updated ...');
                     return (
-                        navigate(`/Admin/${id}/Profile`)
+                        navigate(`/Admin/Login`)
                     )
                 } else {
                     setError('Internal server error is happened. Please do it again.');
+                    return (
+                        navigate(`/Admin/Login`)
+                    )
                 }
             })
     };
@@ -122,18 +127,19 @@ export function EditAdminName() {
                 if (error.response.statusText == 'Bad Request') {
                     setError('Email or Password is wrong ...');
                     return (
-                        navigate(`${baseURL}./admin/login`)
+                        navigate(`/Admin/Login`)
                     )
                 } else {
                     setError('Internal server error is happened. Please do it again.');
                     return (
-                        navigate(`${baseURL}./admin/login`)
+                        navigate(`/Admin/Login`)
                     )
                 }
             })
     }, [])
     return (
         <>
+            <AdminHeader/>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="my-4 mx-32 block text-lg duration-700">
                     <input
@@ -167,6 +173,7 @@ export function EditAdminName() {
                     </button>
                 </div>
             </form>
+            <AdminFooter/>
         </>
     )
 }
@@ -178,7 +185,7 @@ export function EditAdminEmail() {
     });
     const baseURL = process.env.REACT_APP_API_BASE_URL;
     const navigate = useNavigate();
-    const {id} = useParams();
+    const {id} = useParams<{ id: string }>();
     const [error, setError] = useState('');
     const {register, handleSubmit, formState: {errors}} = useForm<emailData>()
     useEffect(() => {
@@ -202,15 +209,19 @@ export function EditAdminEmail() {
                 if (error.response.statusText == 'Bad Request') {
                     setError('Item Information could not updated ...');
                     return (
-                        navigate(`/Admin/${id}/Profile`)
+                        navigate(`/Admin/Login`)
                     )
                 } else {
                     setError('Internal server error is happened. Please do it again.');
+                    return (
+                        navigate(`/Admin/Login`)
+                    )
                 }
             })
     };
     return (
         <>
+            <AdminHeader/>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="my-4 mx-32 block text-lg duration-700">
                     <input
@@ -244,6 +255,7 @@ export function EditAdminEmail() {
                     </button>
                 </div>
             </form>
+            <AdminFooter/>
         </>
     )
 }
@@ -253,7 +265,7 @@ export function AllUsers() {
     const [error, setError] = useState("");
     const baseURL = process.env.REACT_APP_API_BASE_URL;
     const navigate = useNavigate();
-    const {id} = useParams();
+    const {id} = useParams<{ id: string }>();
     useEffect(() => {
         axios.get(`${baseURL}./admin/${id}/user/all`)
             .then(res => {
@@ -263,18 +275,19 @@ export function AllUsers() {
                 if (error.response.statusText == 'Bad Request') {
                     setError('Email or Password is wrong ...');
                     return (
-                        navigate(`${baseURL}./admin/login`)
+                        navigate(`/Admin/Login`)
                     )
                 } else {
                     setError('Internal server error is happened. Please do it again.');
                     return (
-                        navigate(`${baseURL}./admin/login`)
+                        navigate(`/Admin/Login`)
                     )
                 }
             })
     }, [])
     return (
         <>
+            <AdminHeader/>
             <div className="grid grid-cols-3 gap-4 mx-24">
                 {users.map((user: userData) => {
                     return (
@@ -292,6 +305,7 @@ export function AllUsers() {
                     )
                 })}
             </div>
+            <AdminFooter/>
         </>
     )
 }

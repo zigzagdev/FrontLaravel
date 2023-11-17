@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import axios from "axios";
-import {useNavigate, useParams} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {useForm, SubmitHandler} from "react-hook-form";
 import AdminHeader from "../../common/header/AdminHeader";
 import AdminFooter from "../../common/footer/AdminFooter";
@@ -28,12 +28,12 @@ export function AdminLogin() {
                 if (error.response.statusText == 'Bad Request') {
                     setError('Email or Password is wrong ...');
                     return (
-                        navigate(`${baseURL}./admin/login`)
+                        navigate(`/Admin/Login`)
                     )
                 } else {
                     setError('Internal server error is happened. Please do it again.');
                     return (
-                        navigate(`${baseURL}./admin/login`)
+                        navigate(`/Admin/Login`)
                     )
                 }
             });

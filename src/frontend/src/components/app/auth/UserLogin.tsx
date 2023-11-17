@@ -3,6 +3,7 @@ import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {useForm, SubmitHandler} from "react-hook-form";
 import Footer from "../../common/footer/Footer";
+import Header from "../../common/header/Header";
 
 type Inputs = {
     email: string,
@@ -28,18 +29,19 @@ export function UserLogin() {
                 if (error.response.statusText == 'Bad Request') {
                     setError('Email or Password is wrong ...');
                     return (
-                        navigate(`${baseURL}./login`)
+                        navigate(`/Login`)
                     )
                 } else {
                     setError('Internal server error is happened. Please do it again.');
                     return (
-                        navigate(`${baseURL}./login`)
+                        navigate(`/Login`)
                     )
                 }
             });
     }
     return (
         <>
+            <Header/>
             <div className="my-5 mx-36">
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <h1 className="my-5">
