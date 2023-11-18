@@ -27,9 +27,9 @@ type userData = {
     email: string,
 }
 
-// export function CreateAdmin() {
-//
-// }
+export function CreateAdmin() {
+
+}
 
 export function AdminData() {
     const baseURL = process.env.REACT_APP_API_BASE_URL;
