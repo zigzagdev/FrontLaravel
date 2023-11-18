@@ -24,6 +24,7 @@ class RegisterAdminResource extends JsonResource
         return [
             'statusCode' => $this->statusCode,
             'statusMessage' => 'OK',
+            'id' => $this->id
         ];
     }
 }
