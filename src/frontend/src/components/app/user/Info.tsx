@@ -5,6 +5,12 @@ import {SubmitHandler, useForm} from "react-hook-form";
 import Footer from "../../common/footer/Footer";
 import Header from "../../common/header/Header";
 
+type createUser = {
+    name: string,
+    email: string,
+    password: string,
+}
+
 
 type userData = {
     id: number,
@@ -23,11 +29,77 @@ type nameData = {
 }
 
 export function CreateUser() {
-    return(
+    const [error, setError] = useState("");
+    const baseURL = process.env.REACT_APP_API_BASE_URL;
+    const navigate = useNavigate();
+    const {register, handleSubmit, formState: {errors}} = useForm<createUser>()
+    const onSubmit: SubmitHandler<createUser> = (data) => {
+        axios
+            .post(`${baseURL}./user/create`, data)
+            .then((res) => {
+                const {id} = res.data.data.profile
+                return (
+                    navigate(`/User/${id}`)
+                )
+            })
+            .catch((error: any) => {
+                if (error.response.statusText === 'Bad Request') {
+                    setError('User can not registered ...');
+                    return (
+                        navigate(`/Create`)
+                    )
+                } else {
+                    setError('Internal server error is happened. Please do it again.');
+                    return (
+                        navigate(`/Create`)
+                    )
+                }
+            });
+    }
+    return (
         <>
             <Header/>
-            <div>
-
+            <div className="my-10 mx-9">
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <p>Name</p>
+                    <input
+                        className="bg-gray-50 border border-white-300 text-gray-900 text-sm rounded-lg"
+                        {...register("name", {required: true, minLength: 4, maxLength: 100})}
+                        type="text"
+                    />
+                    {errors.name?.type === "required" && (
+                        <p role="alert" className="text-red-400">ItemName is required</p>
+                    )}
+                    <p>Email</p>
+                    <input
+                        className="bg-gray-50 border border-white-300 text-gray-900 text-sm rounded-lg"
+                        {...register("email", {
+                            required: "required",
+                            minLength: 4,
+                            maxLength: 100,
+                            pattern: {
+                                value: /\S+@\S+\.\S+/,
+                                message: "Entered value does not match email format",
+                            },
+                        })}
+                        type="email"
+                    />
+                    <p>Password</p>
+                    <input
+                        className="bg-gray-50 border border-white-300 text-gray-900 text-sm rounded-lg"
+                        {...register("password", {required: true, minLength: 8, maxLength: 255})}
+                        type="password"
+                    />
+                    <div className="my-10 mx-5 text-red-600 font-mono text-lg">
+                        {error}
+                    </div>
+                    <button
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                        type="submit"
+                    >
+                        Submit
+                    </button>
+                </form>
             </div>
             <Footer/>
         </>
