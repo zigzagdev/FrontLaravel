@@ -43,15 +43,15 @@ export function CreateUser() {
                 )
             })
             .catch((error: any) => {
-                if (error.response.statusText === 'Bad Request') {
+                if (error.res === 'Bad Request') {
                     setError('User can not registered ...');
                     return (
-                        navigate(`/Create`)
+                        navigate(`/Signup`)
                     )
                 } else {
                     setError('Internal server error is happened. Please do it again.');
                     return (
-                        navigate(`/Create`)
+                        navigate(`/Signup`)
                     )
                 }
             });
@@ -78,21 +78,21 @@ export function CreateUser() {
                             minLength: 4,
                             maxLength: 100,
                             pattern: {
-                                value: /\S+@\S+\.\S+/,
+                                value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
                                 message: "Entered value does not match email format",
                             },
                         })}
                         type="email"
                     />
+                    {errors.email?.type === "pattern" && (
+                        <p role="alert" className="text-red-400">{errors.email.message}</p>
+                    )}
                     <p>Password</p>
                     <input
                         className="bg-gray-50 border border-white-300 text-gray-900 text-sm rounded-lg"
                         {...register("password", {required: true, minLength: 8, maxLength: 255})}
                         type="password"
                     />
-                    <div className="my-10 mx-5 text-red-600 font-mono text-lg">
-                        {error}
-                    </div>
                     <button
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
                         type="submit"
