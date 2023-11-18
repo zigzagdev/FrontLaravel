@@ -39,9 +39,10 @@ class UserController extends Controller
                 return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
             }
 
-            $this->createUserData($request);
-
+            $userId = $this->createUserData($request);
+            $request->merge(['id' => $userId]);
             DB::commit();
+
             return new UserResource($request);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -113,7 +114,7 @@ class UserController extends Controller
 
     private function createUserData($request)
     {
-        User::create(
+        $userData = User::create(
             [
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
@@ -124,6 +125,8 @@ class UserController extends Controller
                 'updated_at' => Carbon::now()
             ]
         );
+        $userId = $userData->id;
+        return $userId;
     }
 
     private function updateUserNameData($request, $userId)
