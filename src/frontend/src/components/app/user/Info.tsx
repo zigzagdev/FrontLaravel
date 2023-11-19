@@ -43,16 +43,12 @@ export function CreateUser() {
                 )
             })
             .catch((error: any) => {
-                if (error.res === 'Bad Request') {
+                if (error.res !== null) {
                     setError('User can not registered ...');
-                    return (
-                        navigate(`/Signup`)
-                    )
+                    setTimeout("location.href='/Create'", 5000);
                 } else {
                     setError('Internal server error is happened. Please do it again.');
-                    return (
-                        navigate(`/Signup`)
-                    )
+                    setTimeout("location.href='/Create'", 5000);
                 }
             });
     }
@@ -93,6 +89,7 @@ export function CreateUser() {
                         {...register("password", {required: true, minLength: 8, maxLength: 255})}
                         type="password"
                     />
+                    <p role="alert" className="my-10 mx-5 text-red-600 font-mono text-lg">{error}</p>
                     <button
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
                         type="submit"
