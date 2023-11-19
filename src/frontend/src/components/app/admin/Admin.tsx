@@ -5,6 +5,12 @@ import {useNavigate, useParams} from "react-router-dom";
 import AdminHeader from "../../common/header/AdminHeader";
 import AdminFooter from "../../common/footer/AdminFooter";
 
+type createAdmin = {
+    name: string,
+    email: string,
+    password: string,
+}
+
 type adminData = {
     id: number,
     name: string,
@@ -28,7 +34,80 @@ type userData = {
 }
 
 export function CreateAdmin() {
-
+    const [error, setError] = useState("");
+    const baseURL = process.env.REACT_APP_API_BASE_URL;
+    const navigate = useNavigate();
+    const {register, handleSubmit, formState: {errors}} = useForm<createAdmin>()
+    const onSubmit: SubmitHandler<createAdmin> = (data) => {
+        axios
+            .post(`${baseURL}./admin/create`, data)
+            .then((res) => {
+                const {id} = res.data.data.profile
+                return (
+                    navigate(`/Admin/${id}/Profile`)
+                )
+            })
+            .catch((error: any) => {
+                if (error.res !== null) {
+                    setError('User can not registered ...');
+                    setTimeout("location.href='/Admin/Create'", 10000);
+                } else {
+                    setError('Internal server error is happened. Please do it again.');
+                    setTimeout("location.href='/Admin/Create'", 10000);
+                }
+            });
+    }
+    return (
+        <>
+            <AdminHeader/>
+            <div className="my-10 mx-9">
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <p>Name</p>
+                    <input
+                        className="bg-gray-50 border border-white-300 text-gray-900 text-sm rounded-lg"
+                        {...register("name", {required: true, minLength: 4, maxLength: 100})}
+                        type="text"
+                    />
+                    {errors.name?.type === "required" && (
+                        <p role="alert" className="text-red-400">ItemName is required</p>
+                    )}
+                    <p>Email</p>
+                    <input
+                        className="bg-gray-50 border border-white-300 text-gray-900 text-sm rounded-lg"
+                        {...register("email", {
+                            required: "required",
+                            minLength: 4,
+                            maxLength: 100,
+                            pattern: {
+                                value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                                message: "Entered email does not match format",
+                            },
+                        })}
+                        type="email"
+                    />
+                    {errors.email?.type === "pattern" && (
+                        <p role="alert" className="text-red-400">{errors.email.message}</p>
+                    )}
+                    <p>Password</p>
+                    <input
+                        className="bg-gray-50 border border-white-300 text-gray-900 text-sm rounded-lg"
+                        {...register("password", {required: true, minLength: 8, maxLength: 255})}
+                        type="password"
+                    />
+                    <div>
+                        <p role="alert" className="text-red-700 text-ls">{error}</p>
+                    </div>
+                    <button
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                        type="submit"
+                    >
+                        Submit
+                    </button>
+                </form>
+            </div>
+            <AdminFooter/>
+        </>
+    )
 }
 
 export function AdminData() {
@@ -45,19 +124,11 @@ export function AdminData() {
         axios.get(`${baseURL}./admin/${id}/profile`)
             .then(res => {
                 setAdminData(res.data.data.profile)
+                console.log(res.data.statusMessage)
             })
             .catch((error: any) => {
-                if (error.response.statusText == 'Bad Request') {
-                    setError('Email or Password is wrong ...');
-                    return (
-                        navigate(`/Admin/Login`)
-                    )
-                } else {
-                    setError('Internal server error is happened. Please do it again.');
-                    return (
-                        navigate(`/Admin/Login`)
-                    )
-                }
+                setError('Email or Password is wrong ...');
+                setTimeout("location.href='/Admin/Login'", 10000);
             })
     }, [])
     return (
@@ -78,6 +149,7 @@ export function AdminData() {
                                font-bold py-2 px-4 border border-blue-700 rounded">
                     <a href="/Admin/Update/Email">Email</a>
                 </button>
+                <p role="alert" className="text-red-700 text-ls">{error}</p>
             </div>
             <AdminFooter/>
         </>
@@ -105,11 +177,9 @@ export function EditAdminName() {
                 )
             })
             .catch((error: any) => {
-                if (error.response.statusText == 'Bad Request') {
+                if (error.response !== null) {
                     setError('Item Information could not updated ...');
-                    return (
-                        navigate(`/Admin/Login`)
-                    )
+                    setTimeout("location.href=`/Admin/${id}/Profile`", 10000);
                 } else {
                     setError('Internal server error is happened. Please do it again.');
                     return (
@@ -124,17 +194,8 @@ export function EditAdminName() {
                 setAdminName(res.data.data.profile)
             })
             .catch((error: any) => {
-                if (error.response.statusText == 'Bad Request') {
-                    setError('Email or Password is wrong ...');
-                    return (
-                        navigate(`/Admin/Login`)
-                    )
-                } else {
-                    setError('Internal server error is happened. Please do it again.');
-                    return (
-                        navigate(`/Admin/Login`)
-                    )
-                }
+                setError('Email or Password is wrong ...');
+                setTimeout("location.href='/Admin/Login'", 10000);
             })
     }, [])
     return (
@@ -162,9 +223,7 @@ export function EditAdminName() {
                     {errors.name && errors.name.type === "maxLength" && (
                         <p role="alert" className="text-red-500">You have to written in less than 100 characters.</p>
                     )}
-                    <div className="my-10 mx-5 text-red-600 font-mono text-lg">
-                        {error}
-                    </div>
+                    <p className="my-10 mx-5 text-red-600 font-mono text-lg">{error}</p>
                     <button
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
                         type="submit"
@@ -206,16 +265,12 @@ export function EditAdminEmail() {
                 )
             })
             .catch((error: any) => {
-                if (error.response.statusText == 'Bad Request') {
+                if (error.response.statusText !== null) {
                     setError('Item Information could not updated ...');
-                    return (
-                        navigate(`/Admin/Login`)
-                    )
+                    setTimeout("location.href=`/Admin/${id}/Profile`", 5000);
                 } else {
                     setError('Internal server error is happened. Please do it again.');
-                    return (
-                        navigate(`/Admin/Login`)
-                    )
+                    setTimeout("location.href='/Admin/Login'", 5000);
                 }
             })
     };
@@ -264,7 +319,6 @@ export function AllUsers() {
     const [users, setUsers] = useState<userData[]>([]);
     const [error, setError] = useState("");
     const baseURL = process.env.REACT_APP_API_BASE_URL;
-    const navigate = useNavigate();
     const {id} = useParams<{ id: string }>();
     useEffect(() => {
         axios.get(`${baseURL}./admin/${id}/user/all`)
@@ -272,17 +326,8 @@ export function AllUsers() {
                 setUsers(res.data.data.userInformation)
             })
             .catch((error: any) => {
-                if (error.response.statusText == 'Bad Request') {
-                    setError('Email or Password is wrong ...');
-                    return (
-                        navigate(`/Admin/Login`)
-                    )
-                } else {
-                    setError('Internal server error is happened. Please do it again.');
-                    return (
-                        navigate(`/Admin/Login`)
-                    )
-                }
+                setError('Email or Password is wrong ...');
+                setTimeout("location.href=`/Admin/${id}/Profile`", 10000);
             })
     }, [])
     return (
@@ -304,6 +349,7 @@ export function AllUsers() {
                         </div>
                     )
                 })}
+                <p role="alert" className="text-red-400">{error}</p>
             </div>
             <AdminFooter/>
         </>
