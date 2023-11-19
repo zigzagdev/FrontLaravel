@@ -14,7 +14,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\Api\AdminRequest;
 use App\Http\Resources\Api\ErrorResource;
-use App\Http\Resources\Api\RegisterAdminResource;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use App\Consts\Common;
@@ -44,10 +43,11 @@ class AdminController extends Controller
                 return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
             }
 
-            $this->adminCreateData($request);
+            $adminId = $this->adminCreateData($request);
             DB::commit();
+            $request->merge(['id' => $adminId]);
 
-            return new RegisterAdminResource($request);
+            return new AdminResource($request);
         } catch (\Exception $e) {
             DB::rollBack();
             $request->merge(['statusMessage' => sprintf(Common::REGISTER_FAILED, 'アカウント')]);
@@ -148,7 +148,7 @@ class AdminController extends Controller
 
     private function adminCreateData($request)
     {
-        Admin::create(
+        $adminData = Admin::create(
             [
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
@@ -159,6 +159,8 @@ class AdminController extends Controller
                 'updated_at' => Carbon::now()
             ]
         );
+        $adminId = $adminData->id;
+        return $adminId;
     }
 
     private function updateAdminNameData($request, $adminId)

@@ -13,7 +13,7 @@ import {AdminLogin} from "../components/app/auth/AdminLogin";
 import {UserLogin} from "../components/app/auth/UserLogin";
 import Result from "../components/app/input/Result";
 import {ShowSlug, EditSlug} from "../components/app/post/PostSlug";
-import {AdminData, AllUsers, EditAdminEmail, EditAdminName} from "../components/app/admin/Admin";
+import {AdminData, AllUsers, CreateAdmin, EditAdminEmail, EditAdminName} from "../components/app/admin/Admin";
 import {CreateUser, EachUserData, EditUserEmail, EditUserName} from "../components/app/user/Info";
 
 
@@ -29,6 +29,7 @@ export default function EachRoute() {
                 <Route path="/Posts" element={<Posts/>}/>
                 <Route path="/Result" element={<Result/>}/>
                 <Route path="/Signup" element={<CreateUser/>}/>
+                <Route path="/Admin/Create" element={<CreateAdmin/>}/>
                 <Route path="*" element={<NotFound/>}/>
                 //AdminProvider
                 <Route path="/Admin/:id/Profile" element={<AdminData/>}/>
