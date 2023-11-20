@@ -33,8 +33,8 @@ class ItemFlag extends Model
         ])->leftjoin('items', function ($join) {
             $join->on('item_display.item_id', '=', 'items.id');
         })->where('item_display.is_display', '=', Number::Display_Flag)
-            ->orderBy('items.id', 'desc')
-            ->paginate(10);
+            ->orderBy('items.id', 'asc')
+            ->paginate(9);
     }
 
     public static function onDateSearchItems($searchQuery)

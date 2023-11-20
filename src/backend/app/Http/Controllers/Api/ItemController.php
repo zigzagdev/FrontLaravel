@@ -34,7 +34,7 @@ class ItemController extends Controller
     {
         try {
             DB::beginTransaction();
-            $adminId = $request->admin_id;
+            $adminId = $request->route('id');
             $admin = Admin::where('id', $adminId)->first();
 
             if (empty($admin)) {
@@ -79,13 +79,13 @@ class ItemController extends Controller
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
                 return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
             }
-            $changeItems = $displayItems->toArray();
-            foreach ($changeItems as $key => $value) {
+
+            foreach ($displayItems as $key => $value) {
                 $insertNumber = $value['category'];
-                $changeItems[$key]['categoryName'] = Category::genre[$insertNumber];
+                $displayItems[$key]['categoryName'] = Category::genre[$insertNumber];
             }
 
-            return new ItemCollection($changeItems);
+            return new ItemCollection($displayItems);
         } catch (Exception $e) {
             $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, 'アイテム')]);
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
@@ -108,13 +108,11 @@ class ItemController extends Controller
                 }
                 return new SearchCollection($arrayResult);
             } else {
-                $arrayResult = $resultItem->toArray();
-
-                foreach ($arrayResult as $key => $value) {
+                foreach ($resultItem as $key => $value) {
                     $insertNumber = $value['category'];
-                    $arrayResult[$key]['categoryName'] = Category::genre[$insertNumber];
+                    $resultItem[$key]['categoryName'] = Category::genre[$insertNumber];
                 }
-                return new SearchCollection($arrayResult);
+                return new SearchCollection($resultItem);
             }
         } catch (Exception $e) {
             $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, 'アイテム')]);
