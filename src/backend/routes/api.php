@@ -43,10 +43,10 @@ Route::group(['middleware' => ['admin']], function () {
         Route::get('/admin/{id}/user/all', 'allUser');
     });
     Route::controller(ItemController::class)->group(function () {
-        Route::post('/create/item', 'createItem');
-        Route::get('/item/{slug}', 'displayItem');
-        Route::post('/item/{slug}', 'deleteItem');
-        Route::put('/item/{slug}/update', 'updateItem');
+        Route::post('/{id}/create/item', 'createItem');
+        Route::get('/{id}/item/{slug}', 'displayItem');
+        Route::post('/{id}/item/{slug}', 'deleteItem');
+        Route::put('/{id}/item/{slug}/update', 'updateItem');
     });
     Route::controller(AuthenticationController::class)->group(function () {
         Route::post('/logout', 'logoutAction');

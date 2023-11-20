@@ -34,7 +34,7 @@ class ItemFlag extends Model
             $join->on('item_display.item_id', '=', 'items.id');
         })->where('item_display.is_display', '=', Number::Display_Flag)
             ->orderBy('items.id', 'desc')
-            ->get();
+            ->paginate(10);
     }
 
     public static function onDateSearchItems($searchQuery)
@@ -56,6 +56,6 @@ class ItemFlag extends Model
                 $query->orWhere('items.category', "like", "%" . $searchQuery . "%");
             })
             ->orderBy('items.id', 'asc')
-            ->get();
+            ->paginate(10);
     }
 }
