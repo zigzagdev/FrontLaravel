@@ -8,6 +8,23 @@ use Illuminate\Support\Str;
 
 class ItemCollection extends ResourceCollection
 {
+    private $pagination;
+
+    public function __construct($resource)
+    {
+        $this->pagination = [
+            'total' => $resource->total(),
+            'perPage' => $resource->perPage(),
+            'currentPage' => $resource->currentPage(),
+            'from' => $resource->firstItem(),
+            'to' => $resource->lastItem(),
+            'lastPage' => $resource->lastPage(),
+        ];
+
+        $resource = $resource->getCollection();
+
+        parent::__construct($resource);
+    }
     /**
      * Transform the resource collection into an array.
      *
@@ -28,7 +45,8 @@ class ItemCollection extends ResourceCollection
                     'slug' => $changeItems['slug'],
                     'categoryName' => $changeItems['categoryName']
                 ];
-            })
+            }),
+            'pagination' => $this->pagination
         ];
     }
 }
