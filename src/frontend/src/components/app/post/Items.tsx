@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import axios from "axios";
 import Search from "../input/Search";
 import {Link} from "react-router-dom";
+import {Pagination} from "../input/Result";
 
 type itemsData = {
     Id: number,
@@ -12,13 +13,34 @@ type itemsData = {
     slug: string
 }
 
+type pagination = {
+    total: number,
+    perPage: number,
+    currentPage: number,
+    from: number,
+    to: number,
+    lastPage: number
+}
+
 export function Posts() {
     const [items, setItems] = useState<itemsData[]>([]);
+    const [pagination, setPagination] = useState<pagination>(({
+        total: 0,
+        perPage: 0,
+        currentPage: 0,
+        from: 0,
+        to: 0,
+        lastPage: 0
+    }));
     const baseURL = process.env.REACT_APP_API_BASE_URL;
+    const [page, setPage] = useState(1);
+    const [lastPage, setLastPage] = useState(pagination.lastPage);
+    console.log(lastPage)
     useEffect(() => {
-        axios.get(`${baseURL}./items`)
+        axios.get(`${baseURL}./items?page=${page}`)
             .then(res => {
                 setItems(res.data.data.itemDetail)
+                setPagination(res.data.data.pagination)
             })
     }, [])
     return (
@@ -48,6 +70,7 @@ export function Posts() {
                         </Link>
                     )
                 })}
+
             </div>
         </>
     )
