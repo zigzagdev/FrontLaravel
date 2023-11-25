@@ -4,17 +4,18 @@ import {
     Routes,
     Route,
 } from "react-router-dom";
-import {Posts} from "../components/app/post/Posts";
+import {Items} from "../components/app/post/Items";
 import {TopPage} from "../components/TopPage";
 import Instagram from "../components/common/footer/Instagram";
 import NotFound from "../components/app/exception/NotFound";
 import Contact from "../components/common/footer/Contact";
 import {AdminLogin} from "../components/app/auth/AdminLogin";
 import {UserLogin} from "../components/app/auth/UserLogin";
-import Result from "../components/app/input/Result";
-import {ShowSlug, EditSlug} from "../components/app/post/PostSlug";
+import {Result} from "../components/app/input/Result";
+import {ShowSlug, EditSlug} from "../components/app/post/ItemSlug";
 import {AdminData, AllUsers, CreateAdmin, EditAdminEmail, EditAdminName} from "../components/app/admin/Admin";
 import {CreateUser, EachUserData, EditUserEmail, EditUserName} from "../components/app/user/Info";
+import Pagination from "../components/app/post/Pagination";
 
 
 export default function EachRoute() {
@@ -26,7 +27,7 @@ export default function EachRoute() {
                 <Route path="/" element={<TopPage/>}/>
                 <Route path="/Instagram" element={<Instagram/>}/>
                 <Route path="/Contact" element={<Contact/>}/>
-                <Route path="/Posts" element={<Posts/>}/>
+                <Route path="/Items" element={<Items/>}/>
                 <Route path="/Result" element={<Result/>}/>
                 <Route path="/Signup" element={<CreateUser/>}/>
                 <Route path="/Admin/Create" element={<CreateAdmin/>}/>
