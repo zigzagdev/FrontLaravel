@@ -29,7 +29,7 @@ class FetchItemResource extends JsonResource
                 'content' => $this->description,
                 'price' => number_format($this->price),
                 'slug' => $this->slug,
-                'admin_id' => $this->adminId,
+                'adminId' => $this->adminId,
                 'category' => $this->category,
                 'categoryName' => $this->categoryName
             ]

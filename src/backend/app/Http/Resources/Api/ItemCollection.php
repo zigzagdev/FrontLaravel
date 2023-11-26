@@ -19,12 +19,12 @@ class ItemCollection extends ResourceCollection
             'from' => $resource->firstItem(),
             'to' => $resource->lastItem(),
             'lastPage' => $resource->lastPage(),
+            'path' => $resource->path(),
         ];
-
         $resource = $resource->getCollection();
-
         parent::__construct($resource);
     }
+
     /**
      * Transform the resource collection into an array.
      *
@@ -43,10 +43,11 @@ class ItemCollection extends ResourceCollection
                     'content' => Str::limit($changeItems['description'], 15, '...'),
                     'price' => $changeItems['price'],
                     'slug' => $changeItems['slug'],
-                    'categoryName' => $changeItems['categoryName']
+                    'categoryName' => $changeItems['categoryName'],
+                    'adminId' => $changeItems['adminId']
                 ];
             }),
-            'pagination' => $this->pagination
+            'pagination' => $this->pagination,
         ];
     }
 }

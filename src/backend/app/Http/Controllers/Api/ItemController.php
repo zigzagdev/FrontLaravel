@@ -122,9 +122,10 @@ class ItemController extends Controller
     function displayItem(Request $request)
     {
         try {
+            $adminId = $request->route('id');
             $slug = $request->route('slug');
             $fetchItem = ItemFlag::onDateAllItems()->where('slug', $slug)->first();
-            if (!$fetchItem) {
+            if (empty($fetchItem)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
                 return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
             }
