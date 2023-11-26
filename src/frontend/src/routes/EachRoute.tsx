@@ -34,7 +34,7 @@ export default function EachRoute() {
                 <Route path="*" element={<NotFound/>}/>
                 //AdminProvider
                 <Route path="/Admin/:id/Profile" element={<AdminData/>}/>
-                <Route path="/Post/:slug" element={<ShowSlug/>}/>
+                <Route path=":id/Item/:slug" element={<ShowSlug/>}/>
                 <Route path="/Post/:slug/Edit" element={<EditSlug/>}/>
                 <Route path="Admin/Update/Email" element={<EditAdminName/>}/>
                 <Route path="Admin/Update/Name" element={<EditAdminEmail/>}/>
