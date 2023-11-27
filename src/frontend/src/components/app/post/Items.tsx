@@ -9,18 +9,40 @@ type itemsData = {
     content: string,
     price: number,
     category: string,
-    slug: string
+    slug: string,
+    perPage: number,
+    adminId: number
 }
 
-export function Posts() {
+type paginationData = {
+    perPage: number,
+    currentPage: number,
+    from: number,
+    to: number,
+    lastPage: number,
+    total: number
+}
+
+
+export function Items() {
     const [items, setItems] = useState<itemsData[]>([]);
+    const [paginationData, setPaginationData] = useState<paginationData>(({
+        perPage: 0,
+        currentPage: 0,
+        from: 0,
+        to: 0,
+        lastPage: 0,
+        total: 0
+    }));
     const baseURL = process.env.REACT_APP_API_BASE_URL;
     useEffect(() => {
         axios.get(`${baseURL}./items`)
             .then(res => {
                 setItems(res.data.data.itemDetail)
+                setPaginationData(res.data.data.pagination)
             })
     }, [])
+    console.log(items)
     return (
         <>
             <div
@@ -31,7 +53,7 @@ export function Posts() {
             <div className="my-24 mx-16">
                 {items.map((item) => {
                     return (
-                        <Link to={`/Post/${item.slug}`} state={{slug: item.slug}} key={item.Id}>
+                        <Link to={`${item.adminId}/Item/${item.slug}`} state={{slug: item.slug}} key={item.Id}>
                             <div className="my-8 mx-5 inline-block max-w-sm w-full lg:max-w-full lg:flex">
                                 <div
                                     className="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400

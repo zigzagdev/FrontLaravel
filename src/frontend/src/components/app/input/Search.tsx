@@ -3,27 +3,24 @@ import axios from "axios";
 import NotFound from "../exception/NotFound";
 import {useNavigate} from "react-router-dom";
 import Header from "../../common/header/Header";
-import Footer from "../../common/footer/Footer";
 
 export default function Search() {
     const [query, setQuery] = useState('');
     const [searchContent, setSearchContent] = useState("");
     const baseURL = process.env.REACT_APP_API_BASE_URL;
     const navigate = useNavigate();
+    const fetchData = async () => {
+        try {
+            const {data} = await axios.get(
+                `${baseURL}./search?q=${query}`
+            );
+            setSearchContent(data.products);
+            navigate(`/Result?q=${query}`)
+        } catch (error: any) {
+            <NotFound/>
+        }
+    };
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const {data} = await axios.get(
-                    `${baseURL}./search?q=${query}`
-                );
-                setSearchContent(data.products);
-            } catch (error: any) {
-                <NotFound/>
-            }
-        };
-        fetchData();
-    }, [searchContent]);
     return (
         <>
             <Header/>
@@ -40,15 +37,12 @@ export default function Search() {
                     />
                     <button
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-                        onClick={() => {
-                            navigate(`/Result?q=${query}`)
-                        }}
+                        onClick={() => fetchData()}
                     >
                         Search
                     </button>
                 </div>
             </div>
-            <Footer/>
         </>
     )
 }
