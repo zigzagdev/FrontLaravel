@@ -7,38 +7,35 @@ import {Genre} from "./Genre";
 type item = {
     id: number,
     name: string,
-    description: string,
     content: string,
     price: number,
-    categoryName: string,
-    category: number,
     slug: string,
-    admin_id: number
+    adminId: number,
+    category: number,
+    categoryName: string,
 }
 
 
 export function ShowSlug() {
-    const {slug} = useParams<{ slug: string }>()
-    const [item, setItem] = useState<item>({
+    const {slug} = useParams<{ slug: string }>();
+    const {id} = useParams<{id: string}>();
+    const [item, setItem] = useState<item>(({
         id: 0,
         name: "",
-        description: "",
         content: "",
         price: 0,
-        categoryName: "",
-        category: 0,
         slug: "",
-        admin_id: 0
-    });
+        adminId: 0,
+        category: 0,
+        categoryName: "",
+    }));
     const baseURL = process.env.REACT_APP_API_BASE_URL;
-
     useEffect(() => {
-        axios.get(`${baseURL}./item/` + slug)
+        axios.get(`${baseURL}./${id}/item/${slug}`)
             .then(res => {
                 setItem(res.data.data.profile)
             })
     }, [])
-
     return (
         <>
             <div className="my-4 mx-32 block text-lg duration-700">
@@ -72,19 +69,19 @@ export function EditSlug() {
         id: 0,
         name: "",
         content: "",
-        description: "",
         price: 0,
+        slug: "",
+        adminId: 0,
         category: 0,
         categoryName: "",
-        slug: "",
-        admin_id: 0
     }));
     const baseURL = process.env.REACT_APP_API_BASE_URL;
     const navigate = useNavigate();
+    const id = item.adminId
     const {register, handleSubmit, formState: {errors}} = useForm<item>()
 
     useEffect(() => {
-        axios.get(`${baseURL}./item/` + slug)
+        axios.get(`${baseURL}./${id}/item/${slug}`)
             .then(res => {
                 setItem(res.data.data.profile)
             })
@@ -95,11 +92,11 @@ export function EditSlug() {
             .put<item>(`${baseURL}./item/${slug}/update`, {
                 id: item.id,
                 name: data.name,
-                description: data.description,
+                content: data.content,
                 price: data.price,
                 category: data.categoryName,
                 slug: data.slug,
-                admin_id: item.admin_id
+                adminId: item.adminId
             })
             .then((res) => {
                 return (
@@ -153,7 +150,7 @@ export function EditSlug() {
                                    focus:ring-blue-500 focus:border-blue-500 block w-80 p-2.5 dark:bg-gray-700
                                    dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
                                    dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    {...register("description", {required: true, minLength: 4})}
+                                    {...register("content", {required: true, minLength: 4})}
                                 />
                             </p>
                         </div>

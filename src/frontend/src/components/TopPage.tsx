@@ -1,10 +1,10 @@
 import React from "react";
-import {Posts} from "./app/post/Posts";
+import {Items} from "./app/post/Items";
 
 export function TopPage() {
     return (
         <>
-            <Posts/>
+            <Items/>
         </>
     )
 }

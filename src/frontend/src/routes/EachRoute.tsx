@@ -15,7 +15,6 @@ import {Result} from "../components/app/input/Result";
 import {ShowSlug, EditSlug} from "../components/app/post/ItemSlug";
 import {AdminData, AllUsers, CreateAdmin, EditAdminEmail, EditAdminName} from "../components/app/admin/Admin";
 import {CreateUser, EachUserData, EditUserEmail, EditUserName} from "../components/app/user/Info";
-import Pagination from "../components/app/post/Pagination";
 
 
 export default function EachRoute() {

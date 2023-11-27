@@ -2,7 +2,6 @@ import React, {useState, useEffect} from "react";
 import axios from "axios";
 import Search from "../input/Search";
 import {Link} from "react-router-dom";
-import {Pagination} from "../input/Result";
 
 type itemsData = {
     Id: number,
@@ -10,39 +9,40 @@ type itemsData = {
     content: string,
     price: number,
     category: string,
-    slug: string
+    slug: string,
+    perPage: number,
+    adminId: number
 }
 
-type pagination = {
-    total: number,
+type paginationData = {
     perPage: number,
     currentPage: number,
     from: number,
     to: number,
-    lastPage: number
+    lastPage: number,
+    total: number
 }
 
-export function Posts() {
+
+export function Items() {
     const [items, setItems] = useState<itemsData[]>([]);
-    const [pagination, setPagination] = useState<pagination>(({
-        total: 0,
+    const [paginationData, setPaginationData] = useState<paginationData>(({
         perPage: 0,
         currentPage: 0,
         from: 0,
         to: 0,
-        lastPage: 0
+        lastPage: 0,
+        total: 0
     }));
     const baseURL = process.env.REACT_APP_API_BASE_URL;
-    const [page, setPage] = useState(1);
-    const [lastPage, setLastPage] = useState(pagination.lastPage);
-    console.log(lastPage)
     useEffect(() => {
-        axios.get(`${baseURL}./items?page=${page}`)
+        axios.get(`${baseURL}./items`)
             .then(res => {
                 setItems(res.data.data.itemDetail)
-                setPagination(res.data.data.pagination)
+                setPaginationData(res.data.data.pagination)
             })
     }, [])
+    console.log(items)
     return (
         <>
             <div
@@ -53,7 +53,7 @@ export function Posts() {
             <div className="my-24 mx-16">
                 {items.map((item) => {
                     return (
-                        <Link to={`/Post/${item.slug}`} state={{slug: item.slug}} key={item.Id}>
+                        <Link to={`${item.adminId}/Item/${item.slug}`} state={{slug: item.slug}} key={item.Id}>
                             <div className="my-8 mx-5 inline-block max-w-sm w-full lg:max-w-full lg:flex">
                                 <div
                                     className="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400
@@ -70,7 +70,6 @@ export function Posts() {
                         </Link>
                     )
                 })}
-
             </div>
         </>
     )
