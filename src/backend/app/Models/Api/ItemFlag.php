@@ -56,6 +56,6 @@ class ItemFlag extends Model
                 $query->orWhere('items.category', "like", "%" . $searchQuery . "%");
             })
             ->orderBy('items.id', 'asc')
-            ->paginate(10);
+            ->paginate(9);
     }
 }
