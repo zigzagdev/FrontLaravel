@@ -3,7 +3,6 @@ import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {useForm, SubmitHandler} from "react-hook-form";
 import AdminHeader from "../../common/header/AdminHeader";
-import AdminFooter from "../../common/footer/AdminFooter";
 
 type Inputs = {
     email: string,
@@ -74,9 +73,9 @@ export function AdminLogin() {
                             <span className="text-blue-700">Min length exceeded</span>
                         )}
                     </div>
-                    <div className="flex">
+                    <div className="flex my-4">
                         <button
-                            className="btn btn-outline-primary text-center shadow-none mb-3"
+                            className="btn btn-outline-primary text-center shadow-none mb-3 my-4"
                             type="submit"
                         >
                             Submit
@@ -91,7 +90,6 @@ export function AdminLogin() {
                     }
                 </form>
             </div>
-            <AdminFooter/>
         </>
     )
 }
