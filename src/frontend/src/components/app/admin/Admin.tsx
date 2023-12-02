@@ -114,7 +114,6 @@ export function AdminData() {
     const baseURL = process.env.REACT_APP_API_BASE_URL;
     const {id} = useParams<{ id: string }>();
     const [error, setError] = useState("");
-    const navigate = useNavigate();
     const [adminData, setAdminData] = useState<adminData>({
         id: 0,
         email: '',
@@ -124,7 +123,6 @@ export function AdminData() {
         axios.get(`${baseURL}./admin/${id}/profile`)
             .then(res => {
                 setAdminData(res.data.data.profile)
-                console.log(res.data.statusMessage)
             })
             .catch((error: any) => {
                 setError('Email or Password is wrong ...');
