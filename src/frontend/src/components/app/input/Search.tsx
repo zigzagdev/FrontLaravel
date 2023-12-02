@@ -1,12 +1,12 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 import axios from "axios";
-import NotFound from "../exception/NotFound";
 import {useNavigate} from "react-router-dom";
 import Header from "../../common/header/Header";
 
 export default function Search() {
     const [query, setQuery] = useState('');
     const [searchContent, setSearchContent] = useState("");
+    const [error, setError] = useState("");
     const baseURL = process.env.REACT_APP_API_BASE_URL;
     const navigate = useNavigate();
     const fetchData = async () => {
@@ -17,10 +17,9 @@ export default function Search() {
             setSearchContent(data.products);
             navigate(`/Result?q=${query}`)
         } catch (error: any) {
-            <NotFound/>
+            setError('Some words must be filled ...');
         }
     };
-
     return (
         <>
             <Header/>
@@ -37,10 +36,12 @@ export default function Search() {
                     />
                     <button
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-                        onClick={() => fetchData()}
+                        type="submit"
+                        onClick={fetchData}
                     >
                         Search
                     </button>
+                    <p className="my-10 mx-5 text-red-600 font-mono text-lg">{error}</p>
                 </div>
             </div>
         </>

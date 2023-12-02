@@ -42,7 +42,6 @@ export function Items() {
                 setPaginationData(res.data.data.pagination)
             })
     }, [])
-    console.log(items)
     return (
         <>
             <div

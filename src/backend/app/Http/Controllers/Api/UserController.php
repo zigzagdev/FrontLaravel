@@ -47,7 +47,6 @@ class UserController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             $request->merge(['statusMessage' => sprintf(Common::REGISTER_FAILED, 'ユーザーアカウント')]);
-
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }

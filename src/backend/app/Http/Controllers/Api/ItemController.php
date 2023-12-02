@@ -98,14 +98,8 @@ class ItemController extends Controller
             $searchQuery = $request->q;
             $resultItem = ItemFlag::onDateSearchItems($searchQuery);
             if (empty($searchQuery) || empty($resultItem)) {
-                $searchItems = ItemFlag::onDateAllItems();
-                $arrayResult = $searchItems->toArray();
-
-                foreach ($arrayResult as $key => $value) {
-                    $insertNumber = $value['category'];
-                    $arrayResult[$key]['categoryName'] = Category::genre[$insertNumber];
-                }
-                return new SearchCollection($arrayResult);
+                $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, 'アイテム')]);
+                return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
             } else {
                 foreach ($resultItem as $key => $value) {
                     $insertNumber = $value['category'];
