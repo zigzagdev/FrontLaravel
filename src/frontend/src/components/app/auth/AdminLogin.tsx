@@ -46,9 +46,11 @@ export function AdminLogin() {
                     <h1 className="my-5">
                         <strong className="text-red-600">Login</strong>
                     </h1>
-                    <p className="item">
-                        <label htmlFor="email">Email</label>
+                    <div className="flex my-4">
+                        <label htmlFor="email" className="float-left mx-10">Email</label>
                         <input
+                            type="email"
+                            className="flex"
                             {...register("email", {required: true, minLength: 4})}
                         />
                         {errors.email?.type === "required" && (
@@ -57,25 +59,29 @@ export function AdminLogin() {
                         {errors.email && errors.email.type === "minLength" && (
                             <span className="text-blue-700">Min length exceeded</span>
                         )}
-                    </p>
-                    <p className="item">
-                        <label htmlFor="password"> Password </label>
-                        <input type="password" {...register("password", {required: true, minLength: 8})}/>
+                    </div>
+                    <div className="flex my-4">
+                        <label htmlFor="password" className="float-left mx-10"> Password </label>
+                        <input
+                            type="password"
+                            {...register("password", {required: true, minLength: 8})}
+                            className="flex"
+                        />
                         {errors.password?.type === "required" && (
                             <span role="alert" className="text-red-400">Password is required</span>
                         )}
                         {errors.password && errors.password.type === "minLength" && (
                             <span className="text-blue-700">Min length exceeded</span>
                         )}
-                    </p>
-                    <p className="item">
+                    </div>
+                    <div className="flex">
                         <button
                             className="btn btn-outline-primary text-center shadow-none mb-3"
                             type="submit"
                         >
                             Submit
                         </button>
-                    </p>
+                    </div>
                     {
                         <div className="my-5">
                             <span className="text-blue-400 text-lg">
