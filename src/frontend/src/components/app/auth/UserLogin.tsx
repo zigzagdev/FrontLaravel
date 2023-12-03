@@ -12,9 +12,12 @@ type Inputs = {
 
 export function UserLogin() {
     const [error, setError] = useState('');
+    const [visiblePassword, setVisiblePassword] = useState(false);
     const baseURL = process.env.REACT_APP_API_BASE_URL;
     const navigate = useNavigate();
-
+    const showPassword = () => {
+        setVisiblePassword((prevState) => !prevState);
+    }
     const {register, handleSubmit, formState: {errors}} = useForm<Inputs>()
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         axios
@@ -52,9 +55,13 @@ export function UserLogin() {
                     <h1 className="my-5">
                         <strong className="text-red-600">Login</strong>
                     </h1>
-                    <p className="item">
-                        <label htmlFor="email">Email</label>
+                    <div className="">
+                        <label htmlFor="email" className="float-left mx-10">Email</label>
                         <input
+                            autoComplete="email"
+                            type="email"
+                            className=""
+                            placeholder="Enter your mail"
                             {...register("email", {required: true, minLength: 4})}
                         />
                         {errors.email?.type === "required" && (
@@ -63,17 +70,24 @@ export function UserLogin() {
                         {errors.email && errors.email.type === "minLength" && (
                             <span className="text-blue-700">Min length exceeded</span>
                         )}
-                    </p>
-                    <p className="item">
-                        <label htmlFor="password"> Password </label>
-                        <input type="password" {...register("password", {required: true, minLength: 8})}/>
+                    </div>
+                    <div className="">
+                        <label htmlFor="password">Password</label>
+                        <input
+                            autoComplete="password"
+                            {...register("password", {required: true, minLength: 8})}
+                            className="flex"
+                            placeholder="Enter your password"
+                            type={visiblePassword ? "text" : "password"}
+                        />
+                        <span className="mx-1" onClick={showPassword}>show password</span>
                         {errors.password?.type === "required" && (
                             <span role="alert" className="text-red-400">Password is required</span>
                         )}
                         {errors.password && errors.password.type === "minLength" && (
                             <span className="text-blue-700">Min length exceeded</span>
                         )}
-                    </p>
+                    </div>
                     <p className="item">
                         <button
                             className="btn btn-outline-primary text-center shadow-none mb-3"
