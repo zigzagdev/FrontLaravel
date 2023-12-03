@@ -62,16 +62,16 @@ export function CreateAdmin() {
             <AdminHeader/>
             <div className="my-10 mx-9">
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <p>Name</p>
+                    <div>Name</div>
                     <input
                         className="bg-gray-50 border border-white-300 text-gray-900 text-sm rounded-lg"
                         {...register("name", {required: true, minLength: 4, maxLength: 100})}
                         type="text"
                     />
                     {errors.name?.type === "required" && (
-                        <p role="alert" className="text-red-400">ItemName is required</p>
+                        <span role="alert" className="text-red-400">ItemName is required</span>
                     )}
-                    <p>Email</p>
+                    <div>Email</div>
                     <input
                         className="bg-gray-50 border border-white-300 text-gray-900 text-sm rounded-lg"
                         {...register("email", {
@@ -84,18 +84,20 @@ export function CreateAdmin() {
                             },
                         })}
                         type="email"
+                        autoComplete="email"
                     />
                     {errors.email?.type === "pattern" && (
-                        <p role="alert" className="text-red-400">{errors.email.message}</p>
+                        <span role="alert" className="text-red-400">{errors.email.message}</span>
                     )}
-                    <p>Password</p>
+                    <div>Password</div>
                     <input
                         className="bg-gray-50 border border-white-300 text-gray-900 text-sm rounded-lg"
                         {...register("password", {required: true, minLength: 8, maxLength: 255})}
                         type="password"
+                        autoComplete="password"
                     />
                     <div>
-                        <p role="alert" className="text-red-700 text-ls">{error}</p>
+                        <span role="alert" className="text-red-700 text-ls">{error}</span>
                     </div>
                     <button
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
