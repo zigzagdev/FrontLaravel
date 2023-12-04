@@ -20,6 +20,7 @@ use App\Http\Controllers\Api\AuthenticationController;
 Route::controller(AuthenticationController::class)->group(function () {
     Route::post('/admin/login', 'adminLogin');
     Route::post('/login', 'userLogin');
+    Route::post('/reset/password', 'userPasswordReset');
 });
 
 Route::controller(AdminController::class)->group(function () {
