@@ -33,7 +33,7 @@ class UpdateEmailRequest extends CommonRequest
             "email.required" => $message['required'],
             "email.min" => sprintf($message['min'], 4),
             "email.max" => sprintf($message['max'], 255),
-            "email.email" => $message['email'],
+            "email.strict" => $message['email'],
             "email.unique" => $message['unique']
         ];
     }

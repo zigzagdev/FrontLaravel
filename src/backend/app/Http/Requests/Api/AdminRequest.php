@@ -39,16 +39,15 @@ class AdminRequest extends CommonRequest
             "name.regex" => $message['regex'],
 
             //password
-            "password.required" => $message['required'],
             "password.min" => sprintf($message['min'], 8),
             "password.max" => sprintf($message['max'], 255),
-            "password.regex" => $message['regex'],
+            "password.required" => $message['required'],
 
             //email
             "email.required" => $message['required'],
             "email.min" => sprintf($message['min'], 4),
             "email.max" => sprintf($message['max'], 255),
-            "email.email" => $message['email'],
+            "email.strict" => $message['email'],
             "email.unique" => $message['unique']
         ];
     }

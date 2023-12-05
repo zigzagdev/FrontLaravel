@@ -43,7 +43,7 @@ class CommonRequest extends FormRequest
             'string' => ':attributeが不正です。',
             'integer' => ':attributeが不正です。',
             'date' => ':attributeには日付のみ入力可能です。',
-            'email' => ':attributeの形式が正しくありません。',
+            'strict' => ':attributeの形式が正しくありません。',
             'unique' => ':attributeは既に使用されています。',
             'min' => ':attributeの値は%d文字以上の文字数が必要です。',
             'max' => ':attributeの値は%d文字以下の文字数でお願いします。',
