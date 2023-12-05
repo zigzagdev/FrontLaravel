@@ -27,9 +27,12 @@ class CommonRequest extends FormRequest
     public function attributes()
     {
         return [
-            'address' => 'メールアドレス',
-            'password' => 'パスワード',
-            'name' => '名前',
+            "email" => "メールアドレス",
+            "password" => "パスワード",
+            "name" => "名前",
+            "description" => "商品説明",
+            "price" => "価格",
+            "category" => "カテゴリー",
         ];
     }
 
@@ -40,7 +43,7 @@ class CommonRequest extends FormRequest
             'string' => ':attributeが不正です。',
             'integer' => ':attributeが不正です。',
             'date' => ':attributeには日付のみ入力可能です。',
-            'email' => 'メールアドレスの形式が正しくありません。',
+            'email' => ':attributeの形式が正しくありません。',
             'unique' => ':attributeは既に使用されています。',
             'min' => ':attributeの値は%d文字以上の文字数が必要です。',
             'max' => ':attributeの値は%d文字以下の文字数でお願いします。',
