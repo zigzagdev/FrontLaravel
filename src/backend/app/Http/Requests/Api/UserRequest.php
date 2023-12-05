@@ -42,7 +42,6 @@ class UserRequest extends CommonRequest
             "password.required" => $message['required'],
             "password.min" => sprintf($message['min'], 8),
             "password.max" => sprintf($message['max'], 255),
-            "password.regex" => $message['regex'],
 
             //email
             "email.required" => $message['required'],
