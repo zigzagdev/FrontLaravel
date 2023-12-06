@@ -97,7 +97,7 @@ export function UserLogin() {
                         </div>
                     </div>
                     <div className="text-right mb-5 mt-10">
-                        <Link to= "" className="font-bold text-blue-500">
+                        <Link to= "/Password/Reset" className="font-bold text-blue-500">
                             Forgot password ?
                         </Link>
                     </div>
