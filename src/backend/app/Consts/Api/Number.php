@@ -26,6 +26,11 @@ class Number
     public const Three_Months = 3;
     public const Six_Months = 6;
 
+    public const One_Hour = 1;
+    public const Two_Hours = 2;
+    public const Three_Hours = 3;
+    public const Four_Hours = 4;
+
     public const Is_Admin_True = 1;
     public const Is_Admin_False = 2;
 }
