@@ -47,7 +47,7 @@ class AdminRequest extends CommonRequest
             "email.required" => $message['required'],
             "email.min" => sprintf($message['min'], 4),
             "email.max" => sprintf($message['max'], 255),
-            "email.strict" => $message['email'],
+            "email.strict" => $message['strict'],
             "email.unique" => $message['unique']
         ];
     }

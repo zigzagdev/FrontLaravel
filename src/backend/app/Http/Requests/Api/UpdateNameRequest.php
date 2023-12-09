@@ -23,7 +23,6 @@ class UpdateNameRequest extends CommonRequest
     {
         return [
             "name" => "required|min:4||max:100|string",
-            "admin_id" => "required"
         ];
     }
 
@@ -35,7 +34,6 @@ class UpdateNameRequest extends CommonRequest
             "name.min" => sprintf($message['min'], 4),
             "name.max" => sprintf($message['max'], 100),
             "name.regex" => $message['regex'],
-            "admin_id.required" => $message['required'],
         ];
     }
 }
