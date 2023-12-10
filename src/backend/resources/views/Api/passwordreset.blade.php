@@ -1,5 +1,8 @@
-@include('Common.header')
+@extends('Common.master')
+@section('content')
+     Please click the below URL to reset your password.
+     This URL is valid in 1 hour.
 
-{{$url}}
 
-@include('Common.footer')
+    {{$url}}
+@endsection
