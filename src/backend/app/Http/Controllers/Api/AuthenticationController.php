@@ -6,13 +6,21 @@ use App\Consts\Api\Number;
 use App\Consts\Common;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\LoginRequest;
+use App\Http\Requests\Api\PasswordResetRequest;
 use App\Http\Resources\Api\AdminLoginResource;
+use App\Http\Resources\Api\SendResetPasswordResource;
 use App\Http\Resources\Api\UserLoginResource;
 use App\Http\Resources\Api\ErrorResource;
+use App\Mail\Api\PasswordResetMail;
 use App\Models\Api\Admin;
 use App\Models\Api\User;
+use App\Models\Api\UserRememberToken;
+use App\Services\RememberToken;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\DB;
@@ -80,6 +88,42 @@ class AuthenticationController extends Controller
         }
     }
 
+    public function sendResetPasswordEmail(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+            $sendEmail = User::where('email', $request->email)->first();
+
+            if (empty($sendEmail)) {
+                return null;
+            }
+            $rememberUserData = RememberToken::generateRememberToken($sendEmail);
+            $url = url("/password/edit/?email={$request->email}&token={$rememberUserData->remember_token}");
+            DB::commit();
+
+            Mail::to($rememberUserData->email)->send(new PasswordResetMail($url));
+
+            return new SendResetPasswordResource($request);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, 'ユーザー')]);
+            return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    public function resetPassword(PasswordResetRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+            $newPassword = $request->password;
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+        }
+    }
+
+
 //    public function logoutAuth($request)
 //    {
 //        try {
@@ -92,3 +136,7 @@ class AuthenticationController extends Controller
 //        }
 //    }
 }
+
+//SELECT user_id FROM `user_remember_tokens` left join `users`
+//on `user_remember_tokens`.`user_id` = `users`.id;
+

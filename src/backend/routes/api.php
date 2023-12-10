@@ -20,7 +20,9 @@ use App\Http\Controllers\Api\AuthenticationController;
 Route::controller(AuthenticationController::class)->group(function () {
     Route::post('/admin/login', 'adminLogin');
     Route::post('/login', 'userLogin');
-    Route::post('/reset/password', 'userPasswordReset');
+    Route::post('/send/reset/password/mail', 'sendResetPasswordEmail');
+    Route::get('/password/edit', 'resetPassword')->name('reset.password');
+    Route::post('/password/update', 'userPasswordReset');
 });
 
 Route::controller(AdminController::class)->group(function () {

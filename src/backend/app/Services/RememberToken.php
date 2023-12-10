@@ -17,7 +17,6 @@ class RememberToken
         if (!empty($rememberUserData)) {
             $rememberUserData->delete();
         }
-        var_dump($sendEmail->email);
         $rememberUserData = UserRememberToken::create(
             [
                 'remember_token' => $rememberToken,
