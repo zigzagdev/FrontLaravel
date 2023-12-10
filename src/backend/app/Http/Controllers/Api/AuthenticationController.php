@@ -98,7 +98,7 @@ class AuthenticationController extends Controller
                 return null;
             }
             $rememberUserData = RememberToken::generateRememberToken($sendEmail);
-            $url = url("/password/edit/?email={$request->email}&token={$rememberUserData->remember_token}");
+            $url = env('FRONT_URL').'ResetPassword/?email='.$request->email.'?token='.$rememberUserData->remember_token;
             DB::commit();
 
             Mail::to($rememberUserData->email)->send(new PasswordResetMail($url));
@@ -115,7 +115,8 @@ class AuthenticationController extends Controller
     {
         try {
             DB::beginTransaction();
-            $newPassword = $request->password;
+            $validToken = $request->query('token');
+            if (RememberToken::where(''))
 
             DB::commit();
         } catch (\Exception $e) {
