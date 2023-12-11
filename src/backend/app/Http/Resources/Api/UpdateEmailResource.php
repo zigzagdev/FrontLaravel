@@ -12,10 +12,9 @@ class UpdateEmailResource extends JsonResource
      * @param \Illuminate\Http\Request $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
-    public function __construct($resource, $statusCode = 201)
+    public function __construct($resource)
     {
         parent::__construct($resource);
-        $this->statusCode = $statusCode;
     }
 
 
