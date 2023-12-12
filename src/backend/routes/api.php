@@ -21,7 +21,7 @@ Route::controller(AuthenticationController::class)->group(function () {
     Route::post('/admin/login', 'adminLogin');
     Route::post('/login', 'userLogin');
     Route::post('/send/reset/password/mail', 'sendResetPasswordEmail');
-    Route::get('/password/edit', 'resetPassword')->name('reset.password');
+    Route::get('/password/reset', 'resetPassword')->name('reset.password');
     Route::post('/password/update', 'userPasswordReset');
 });
 
