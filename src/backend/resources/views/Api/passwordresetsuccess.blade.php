@@ -1,7 +1,8 @@
 @extends('Common.master')
 @section('content')
     Your password was updated successfully !
-    Please log in to app this below URL
+    Please log in app with this below URL
 
-    {{$url}}
+
+    {{$loginUrl}}
 @endsection
