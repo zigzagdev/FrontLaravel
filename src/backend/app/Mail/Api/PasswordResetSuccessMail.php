@@ -18,9 +18,10 @@ class PasswordResetSuccess extends Mailable
      *
      * @return void
      */
-    public function __construct($url)
+    public function __construct($formUrl, $loginUrl)
     {
-        $this->url = $url;
+        $this->formUrl = $formUrl;
+        $this->loginUrl = $loginUrl;
     }
 
     public function build()
@@ -30,7 +31,8 @@ class PasswordResetSuccess extends Mailable
                 ->subject("Password Reset Success Mail")
                 ->text("Api.PasswordResetSuccess")
                 ->with([
-                    'url' => $this->url,
+                    'formUrl' => $this->formUrl,
+                    'loginUrl' => $this->loginUrl
                 ])
         ];
     }
