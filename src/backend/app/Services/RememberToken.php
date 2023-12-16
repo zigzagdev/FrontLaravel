@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 
 class RememberToken
 {
-    public static function generateRememberToken ($sendEmail)
+    public static function generateRememberToken($sendEmail)
     {
         $rememberToken = Str::random(20);
 
