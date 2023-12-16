@@ -9,9 +9,11 @@ use App\Http\Requests\Api\LoginRequest;
 use App\Http\Requests\Api\PasswordResetRequest;
 use App\Http\Resources\Api\AdminLoginResource;
 use App\Http\Resources\Api\SendResetPasswordResource;
+use App\Http\Resources\Api\UpdatePasswordResource;
 use App\Http\Resources\Api\UserLoginResource;
 use App\Http\Resources\Api\ErrorResource;
 use App\Mail\Api\PasswordResetMail;
+use App\Mail\Api\PasswordResetSuccessMail;
 use App\Models\Api\Admin;
 use App\Models\Api\User;
 use App\Models\Api\UserRememberToken;
@@ -20,7 +22,6 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\DB;
@@ -98,15 +99,20 @@ class AuthenticationController extends Controller
                 return null;
             }
             $rememberUserData = RememberToken::generateRememberToken($sendEmail);
-            $url = env('FRONT_URL').'ResetPassword/?email='.$request->email.'?token='.$rememberUserData->remember_token;
+            $beforeUrl = env('FRONT_URL') . "Reset/Password/" . $request->email . "/" . $rememberUserData->remember_token;
+            $changeUrl = htmlspecialchars_decode($beforeUrl);
+
+            $formUrl = env('FRONT_URL') . "Contact";
             DB::commit();
 
-            Mail::to($rememberUserData->email)->send(new PasswordResetMail($url));
+            Mail::to($rememberUserData->email)->send(new PasswordResetMail($changeUrl, $formUrl));
 
             return new SendResetPasswordResource($request);
         } catch (\Exception $e) {
             DB::rollBack();
             $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, 'ユーザー')]);
+            $i = $e->getMessage();
+            var_dump($i);
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
@@ -116,11 +122,32 @@ class AuthenticationController extends Controller
         try {
             DB::beginTransaction();
             $validToken = $request->query('token');
-            if (RememberToken::where(''))
-
+            $validEmail = $request->query('email');
+            var_dump($validEmail);
+            $now = Carbon::now();
+            $userData = UserRememberToken::where('remember_token', $validToken)->first();
+            if ($userData->expire_at < $now) {
+                $request->merge(['statusMessage' => sprintf(Common::ERR_09)]);
+                return new ErrorResource($request);
+            }
+            if ($userData->email !== $validEmail) {
+                $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
+                return new ErrorResource($request);
+            }
+            $this->updateUserPassword($request, $validEmail);
+            $formUrl = env('FRONT_URL') . "Contact";
+            $loginUrl = env('FRONT_URL') . "Login";
             DB::commit();
+
+            Mail::to($userData->email)->send(new PasswordResetSuccessMail($formUrl, $loginUrl));
+            return new UpdatePasswordResource($request);
+
         } catch (\Exception $e) {
             DB::rollBack();
+            $request->merge(['statusMessage' => sprintf(Common::UPDATE_FAILED, 'パスワード')]);
+            $jj = $e->getMessage();
+            var_dump($jj);
+            return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
 
@@ -136,8 +163,13 @@ class AuthenticationController extends Controller
 //            return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
 //        }
 //    }
+    private function updateUserPassword($request, $validEmail)
+    {
+        User::where('email', $validEmail)->update(
+            [
+                'password' => $request->input('password'),
+                'updated_at' => Carbon::now(),
+            ]
+        );
+    }
 }
-
-//SELECT user_id FROM `user_remember_tokens` left join `users`
-//on `user_remember_tokens`.`user_id` = `users`.id;
-
