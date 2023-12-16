@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class PasswordResetSuccess extends Mailable
+class PasswordResetSuccessMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -29,7 +29,7 @@ class PasswordResetSuccess extends Mailable
         return [
             $this->from(config('mail.from.address'))
                 ->subject("Password Reset Success Mail")
-                ->text("Api.PasswordResetSuccess")
+                ->text("Api.password_reset_success")
                 ->with([
                     'formUrl' => $this->formUrl,
                     'loginUrl' => $this->loginUrl

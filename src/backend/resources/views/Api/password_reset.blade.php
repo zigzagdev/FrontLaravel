@@ -4,5 +4,5 @@
      This URL is valid in 1 hour.
 
 
-    {{$url}}
+    {{$changeUrl}}
 @endsection

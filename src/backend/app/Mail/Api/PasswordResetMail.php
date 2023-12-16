@@ -18,9 +18,9 @@ class PasswordResetMail extends Mailable
      *
      * @return void
      */
-    public function __construct($url, $formUrl)
+    public function __construct($changeUrl, $formUrl)
     {
-        $this->url = $url;
+        $this->changeUrl = $changeUrl;
         $this->formUrl = $formUrl;
     }
 
@@ -29,9 +29,9 @@ class PasswordResetMail extends Mailable
         return [
             $this->from(config('mail.from.address'))
                 ->subject("Password Reset Mail")
-                ->text("Api.PasswordReset")
+                ->text("Api.password_reset")
                 ->with([
-                    'url' => $this->url,
+                    'changeUrl' => $this->changeUrl,
                     'formUrl' => $this->formUrl
                 ])
         ];
