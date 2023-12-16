@@ -1,4 +1,4 @@
-@include('Common.header')
+@include('Common.user-header')
 
 Thank you for using our application !
 
@@ -10,4 +10,4 @@ reset, let us know.
 
 {{$formUrl}}
 
-@include('Common.footer')
+@include('Common.user-footer')
