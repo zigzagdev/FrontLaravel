@@ -1,7 +1,5 @@
 @include('Common.user-header')
 
-Thank you for using our application !
-
 @yield('content')
 
 If you don't have any  request a password
