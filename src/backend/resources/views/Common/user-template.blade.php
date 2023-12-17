@@ -4,8 +4,7 @@ Thank you for using our application !
 
 @yield('content')
 
-If you ignore this message, your password will
-not be changed. If you did't request a password
+If you don't have any  request a password
 reset, let us know.
 
 {{$formUrl}}

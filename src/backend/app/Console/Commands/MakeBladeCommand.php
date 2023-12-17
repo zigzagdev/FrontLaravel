@@ -40,7 +40,7 @@ class MakeBladeCommand extends Command
             return;
         }
 
-        File::put($path, "Haha, Blade template file created.");
+        File::put($path, "Blade template file created.");
 
         $this->info("File {$path} created.");
     }
