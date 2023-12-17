@@ -75,5 +75,3 @@ class MakeBladeCommand extends Command
         }
     }
 }
-
-
