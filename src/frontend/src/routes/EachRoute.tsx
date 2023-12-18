@@ -15,7 +15,7 @@ import {Result} from "../components/app/input/Result";
 import {ShowSlug, EditSlug} from "../components/app/post/ItemSlug";
 import {AdminData, AllUsers, CreateAdmin, EditAdminEmail, EditAdminName} from "../components/app/admin/Admin";
 import {CreateUser, EachUserData, EditUserEmail, EditUserName} from "../components/app/user/Info";
-import {PasswordReset} from "../components/app/auth/PasswordReset";
+import {ForgetPassword, ResetPassword} from "../components/app/auth/PasswordReset";
 
 
 export default function EachRoute() {
@@ -31,7 +31,8 @@ export default function EachRoute() {
                 <Route path="/Result" element={<Result/>}/>
                 <Route path="/Signup" element={<CreateUser/>}/>
                 <Route path="/Admin/Create" element={<CreateAdmin/>}/>
-                <Route path="/PasswordReset" element={<PasswordReset/>}/>
+                <Route path="/Forget/Password" element={<ForgetPassword/>}/>
+                <Route path="/Reset/Password/:parameter" element={<ResetPassword/>}/>
                 <Route path="*" element={<NotFound/>}/>
                 //AdminProvider
                 <Route path="/Admin/:id/Profile" element={<AdminData/>}/>
