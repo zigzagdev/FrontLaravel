@@ -265,6 +265,3 @@ export function ResetPassword() {
         </>
     )
 }
-
-
-
