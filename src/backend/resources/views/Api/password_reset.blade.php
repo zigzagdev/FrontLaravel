@@ -6,5 +6,3 @@
 
     {!! htmlspecialchars_decode($changeUrl) !!}
 @endsection
-
-
