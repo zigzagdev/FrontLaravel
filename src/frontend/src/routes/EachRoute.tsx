@@ -32,7 +32,7 @@ export default function EachRoute() {
                 <Route path="/Signup" element={<CreateUser/>}/>
                 <Route path="/Admin/Create" element={<CreateAdmin/>}/>
                 <Route path="/Forget/Password" element={<ForgetPassword/>}/>
-                <Route path="/Reset/Password/:parameter" element={<ResetPassword/>}/>
+                <Route path="/Reset/Password" element={<ResetPassword/>}/>
                 <Route path="*" element={<NotFound/>}/>
                 //AdminProvider
                 <Route path="/Admin/:id/Profile" element={<AdminData/>}/>
