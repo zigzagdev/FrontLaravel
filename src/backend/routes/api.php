@@ -17,52 +17,56 @@ use App\Http\Controllers\Api\AuthenticationController;
 |
 */
 
-Route::controller(AuthenticationController::class)->group(function () {
-    Route::post('/admin/login', 'adminLogin');
-    Route::post('/login', 'userLogin');
-    Route::post('/send/reset/password/mail', 'sendResetPasswordEmail');
-    Route::post('/password/reset', 'resetPassword')->name('reset.password');
-    Route::post('/password/update', 'userPasswordReset');
-});
+Route::group(['middleware' => ['cors']], function () {
 
-Route::controller(AdminController::class)->group(function () {
-    Route::post('/admin/create', 'createAdmin');
-});
+    Route::controller(AuthenticationController::class)->group(function () {
+        Route::post('/admin/login', 'adminLogin');
+        Route::post('/login', 'userLogin');
+        Route::post('/send/reset/password/mail', 'sendResetPasswordEmail');
+        Route::post('/password/reset', 'resetPassword')->name('reset.password');
+        Route::post('/password/update', 'userPasswordReset');
+    });
 
-Route::controller(UserController::class)->group(function () {
-    Route::post('/user/create', 'createUser');
-});
-
-Route::controller(ItemController::class)->group(function () {
-    Route::get('/items', 'allItems');
-    Route::get('/search', 'searchItems');
-});
-
-Route::group(['middleware' => ['admin']], function () {
     Route::controller(AdminController::class)->group(function () {
-        Route::get('/admin/{id}/profile', 'getAdmin');
-        Route::put('/admin/{id}/update/name', 'updateAdminName');
-        Route::put('/admin/{id}/update/email', 'updateAdminEmail');
-        Route::get('/admin/{id}/user/all', 'allUser');
+        Route::post('/admin/create', 'createAdmin');
     });
-    Route::controller(ItemController::class)->group(function () {
-        Route::post('/{id}/create/item', 'createItem');
-        Route::get('/{id}/item/{slug}', 'displayItem');
-        Route::post('/{id}/item/{slug}', 'deleteItem');
-        Route::put('/{id}/item/{slug}/update', 'updateItem');
-    });
-    Route::controller(AuthenticationController::class)->group(function () {
-        Route::post('/logout', 'logoutAction');
-    });
-});
 
-Route::middleware('user')->group(function () {
     Route::controller(UserController::class)->group(function () {
-        Route::get('/user/{id}', 'eachUser');
-        Route::put('/user/{id}/update/name', 'updateUserName');
-        Route::put('/user/{id}/update/email', 'updateUserEmail');
+        Route::post('/user/create', 'createUser');
     });
-    Route::controller(AuthenticationController::class)->group(function () {
-        Route::post('/logout', 'logoutAction');
+
+    Route::controller(ItemController::class)->group(function () {
+        Route::get('/items', 'allItems');
+        Route::get('/search', 'searchItems');
     });
+
+    Route::group(['middleware' => ['admin']], function () {
+        Route::controller(AdminController::class)->group(function () {
+            Route::get('/admin/{id}/profile', 'getAdmin');
+            Route::put('/admin/{id}/update/name', 'updateAdminName');
+            Route::put('/admin/{id}/update/email', 'updateAdminEmail');
+            Route::get('/admin/{id}/user/all', 'allUser');
+        });
+        Route::controller(ItemController::class)->group(function () {
+            Route::post('/{id}/create/item', 'createItem');
+            Route::get('/{id}/item/{slug}', 'displayItem');
+            Route::post('/{id}/item/{slug}', 'deleteItem');
+            Route::put('/{id}/item/{slug}/update', 'updateItem');
+        });
+        Route::controller(AuthenticationController::class)->group(function () {
+            Route::post('/logout', 'logoutAction');
+        });
+    });
+
+    Route::group(['middleware' => ['user']], function () {
+        Route::controller(UserController::class)->group(function () {
+            Route::get('/user/{id}', 'eachUser');
+            Route::put('/user/{id}/update/name', 'updateUserName');
+            Route::put('/user/{id}/update/email', 'updateUserEmail');
+        });
+        Route::controller(AuthenticationController::class)->group(function () {
+            Route::post('/logout', 'logoutAction');
+        });
+    });
+
 });
