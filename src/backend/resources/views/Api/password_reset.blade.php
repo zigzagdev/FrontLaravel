@@ -4,5 +4,46 @@
     This URL is valid in 1 hour.
 
 
-    {{$changeUrl}}
+    {!! htmlspecialchars_decode($changeUrl) !!}
 @endsection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
