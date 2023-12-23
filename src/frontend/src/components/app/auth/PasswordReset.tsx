@@ -15,6 +15,7 @@ type Password = {
 export function ForgetPassword() {
     const [email, setEmail] = useState("");
     const [error, setError] = useState("");
+    const [message, setMessage] = useState("");
     const baseURL = process.env.REACT_APP_API_BASE_URL;
     const {handleSubmit, register, formState: {errors}} = useForm<Email>();
     const navigate = useNavigate();
@@ -23,7 +24,8 @@ export function ForgetPassword() {
             .post(`${baseURL}./send/reset/password`, data)
             .then((res) => {
                 return (
-                    navigate('/Forget/Password'))
+                    navigate('/Login')
+                )
             })
             .catch((error: any) => {
                 if (error.response.statusText === 'Bad Request') {
@@ -58,7 +60,7 @@ export function ForgetPassword() {
                     </div>
                     <div className="w-3/5 flex bg-white">
                         <div className="py-32 px-52">
-                            <form>
+                            <form onSubmit={handleSubmit(onSubmit)}>
                                 <div className="font-extrabold">Password Reset</div>
                                 <div className="my-8">
                                     <div className="break-words">
@@ -78,7 +80,7 @@ export function ForgetPassword() {
                                     transition-all placeholder:text-gray-400 pl-2 placeholder-shown:border
                                     placeholder-shown:border-blue-gray-100 placeholder-shown:border-t-blue-gray-200 focus:border-2
                                     focus:!border-gray-900 focus:border-t-transparent focus:!border-t-gray-900
-                                    focus:outline-0 focus:ring-gray-900/10 disabled:border-0 disabled:bg-blue-gray-50"
+                                    focus:outline-0 focus:ring-gray-900/10 disabled:border-0 disabled:bg-blue-gray-50 text-black"
                                         {...register("email", {
                                             required: true
                                             , minLength: 4
@@ -121,7 +123,9 @@ export function ForgetPassword() {
                                     Submit
                                 </button>
                             </form>
-                            {error}
+                            <span className="text-blue-400 text-lg">
+                                {error}
+                            </span>
                             <div className="py-5">
                                 <Link to="/Login" className="text-violet-400 font-bold">
                                     Log in
@@ -136,13 +140,13 @@ export function ForgetPassword() {
 }
 
 export function ResetPassword() {
-    const navigate = useNavigate();
     const search = useLocation().search;
     const query = new URLSearchParams(search);
     const baseURL = process.env.REACT_APP_API_BASE_URL;
-    const [error, setError] = useState('');
+    const [error, setError] = useState("");
     const [visiblePassword, setVisiblePassword] = useState(false);
     const [confirmVisiblePassword, setConfirmVisiblePassword] = useState(false);
+    const [message, setMessage] = useState("");
     const showPassword = () => {
         setVisiblePassword((prevState) => !prevState);
     }
@@ -154,9 +158,9 @@ export function ResetPassword() {
         axios
             .post(`${baseURL}./password/reset?email=${query.get('email')}&token=${query.get('token')}`, data)
             .then((res) => {
-                return (
-                    navigate(`/Login`)
-                )
+                setMessage('Your password was updated successfully ! Check your email.' +
+                    ' This page will be return to Top page in 6 seconds in automatically ..');
+                setTimeout("location.href='/'", 6000);
             })
             .catch((error: any) => {
                 if (error.response.statusText === 'Not Acceptable') {
@@ -243,6 +247,9 @@ export function ResetPassword() {
                                     Log in
                                 </Link>
                             </div>
+                            <span className="text-blue-400 text-lg">
+                                {message}
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -250,3 +257,21 @@ export function ResetPassword() {
         </>
     )
 }
+
+
+
+// <div className="w-3/5 flex bg-white">
+//     <div className="py-32 px-52">
+//         An email has been sent
+//         <div className="text-gray-500 font-bold">
+//             We've sent a password reset email to {email}.
+//             Please click the link in the email to set your new password.
+//         </div>
+//         <div>
+//             <Link to="">Resend</Link>
+//         </div>
+//         <div>
+//             <Link to="/Login">Login</Link>
+//         </div>
+//     </div>
+// </div>

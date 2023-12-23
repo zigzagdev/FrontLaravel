@@ -63,7 +63,7 @@ export function UserLogin() {
                             <input
                                 autoComplete="email"
                                 type="email"
-                                className="w-72 rounded-md h-8"
+                                className="w-72 rounded-md h-8 text-black"
                                 placeholder="Enter your mail"
                                 {...register("email", {required: true, minLength: 4})}
                             />
@@ -83,7 +83,7 @@ export function UserLogin() {
                             <input
                                 autoComplete="password"
                                 {...register("password", {required: true, minLength: 8})}
-                                className="flex w-72 rounded-md h-8"
+                                className="flex w-72 rounded-md h-8 text-black"
                                 placeholder="Enter your password"
                                 type={visiblePassword ? "text" : "password"}
                             />
@@ -97,6 +97,7 @@ export function UserLogin() {
                                 <span className="text-blue-700">Min length exceeded</span>
                             )}
                         </div>
+
                     </div>
                     <div className="text-right mb-5 mt-10">
                         <Link to="/Forget/Password" className="font-bold text-blue-500">
