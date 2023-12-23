@@ -4,7 +4,7 @@ namespace App\Http\Resources\Api;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UpdateEmailResource extends JsonResource
+class UpdatePasswordResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -23,9 +23,6 @@ class UpdateEmailResource extends JsonResource
         return [
             'statusCode' => $this->statusCode,
             'statusMessage' => 'OK',
-            'updateEmail' => [
-                'email' => $this->email,
-            ]
         ];
     }
 }

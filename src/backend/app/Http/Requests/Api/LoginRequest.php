@@ -23,8 +23,8 @@ class LoginRequest extends CommonRequest
     public function rules()
     {
         return [
-            "email" => "required|email|string",
-            "password" => "required|string",
+            "email" => "required|min:4|max:100|email:strict",
+            "password" => "min:8|max:255|required",
         ];
     }
 
@@ -34,11 +34,13 @@ class LoginRequest extends CommonRequest
         return [
             //email
             "email.required" => $message['required'],
-            "email.email" => $message['email'],
-            "email.string" => $message['string'],
+            "email.min" => sprintf($message['min'], 4),
+            "email.max" => sprintf($message['max'], 255),
+            "email.strict" => $message['strict'],
             //password
             "password.required" => $message['required'],
-            "password.string" => $message['string'],
+            "password.min" => sprintf($message['min'], 8),
+            "password.max" => sprintf($message['max'], 255),
         ];
     }
 }

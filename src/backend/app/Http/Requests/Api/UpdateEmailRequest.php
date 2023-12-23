@@ -2,6 +2,9 @@
 
 namespace App\Http\Requests\Api;
 
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+
 class UpdateEmailRequest extends CommonRequest
 {
     /**
@@ -19,10 +22,18 @@ class UpdateEmailRequest extends CommonRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
+    public function rules(Request $request)
     {
         return [
-            "email" => "required|min:4|max:100|email:strict|unique:admins|unique:users"
+//            "email" => "required|min:4|max:100|email:strict|unique:admins|unique:users"
+            "email"     => [
+                "required",
+                "min:4",
+                "max:100",
+                "email:strict",
+                Rule::unique('users')->ignore($request->route('id'), 'id'),
+                Rule::unique('admins')->ignore($request->route('id'), 'id'),
+    ],
         ];
     }
 
@@ -33,7 +44,7 @@ class UpdateEmailRequest extends CommonRequest
             "email.required" => $message['required'],
             "email.min" => sprintf($message['min'], 4),
             "email.max" => sprintf($message['max'], 255),
-            "email.email" => $message['email'],
+            "email.strict" => $message['strict'],
             "email.unique" => $message['unique']
         ];
     }

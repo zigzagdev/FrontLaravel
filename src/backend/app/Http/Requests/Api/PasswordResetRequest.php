@@ -2,7 +2,8 @@
 
 namespace App\Http\Requests\Api;
 
-class AdminRequest extends CommonRequest
+
+class PasswordResetRequest extends CommonRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +23,6 @@ class AdminRequest extends CommonRequest
     public function rules()
     {
         return [
-            "name" => "required|min:4|max:100|string",
-            "email" => "required|min:4|max:100|email:strict|unique:admins|unique:users",
             "password" => "min:8|max:255|required",
         ];
     }
@@ -32,23 +31,10 @@ class AdminRequest extends CommonRequest
     {
         $message = $this->errorMessages();
         return [
-            //name
-            "name.required" => $message['required'],
-            "name.min" => sprintf($message['min'], 4),
-            "name.max" => sprintf($message['max'], 100),
-            "name.regex" => $message['regex'],
-
-            //password
             "password.min" => sprintf($message['min'], 8),
             "password.max" => sprintf($message['max'], 255),
             "password.required" => $message['required'],
-
-            //email
-            "email.required" => $message['required'],
-            "email.min" => sprintf($message['min'], 4),
-            "email.max" => sprintf($message['max'], 255),
-            "email.strict" => $message['strict'],
-            "email.unique" => $message['unique']
         ];
     }
+
 }
