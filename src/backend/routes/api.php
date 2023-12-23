@@ -22,7 +22,7 @@ Route::group(['middleware' => ['cors']], function () {
     Route::controller(AuthenticationController::class)->group(function () {
         Route::post('/admin/login', 'adminLogin');
         Route::post('/login', 'userLogin');
-        Route::post('/send/reset/password/mail', 'sendResetPasswordEmail');
+        Route::post('/send/reset/password', 'sendResetPasswordEmail');
         Route::post('/password/reset', 'resetPassword')->name('reset.password');
         Route::post('/password/update', 'userPasswordReset');
     });
