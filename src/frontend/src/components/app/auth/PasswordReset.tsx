@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {SubmitHandler, useForm} from "react-hook-form";
 import axios from "axios";
-import {Link, useNavigate, useParams, useLocation, useSearchParams} from "react-router-dom";
+import {Link, useNavigate, useLocation} from "react-router-dom";
 
 type Email = {
     email: string
@@ -10,8 +10,6 @@ type Email = {
 type Password = {
     password: string,
     confirmPassword: string,
-    email: string,
-    token: string
 }
 
 export function ForgetPassword() {
@@ -22,7 +20,7 @@ export function ForgetPassword() {
     const navigate = useNavigate();
     const onSubmit: SubmitHandler<Email> = (data) => {
         axios
-            .post(`${baseURL}./send/reset/password/mail`, data)
+            .post(`${baseURL}./send/reset/password`, data)
             .then((res) => {
                 return (
                     navigate('/Forget/Password'))
@@ -60,7 +58,7 @@ export function ForgetPassword() {
                     </div>
                     <div className="w-3/5 flex bg-white">
                         <div className="py-32 px-52">
-                            <form onSubmit={handleSubmit(onSubmit)}>
+                            <form>
                                 <div className="font-extrabold">Password Reset</div>
                                 <div className="my-8">
                                     <div className="break-words">
@@ -118,6 +116,7 @@ export function ForgetPassword() {
                                     className="bg-blue-500 hover:bg-blue-700
                                                text-white font-bold py-2 px-4 rounded-md w-full"
                                     type="submit"
+                                    onSubmit={handleSubmit(onSubmit)}
                                 >
                                     Submit
                                 </button>
@@ -160,21 +159,10 @@ export function ResetPassword() {
                 )
             })
             .catch((error: any) => {
-                if (error.response.statusText === 'Bad Request') {
-                    setError('Email or Password is wrong ...');
-                    return (
-                        navigate(`/Login`)
-                    )
-                } else if (error.response.statusText === 'Not Acceptable') {
-                    setError('Email or Password is wrong... Please do it again');
-                    return (
-                        navigate(`/Login`)
-                    )
+                if (error.response.statusText === 'Not Acceptable') {
+                    setError('Password is not valid. Please submit again');
                 } else {
-                    setError('Internal server error is happened. Please do it again.')
-                    return (
-                        navigate(`/Login`)
-                    )
+                    setError('Internal server error is happened.')
                 }
             });
     }
@@ -207,11 +195,9 @@ export function ResetPassword() {
                                                 required: true
                                             })}
                                         />
-                                        <div className="mx-2.5" onClick={showPassword}>
-                                            <button>
-                                                {visiblePassword ? "show" : "hidden"}
-                                            </button>
-                                        </div>
+                                        <span onClick={showPassword} className="ml-3">
+                                            {visiblePassword ? "show" : "hidden"}
+                                        </span>
                                     </div>
                                     {errors.password?.type === "required" && (
                                         <span role="alert" className="text-red-400">Password is required</span>
@@ -232,11 +218,9 @@ export function ResetPassword() {
                                             })
                                             }
                                         />
-                                        <div className="mx-2.5" onClick={confirmShowPassword}>
-                                            <button>
-                                                {confirmVisiblePassword ? "show" : "hidden"}
-                                            </button>
-                                        </div>
+                                        <span onClick={confirmShowPassword} className="ml-3">
+                                            {confirmVisiblePassword ? "show" : "hidden"}
+                                        </span>
                                     </div>
                                     {errors.password?.type === "required" && (
                                         <span role="alert" className="text-red-400">Password is required</span>
@@ -252,6 +236,7 @@ export function ResetPassword() {
                                 >
                                     Submit
                                 </button>
+                                {error}
                             </form>
                             <div className="py-5">
                                 <Link to="/Login" className="text-violet-400 font-bold">

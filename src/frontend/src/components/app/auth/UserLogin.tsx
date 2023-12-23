@@ -18,7 +18,7 @@ export function UserLogin() {
     const showPassword = () => {
         setVisiblePassword((prevState) => !prevState);
     }
-    const {register, handleSubmit, formState: {errors}} = useForm<Inputs>()
+    const {register, handleSubmit, formState: {errors}} = useForm<Inputs>();
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         axios
             .post(`${baseURL}./login`, data)
@@ -87,7 +87,9 @@ export function UserLogin() {
                                 placeholder="Enter your password"
                                 type={visiblePassword ? "text" : "password"}
                             />
-                            <span className="mx-2.5" onClick={showPassword}>show password</span>
+                            <span onClick={showPassword} className="ml-3">
+                                {visiblePassword ? "show" : "hidden"}
+                            </span>
                             {errors.password?.type === "required" && (
                                 <span role="alert" className="text-red-400">Password is required</span>
                             )}
@@ -97,7 +99,7 @@ export function UserLogin() {
                         </div>
                     </div>
                     <div className="text-right mb-5 mt-10">
-                        <Link to= "/Password/Reset" className="font-bold text-blue-500">
+                        <Link to="/Forget/Password" className="font-bold text-blue-500">
                             Forgot password ?
                         </Link>
                     </div>
