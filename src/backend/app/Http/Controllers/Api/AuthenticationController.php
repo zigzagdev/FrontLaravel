@@ -21,6 +21,7 @@ use App\Services\RememberToken;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
@@ -99,10 +100,9 @@ class AuthenticationController extends Controller
                 return null;
             }
             $rememberUserData = RememberToken::generateRememberToken($sendEmail);
-            $beforeUrl = env('FRONT_URL') . "Reset/Password/" . $request->email . "/" . $rememberUserData->remember_token;
-            $changeUrl = htmlspecialchars_decode($beforeUrl);
+            $changeUrl = url((env('FRONT_URL'). 'Reset/Password?token=' . $rememberUserData->remember_token . '&email=' .  $request->email));
+            $formUrl = url(env('FRONT_URL') . "Contact");
 
-            $formUrl = env('FRONT_URL') . "Contact";
             DB::commit();
 
             Mail::to($rememberUserData->email)->send(new PasswordResetMail($changeUrl, $formUrl));
@@ -111,8 +111,6 @@ class AuthenticationController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, 'ユーザー')]);
-            $i = $e->getMessage();
-            var_dump($i);
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
@@ -121,12 +119,12 @@ class AuthenticationController extends Controller
     {
         try {
             DB::beginTransaction();
+
             $validToken = $request->query('token');
             $validEmail = $request->query('email');
-            var_dump($validEmail);
-            $now = Carbon::now();
+
             $userData = UserRememberToken::where('remember_token', $validToken)->first();
-            if ($userData->expire_at < $now) {
+            if ($userData->expire_at < Carbon::now()) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_09)]);
                 return new ErrorResource($request);
             }
@@ -145,8 +143,6 @@ class AuthenticationController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             $request->merge(['statusMessage' => sprintf(Common::UPDATE_FAILED, 'パスワード')]);
-            $jj = $e->getMessage();
-            var_dump($jj);
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
@@ -167,7 +163,7 @@ class AuthenticationController extends Controller
     {
         User::where('email', $validEmail)->update(
             [
-                'password' => $request->input('password'),
+                'password' => Hash::make($request->input('password')),
                 'updated_at' => Carbon::now(),
             ]
         );
