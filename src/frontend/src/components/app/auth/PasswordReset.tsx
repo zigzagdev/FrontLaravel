@@ -15,7 +15,7 @@ type Password = {
 export function ForgetPassword() {
     const [email, setEmail] = useState("");
     const [error, setError] = useState("");
-    const [message, setMessage] = useState("");
+
     const baseURL = process.env.REACT_APP_API_BASE_URL;
     const {handleSubmit, register, formState: {errors}} = useForm<Email>();
     const navigate = useNavigate();
