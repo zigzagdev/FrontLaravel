@@ -50,12 +50,11 @@ export function Items() {
         prev: '',
     }));
     const baseURL = process.env.REACT_APP_API_BASE_URL;
-    const [current, setCurrent] = useState(1);
     const pageNumbers = [];
     for (let i = 1; i <= paginationData.last_page; i++) {
         pageNumbers.push(i);
     }
-    let apiUrl = `${baseURL}items?page=${current}`;
+    let apiUrl = `${baseURL}items?page=${paginationData.current_page}`;
     const fetchItemData = (apiUrl: string) => {
         axios
             .get(apiUrl)
