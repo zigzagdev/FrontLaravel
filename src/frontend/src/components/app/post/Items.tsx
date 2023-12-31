@@ -71,25 +71,6 @@ export function Items() {
     useEffect(() => {
         fetchItemData(apiUrl);
     }, []);
-
-
-    const handleNextPage = () => {
-        fetchItemData(url.next);
-        setCurrent(current + 1);
-    };
-
-    const handlePreviousPage = () => {
-        fetchItemData(url.prev);
-        window.scrollTo(0, 0);
-        setCurrent(current -1 );
-    };
-
-    const numberClick = (pageNum: number) => {
-        let apiUrl = `${baseURL}items?page=${pageNum}`;
-        fetchItemData(apiUrl);
-        setCurrent(pageNum);
-    }
-
     return (
         <>
             <div
@@ -118,45 +99,18 @@ export function Items() {
                     )
                 })}
                 <div className="my-3 mx-5">
-                    <p className="text-violet-300 my-3">
-                        <span className="text-blue-700 px-1">Page</span>
-                        {current} / {paginationData.last_page}
-                    </p>
-                    <div className="mx-16 flex">
-                        {current !== 1 ?
-                            <button onClick={handlePreviousPage}
-                                    className="focus:outline-none text-white bg-purple-700 hover:bg-yellow-300
-                            focus:ring-yellow-400 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-yellow-400
-                            dark:hover:bg-yellow-400 dark:focus:ring-yellow-400 mx-1"
-                            >
-                                Before
-                            </button>
-                            : <div className="Font"> &emsp; &emsp;</div>
-                        }
-                        {pageNumbers.map((pageNum) => {
-                            return (
-                                <button
-                                    key={pageNum}
-                                    onClick={() => numberClick(pageNum)}
-                                    className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4
-                                focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600
-                                dark:hover:bg-purple-700 dark:focus:ring-purple-900 mx-1"
-                                >
-                                    {pageNum}
-                                </button>
-                            )
-                        })}
-                        {current !== paginationData.last_page ?
-                            <button onClick={handleNextPage}
-                                    className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4
-                            focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600
-                            dark:hover:bg-purple-700 dark:focus:ring-purple-900 mx-1"
-                            >
-                                Next
-                            </button>
-                            : <div className="Font"> &emsp; &emsp;</div>
-                        }
-                    </div>
+                    <Pagination
+                        currentPage={paginationData.current_page}
+                        lastPage={paginationData.last_page}
+                        from={paginationData.from}
+                        first={url.first}
+                        last={url.last}
+                        next={url.next}
+                        prev={url.prev}
+                        apiUrl={apiUrl}
+                        fetchItemData={fetchItemData}
+                        path={paginationData.path}
+                    />
                 </div>
             </div>
         </>
