@@ -2,7 +2,16 @@ import React, {useState} from "react";
 
 export function Pagination(
     props: {
-        currentPage: number, lastPage: number, from: number, first: string, last: string, next: string, prev: string, apiUrl: string, fetchItemData: (text: string) => void, path: ''
+        currentPage: number
+        , lastPage: number
+        , from: number
+        , first: string
+        , last: string
+        , next: string
+        , prev: string
+        , apiUrl: string
+        , fetchItemData: (text: string) => void
+        , path: ''
     }
 ) {
     const pageNumbers = [];
