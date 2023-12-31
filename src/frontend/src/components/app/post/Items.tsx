@@ -1,9 +1,8 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
 import Search from "../input/Search";
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {Pagination} from "../config/Pagination";
-import {set} from "react-hook-form";
 
 type itemsData = {
     Id: number,
@@ -23,6 +22,7 @@ type paginationData = {
     to: number,
     last_page: number,
     total: number,
+    path: ''
 }
 
 type url = {
@@ -41,6 +41,7 @@ export function Items() {
         to: 0,
         last_page: 0,
         total: 0,
+        path: ''
     }));
     const [url, setUrl] = useState<url>(({
         first: '',
@@ -50,6 +51,10 @@ export function Items() {
     }));
     const baseURL = process.env.REACT_APP_API_BASE_URL;
     const [current, setCurrent] = useState(1);
+    const pageNumbers = [];
+    for (let i = 1; i <= paginationData.last_page; i++) {
+        pageNumbers.push(i);
+    }
     let apiUrl = `${baseURL}items?page=${current}`;
     const fetchItemData = (apiUrl: string) => {
         axios
@@ -78,6 +83,13 @@ export function Items() {
         window.scrollTo(0, 0);
         setCurrent(current -1 );
     };
+
+    const numberClick = (pageNum: number) => {
+        let apiUrl = `${baseURL}items?page=${pageNum}`;
+        fetchItemData(apiUrl);
+        setCurrent(pageNum);
+    }
+
     return (
         <>
             <div
@@ -121,19 +133,19 @@ export function Items() {
                             </button>
                             : <div className="Font"> &emsp; &emsp;</div>
                         }
-                        {/*{pageNumbers.map((pageNum) => {*/}
-                        {/*    return (*/}
-                        {/*        <button*/}
-                        {/*            key={pageNum}*/}
-                        {/*            onClick={numberClick}*/}
-                        {/*            className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4*/}
-                        {/*        focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600*/}
-                        {/*        dark:hover:bg-purple-700 dark:focus:ring-purple-900 mx-1"*/}
-                        {/*        >*/}
-                        {/*            {pageNum}*/}
-                        {/*        </button>*/}
-                        {/*    )*/}
-                        {/*})}*/}
+                        {pageNumbers.map((pageNum) => {
+                            return (
+                                <button
+                                    key={pageNum}
+                                    onClick={() => numberClick(pageNum)}
+                                    className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4
+                                focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600
+                                dark:hover:bg-purple-700 dark:focus:ring-purple-900 mx-1"
+                                >
+                                    {pageNum}
+                                </button>
+                            )
+                        })}
                         {current !== paginationData.last_page ?
                             <button onClick={handleNextPage}
                                     className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4
