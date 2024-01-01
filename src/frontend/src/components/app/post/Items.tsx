@@ -49,7 +49,6 @@ export function Items() {
     for (let i = 1; i <= paginationData.last_page; i++) {
         pageNumbers.push(i);
     }
-    console.log(paginationData)
     let apiUrl = `${baseURL}items?`;
     const fetchItemData = (apiUrl: string) => {
         axios
