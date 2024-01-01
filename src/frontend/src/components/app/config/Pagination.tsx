@@ -17,11 +17,13 @@ export function Pagination(
     }
     const [current, setCurrent] = useState(props.currentPage);
     const handleNextPage = () => {
-        props.fetchItemData(props.next);
+        let pageUrl = `${props.apiUrl}page=${current + 1}`;
+        props.fetchItemData(pageUrl);
         setCurrent(current + 1);
     };
     const handlePreviousPage = () => {
-        props.fetchItemData(props.prev);
+        let pageUrl = `${props.apiUrl}page=${current - 1}`;
+        props.fetchItemData(pageUrl);
         setCurrent(current - 1);
     };
     const numberClick = (pageNum: number) => {
@@ -29,14 +31,15 @@ export function Pagination(
         props.fetchItemData(pageUrl);
         setCurrent(pageNum);
     }
+
     return (
         <>
-            <div className="my-3 mx-5">
+            <div className="my-8 mx-5">
                 <p className="text-violet-300 my-3">
                     <span className="text-blue-700 px-1">Page</span>
                     {current} / {props.lastPage}
                 </p>
-                <div className="mx-16 flex">
+                <div className="mx-16 flex justify-center">
                     {current != props.from ?
                         <button onClick={handlePreviousPage}
                                 className="focus:outline-none text-white bg-purple-700 hover:bg-yellow-300
