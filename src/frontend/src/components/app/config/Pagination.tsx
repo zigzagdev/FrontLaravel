@@ -5,13 +5,10 @@ export function Pagination(
         currentPage: number
         , lastPage: number
         , from: number
-        , first: string
-        , last: string
         , next: string
         , prev: string
         , apiUrl: string
         , fetchItemData: (text: string) => void
-        , path: ''
     }
 ) {
     const pageNumbers = [];
@@ -28,8 +25,8 @@ export function Pagination(
         setCurrent(current - 1);
     };
     const numberClick = (pageNum: number) => {
-        let apiUrl = `${props.path}?page=${pageNum}`;
-        props.fetchItemData(apiUrl);
+        let pageUrl = `${props.apiUrl}page=${pageNum}`;
+        props.fetchItemData(pageUrl);
         setCurrent(pageNum);
     }
     return (
