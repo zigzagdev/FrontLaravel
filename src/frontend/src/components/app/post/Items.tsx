@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import axios from "axios";
+import axios, {AxiosError} from "axios";
 import Search from "../input/Search";
 import {Link} from "react-router-dom";
 import {Pagination} from "../config/Pagination";
@@ -16,36 +16,31 @@ type itemsData = {
 }
 
 type paginationData = {
-    per_page: number,
     current_page: number,
     from: number,
     to: number,
     last_page: number,
-    total: number,
-    path: ''
 }
 
 type url = {
-    first: string,
-    last: string,
     next: string,
     prev: string,
 }
 
+type AxiosErrorResponse = {
+    error: string
+}
+
 export function Items() {
+    const [errorMessage, setErrorMessage] = useState('');
     const [items, setItems] = useState<itemsData[]>([]);
     const [paginationData, setPaginationData] = useState<paginationData>(({
-        per_page: 0,
         current_page: 1,
         from: 0,
         to: 0,
         last_page: 0,
-        total: 0,
-        path: ''
     }));
     const [url, setUrl] = useState<url>(({
-        first: '',
-        last: '',
         next: '',
         prev: '',
     }));
@@ -54,7 +49,8 @@ export function Items() {
     for (let i = 1; i <= paginationData.last_page; i++) {
         pageNumbers.push(i);
     }
-    let apiUrl = `${baseURL}items?page=${paginationData.current_page}`;
+    console.log(paginationData)
+    let apiUrl = `${baseURL}items?`;
     const fetchItemData = (apiUrl: string) => {
         axios
             .get(apiUrl)
@@ -64,18 +60,27 @@ export function Items() {
                 setUrl(data.data.links);
             })
             .catch((error) => {
-                console.log(error);
+                if (
+                    (error as AxiosError<AxiosErrorResponse>).response &&
+                    (error as AxiosError<AxiosErrorResponse>).response!.status === 400
+                ) {
+                    setErrorMessage('Something is wrong ....')
+                }
             });
     };
     useEffect(() => {
         fetchItemData(apiUrl);
     }, []);
+    console.log(apiUrl)
     return (
         <>
             <div
                 className="my-3 text-center block text-sm text-gray-300 sm:text-center
                            duration-700 hover:text-gray-100">
                 <Search/>
+            </div>
+            <div className="my-1">
+                <span className="text-red-400">{errorMessage}</span>
             </div>
             <div className="my-24 mx-16">
                 {items.map((item) => {
@@ -102,13 +107,10 @@ export function Items() {
                         currentPage={paginationData.current_page}
                         lastPage={paginationData.last_page}
                         from={paginationData.from}
-                        first={url.first}
-                        last={url.last}
                         next={url.next}
                         prev={url.prev}
                         apiUrl={apiUrl}
                         fetchItemData={fetchItemData}
-                        path={paginationData.path}
                     />
                 </div>
             </div>
