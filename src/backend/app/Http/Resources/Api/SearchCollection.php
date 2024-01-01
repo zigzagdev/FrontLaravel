@@ -2,32 +2,12 @@
 
 namespace App\Http\Resources\Api;
 
-use App\Consts\Api\Category;
-use App\Models\Api\Item;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 class SearchCollection extends ResourceCollection
 {
-    private $pagination;
-
-    public function __construct($resource)
-    {
-        $this->pagination = [
-            'total' => $resource->total(),
-            'perPage' => $resource->perPage(),
-            'currentPage' => $resource->currentPage(),
-            'from' => $resource->firstItem(),
-            'to' => $resource->lastItem(),
-            'lastPage' => $resource->lastPage(),
-        ];
-
-        $resource = $resource->getCollection();
-
-        parent::__construct($resource);
-    }
-
     /**
      * Transform the resource collection into an array.
      *
@@ -49,7 +29,6 @@ class SearchCollection extends ResourceCollection
                     'slug' => $items['slug']
                 ];
             }),
-            'pagination' => $this->pagination
         ];
     }
 }

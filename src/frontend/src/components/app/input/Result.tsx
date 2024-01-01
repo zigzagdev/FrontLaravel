@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from "react";
-import axios from "axios";
+import axios, {AxiosError} from "axios";
 import Search from "./Search";
 import {Link} from "react-router-dom";
+import {Pagination} from "../config/Pagination";
 
 type searchResults = {
     Id: number,
@@ -11,22 +12,65 @@ type searchResults = {
     categoryName: string
 }
 
+type paginationData = {
+    current_page: number,
+    from: number,
+    last_page: number,
+}
+
+type url = {
+    next: string,
+    prev: string,
+}
+
+type AxiosErrorResponse = {
+    error: string
+}
+
 export function Result() {
     const queryParams = new URLSearchParams(window.location.search)
     const query = queryParams.get("q")
+    const [errorMessage, setErrorMessage] = useState('');
     const [searchContents, setSearchContents] = useState<searchResults[]>([]);
+    const [paginationData, setPaginationData] = useState<paginationData>(({
+        current_page: 1,
+        from: 0,
+        last_page: 0,
+    }));
+    const [url, setUrl] = useState<url>(({
+        next: '',
+        prev: '',
+    }));
     const baseURL = process.env.REACT_APP_API_BASE_URL;
-    useEffect(() => {
-        axios.get(`${baseURL}./search?q=${query}`)
-            .then(res => {
-                setSearchContents(res.data.data.itemInformation)
+    let apiUrl = `${baseURL}search?q=${query}&`;
+    const fetchItemData = (apiUrl: string) => {
+        axios
+            .get(apiUrl)
+            .then((data) => {
+                setSearchContents(data.data.data.itemInformation);
+                setPaginationData(data.data.meta);
+                setUrl(data.data.links);
             })
-    }, [])
+            .catch((error) => {
+                if (
+                    (error as AxiosError<AxiosErrorResponse>).response &&
+                    (error as AxiosError<AxiosErrorResponse>).response!.status === 400
+                ) {
+                    setErrorMessage('Something is wrong ....')
+                }
+            });
+    };
+    useEffect(() => {
+        fetchItemData(apiUrl);
+    }, []);
     return (
         <>
             <div className="my-3 text-center block text-sm text-gray-300 sm:text-center
                            duration-700 hover:text-gray-100">
                 <Search/>
+            </div>
+            <div className="my-1">
+                <span className="text-red-400">{errorMessage}</span>
             </div>
             <div className="my-24 mx-16">
                 {searchContents.map(searchContent => {
@@ -49,6 +93,15 @@ export function Result() {
                     )
                 })}
             </div>
+            <Pagination
+                currentPage={paginationData.current_page}
+                lastPage={paginationData.last_page}
+                from={paginationData.from}
+                next={url.next}
+                prev={url.prev}
+                apiUrl={apiUrl}
+                fetchItemData={fetchItemData}
+            />
         </>
     )
 }
