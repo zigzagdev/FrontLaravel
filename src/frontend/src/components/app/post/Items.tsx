@@ -71,7 +71,6 @@ export function Items() {
     useEffect(() => {
         fetchItemData(apiUrl);
     }, []);
-    console.log(apiUrl)
     return (
         <>
             <div

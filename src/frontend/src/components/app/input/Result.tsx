@@ -63,7 +63,6 @@ export function Result() {
     useEffect(() => {
         fetchItemData(apiUrl);
     }, []);
-
     return (
         <>
             <div className="my-3 text-center block text-sm text-gray-300 sm:text-center
