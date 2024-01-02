@@ -4,6 +4,8 @@ import {SubmitHandler, useForm} from "react-hook-form";
 import {useNavigate, useParams} from "react-router-dom";
 import AdminHeader from "../../common/header/AdminHeader";
 import AdminFooter from "../../common/footer/AdminFooter";
+import {AxiosError} from "axios/index";
+import {Pagination} from "../config/Pagination";
 
 type createAdmin = {
     name: string,
@@ -15,6 +17,10 @@ type adminData = {
     id: number,
     name: string,
     email: string,
+}
+
+type AxiosErrorResponse = {
+    error: string
 }
 
 type emailData = {
@@ -31,6 +37,17 @@ type userData = {
     id: number,
     name: string,
     email: string,
+}
+
+type userInformationData = {
+    current_page: number,
+    from: number,
+    last_page: number,
+}
+
+type url = {
+    next: string,
+    prev: string,
 }
 
 export function CreateAdmin() {
@@ -317,19 +334,40 @@ export function EditAdminEmail() {
 
 export function AllUsers() {
     const [users, setUsers] = useState<userData[]>([]);
-    const [error, setError] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+    const [userInformationData, setUserInformationData] = useState<userInformationData>(({
+        current_page: 1,
+        from: 0,
+        last_page: 0,
+    }));
+    const [url, setUrl] = useState<url>(({
+        next: '',
+        prev: '',
+    }));
     const baseURL = process.env.REACT_APP_API_BASE_URL;
     const {id} = useParams<{ id: string }>();
+    let apiUrl = `${baseURL}admin/${id}/user/all?`;
+
+    const fetchItemData = (apiUrl: string) => {
+        axios
+            .get(apiUrl)
+            .then((data) => {
+                setUsers(data.data.data.userInformation);
+                setUserInformationData(data.data.meta);
+                setUrl(data.data.links);
+            })
+            .catch((error) => {
+                if (
+                    (error as AxiosError<AxiosErrorResponse>).response &&
+                    (error as AxiosError<AxiosErrorResponse>).response!.status === 400
+                ) {
+                    setErrorMessage('Something is wrong ....')
+                }
+            });
+    };
     useEffect(() => {
-        axios.get(`${baseURL}./admin/${id}/user/all`)
-            .then(res => {
-                setUsers(res.data.data.userInformation)
-            })
-            .catch((error: any) => {
-                setError('Email or Password is wrong ...');
-                setTimeout("location.href=`/Admin/${id}/Profile`", 10000);
-            })
-    }, [])
+        fetchItemData(apiUrl);
+    }, []);
     return (
         <>
             <AdminHeader/>
@@ -344,12 +382,24 @@ export function AllUsers() {
                             <button
                                 className="items-center bg-blue-500 hover:bg-blue-700
                                 text-white font-bold px-4 rounded-full"
-                            >More Detail
+                            >
+                                More Detail
                             </button>
                         </div>
                     )
                 })}
-                <p role="alert" className="text-red-400">{error}</p>
+            </div>
+            <p role="alert" className="text-red-400">{errorMessage}</p>
+            <div className="my-3 mx-5">
+                <Pagination
+                    currentPage={userInformationData.current_page}
+                    lastPage={userInformationData.last_page}
+                    from={userInformationData.from}
+                    next={url.next}
+                    prev={url.prev}
+                    apiUrl={apiUrl}
+                    fetchItemData={fetchItemData}
+                />
             </div>
             <AdminFooter/>
         </>
