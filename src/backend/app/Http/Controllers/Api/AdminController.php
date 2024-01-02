@@ -133,7 +133,7 @@ class AdminController extends Controller
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
                 return new ErrorResource($request, Response::HTTP_NOT_FOUND);
             }
-            $users = User::all();
+            $users = User::paginate(9);
             if (empty($users)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
                 return new ErrorResource($request, Response::HTTP_NOT_FOUND);
