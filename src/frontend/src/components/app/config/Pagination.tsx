@@ -35,10 +35,10 @@ export function Pagination(
     return (
         <>
             <div className="my-8 mx-5">
-                <p className="text-violet-300 my-3">
+                <div className="text-violet-300 my-3 flex justify-center">
                     <span className="text-blue-700 px-1">Page</span>
                     {current} / {props.lastPage}
-                </p>
+                </div>
                 <div className="mx-16 flex justify-center">
                     {current != props.from ?
                         <button onClick={handlePreviousPage}
