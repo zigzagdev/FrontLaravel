@@ -346,7 +346,7 @@ export function AllUsers() {
     }));
     const baseURL = process.env.REACT_APP_API_BASE_URL;
     const {id} = useParams<{ id: string }>();
-    let apiUrl = `${baseURL}admin/${id}/user/all?`;
+    let apiUrl = `${baseURL}/admin/${id}/user/all?`;
 
     const fetchItemData = (apiUrl: string) => {
         axios
