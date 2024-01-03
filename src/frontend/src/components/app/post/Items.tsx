@@ -4,7 +4,7 @@ import Search from "../input/Search";
 import {Link} from "react-router-dom";
 import {Pagination} from "../config/Pagination";
 
-type itemsData = {
+type ItemsData = {
     Id: number,
     itemName: string,
     content: string,
@@ -15,13 +15,13 @@ type itemsData = {
     adminId: number
 }
 
-type paginationData = {
+type PaginationData = {
     current_page: number,
     from: number,
     last_page: number,
 }
 
-type url = {
+type Url = {
     next: string,
     prev: string,
 }
@@ -32,13 +32,13 @@ type AxiosErrorResponse = {
 
 export function Items() {
     const [errorMessage, setErrorMessage] = useState('');
-    const [items, setItems] = useState<itemsData[]>([]);
-    const [paginationData, setPaginationData] = useState<paginationData>(({
+    const [items, setItems] = useState<ItemsData[]>([]);
+    const [paginationData, setPaginationData] = useState<PaginationData>(({
         current_page: 1,
         from: 0,
         last_page: 0,
     }));
-    const [url, setUrl] = useState<url>(({
+    const [url, setUrl] = useState<Url>(({
         next: '',
         prev: '',
     }));

@@ -4,7 +4,7 @@ import Search from "./Search";
 import {Link} from "react-router-dom";
 import {Pagination} from "../config/Pagination";
 
-type searchResults = {
+type SearchResults = {
     Id: number,
     itemName: string,
     content: string,
@@ -12,13 +12,13 @@ type searchResults = {
     categoryName: string
 }
 
-type paginationData = {
+type PaginationData = {
     current_page: number,
     from: number,
     last_page: number,
 }
 
-type url = {
+type Url = {
     next: string,
     prev: string,
 }
@@ -31,13 +31,13 @@ export function Result() {
     const queryParams = new URLSearchParams(window.location.search)
     const query = queryParams.get("q")
     const [errorMessage, setErrorMessage] = useState('');
-    const [searchContents, setSearchContents] = useState<searchResults[]>([]);
-    const [paginationData, setPaginationData] = useState<paginationData>(({
+    const [searchContents, setSearchContents] = useState<SearchResults[]>([]);
+    const [paginationData, setPaginationData] = useState<PaginationData>(({
         current_page: 1,
         from: 0,
         last_page: 0,
     }));
-    const [url, setUrl] = useState<url>(({
+    const [url, setUrl] = useState<Url>(({
         next: '',
         prev: '',
     }));

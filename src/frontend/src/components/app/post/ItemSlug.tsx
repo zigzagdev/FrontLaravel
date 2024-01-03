@@ -4,7 +4,7 @@ import {useParams, useNavigate} from "react-router-dom";
 import {useForm, SubmitHandler} from "react-hook-form";
 import {Genre} from "./Genre";
 
-type item = {
+type Item = {
     id: number,
     name: string,
     content: string,
@@ -19,7 +19,7 @@ type item = {
 export function ShowSlug() {
     const {slug} = useParams<{ slug: string }>();
     const {id} = useParams<{id: string}>();
-    const [item, setItem] = useState<item>(({
+    const [item, setItem] = useState<Item>(({
         id: 0,
         name: "",
         content: "",
@@ -65,7 +65,7 @@ export function ShowSlug() {
 export function EditSlug() {
     const {slug} = useParams<{ slug: string }>();
     const [error, setError] = useState('');
-    const [item, setItem] = useState<item>(({
+    const [item, setItem] = useState<Item>(({
         id: 0,
         name: "",
         content: "",
@@ -78,7 +78,7 @@ export function EditSlug() {
     const baseURL = process.env.REACT_APP_API_BASE_URL;
     const navigate = useNavigate();
     const id = item.adminId
-    const {register, handleSubmit, formState: {errors}} = useForm<item>()
+    const {register, handleSubmit, formState: {errors}} = useForm<Item>()
 
     useEffect(() => {
         axios.get(`${baseURL}./${id}/item/${slug}`)
@@ -87,9 +87,9 @@ export function EditSlug() {
             })
     }, [])
 
-    const onSubmit: SubmitHandler<item> = (data: item) => {
+    const onSubmit: SubmitHandler<Item> = (data: Item) => {
         axios
-            .put<item>(`${baseURL}./item/${slug}/update`, {
+            .put<Item>(`${baseURL}./item/${slug}/update`, {
                 id: item.id,
                 name: data.name,
                 content: data.content,
