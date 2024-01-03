@@ -18,7 +18,6 @@ type itemsData = {
 type paginationData = {
     current_page: number,
     from: number,
-    to: number,
     last_page: number,
 }
 
@@ -37,7 +36,6 @@ export function Items() {
     const [paginationData, setPaginationData] = useState<paginationData>(({
         current_page: 1,
         from: 0,
-        to: 0,
         last_page: 0,
     }));
     const [url, setUrl] = useState<url>(({
@@ -49,7 +47,7 @@ export function Items() {
     for (let i = 1; i <= paginationData.last_page; i++) {
         pageNumbers.push(i);
     }
-    let apiUrl = `${baseURL}items?`;
+    let apiUrl = `${baseURL}/items?`;
     const fetchItemData = (apiUrl: string) => {
         axios
             .get(apiUrl)
