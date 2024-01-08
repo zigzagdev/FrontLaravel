@@ -10,6 +10,7 @@ export function AuthenticationComponents() {
     const SideBarClose = () => {
         setIsOpen(false);
     }
+
     return (
         <>
             <div className="">
@@ -28,7 +29,17 @@ export function AuthenticationComponents() {
                              ease-in-out duration-300 ${isOpen ? "translate-x-0 " : "translate-x-full"}`}
                         >
                             <div className="my-5 flex">
-                                <span className="text-gray-800 mx-auto">
+                                <span className="text-gray-800 mx-auto font-bold">
+                                    Profile Page
+                                </span>
+                            </div>
+                            <div className="my-5 flex">
+                                <span className="text-gray-800 mx-auto font-bold">
+                                    Item Page
+                                </span>
+                            </div>
+                            <div className="my-5 flex  text-center">
+                                <span className="text-gray-800 mx-auto py-2 font-bold bg-pink-200 w-10/12 rounded-md">
                                 Help & Settings
                                 </span>
                             </div>
@@ -36,14 +47,26 @@ export function AuthenticationComponents() {
                                 <div className="flex my-5">
                                     <button onClick={SideBarClose} className="w-full py-2 bg-indigo-500
                             hover:bg-indigo-600 text-white text-sm font-medium rounded-md">
-                                        back
+                                        Back to Previous
                                     </button>
                                 </div>
-                                <div className="my-5 flex text-center">
-                                    <Link to="/Admin/Login" type="button" className="w-full py-2 bg-indigo-500
+                                <div className="flex my-5 text-center">
+                                    <span className="w-full py-2 bg-indigo-500
                             hover:bg-indigo-600 text-white text-sm font-medium rounded-md">
-                                        <span>Log In</span>
-                                    </Link>
+                                        Settings
+                                    </span>
+                                </div>
+                                <div className="flex my-5 text-center">
+                                    <span className="w-full py-2 bg-indigo-500
+                            hover:bg-indigo-600 text-white text-sm font-medium rounded-md">
+                                        Sign Out
+                                    </span>
+                                </div>
+                                <div className="flex my-5 text-center">
+                                    <span className="w-full py-2 bg-indigo-500
+                            hover:bg-indigo-600 text-white text-sm font-medium rounded-md">
+                                        Language
+                                    </span>
                                 </div>
                             </div>
                         </div>
