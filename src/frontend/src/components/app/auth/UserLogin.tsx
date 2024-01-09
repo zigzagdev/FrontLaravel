@@ -21,7 +21,7 @@ export function UserLogin() {
     const {register, handleSubmit, formState: {errors}} = useForm<Inputs>();
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         axios
-            .post(`${baseURL}./login`, data)
+            .post(`${baseURL}/login`, data)
             .then((res) => {
                 const id = res.data.data.id
                 return (

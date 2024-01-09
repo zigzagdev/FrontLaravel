@@ -20,7 +20,7 @@ export function ForgetPassword() {
     const navigate = useNavigate();
     const onSubmit: SubmitHandler<Email> = (data) => {
         axios
-            .post(`${baseURL}./send/reset/password`, data)
+            .post(`${baseURL}/send/reset/password`, data)
             .then((res) => {
                 return (
                     navigate('/Login')
@@ -155,7 +155,7 @@ export function ResetPassword() {
     const {handleSubmit, register, formState: {errors}, getValues} = useForm<Password>();
     const onSubmit: SubmitHandler<Password> = (data) => {
         axios
-            .post(`${baseURL}./password/reset?email=${query.get('email')}&token=${query.get('token')}`, data)
+            .post(`${baseURL}/password/reset?email=${query.get('email')}&token=${query.get('token')}`, data)
             .then((res) => {
                 setMessage('Your password was updated successfully ! Check your email.' +
                     ' This page will be return to Top page in 6 seconds in automatically ..');
