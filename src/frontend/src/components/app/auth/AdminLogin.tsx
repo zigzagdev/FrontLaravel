@@ -20,7 +20,7 @@ export function AdminLogin() {
     }
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         axios
-            .post(`${baseURL}./admin/login`, data)
+            .post(`${baseURL}/admin/login`, data)
             .then((res) => {
                 const id = res.data.data.id
                 return (

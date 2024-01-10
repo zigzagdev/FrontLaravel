@@ -1,19 +1,19 @@
 import React, {useState, useEffect} from "react";
-import axios from "axios";
+import axios, {AxiosError} from "axios";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {useNavigate, useParams} from "react-router-dom";
 import AdminHeader from "../../common/header/AdminHeader";
 import AdminFooter from "../../common/footer/AdminFooter";
-import {AxiosError} from "axios/index";
 import {Pagination} from "../config/Pagination";
+import {SideBar} from "./func/AdminComponent";
 
-type createAdmin = {
+type CreateAdmin = {
     name: string,
     email: string,
     password: string,
 }
 
-type adminData = {
+type AdminData = {
     id: number,
     name: string,
     email: string,
@@ -23,29 +23,29 @@ type AxiosErrorResponse = {
     error: string
 }
 
-type emailData = {
+type EmailData = {
     id: number,
     email: string,
 }
 
-type nameData = {
+type NameData = {
     id: number,
     name: string,
 }
 
-type userData = {
+type UserData = {
     id: number,
     name: string,
     email: string,
 }
 
-type userInformationData = {
+type UserInformationData = {
     current_page: number,
     from: number,
     last_page: number,
 }
 
-type url = {
+type Url = {
     next: string,
     prev: string,
 }
@@ -54,8 +54,8 @@ export function CreateAdmin() {
     const [error, setError] = useState("");
     const baseURL = process.env.REACT_APP_API_BASE_URL;
     const navigate = useNavigate();
-    const {register, handleSubmit, formState: {errors}} = useForm<createAdmin>()
-    const onSubmit: SubmitHandler<createAdmin> = (data) => {
+    const {register, handleSubmit, formState: {errors}} = useForm<CreateAdmin>()
+    const onSubmit: SubmitHandler<CreateAdmin> = (data) => {
         axios
             .post(`${baseURL}./admin/create`, data)
             .then((res) => {
@@ -133,13 +133,13 @@ export function AdminData() {
     const baseURL = process.env.REACT_APP_API_BASE_URL;
     const {id} = useParams<{ id: string }>();
     const [error, setError] = useState("");
-    const [adminData, setAdminData] = useState<adminData>({
+    const [adminData, setAdminData] = useState<AdminData>({
         id: 0,
         email: '',
         name: ''
     });
     useEffect(() => {
-        axios.get(`${baseURL}./admin/${id}/profile`)
+        axios.get(`${baseURL}/admin/${id}/profile`)
             .then(res => {
                 setAdminData(res.data.data.profile)
             })
@@ -151,30 +151,34 @@ export function AdminData() {
     return (
         <>
             <AdminHeader/>
-            <div className="my-4 mx-32 block text-lg duration-700">
-                <div>{adminData.name}</div>
-                <button
-                    className="bg-blue-500 hover:bg-blue-700 text-white
+            <div className="flex">
+                <SideBar/>
+                <div className="mx-32 block text-lg duration-700">
+                    <div className="my-4 mx-32 block text-lg duration-700 flex">
+                        <button
+                            className="bg-blue-500 hover:bg-blue-700 text-white
                                font-bold py-2 px-4 border border-blue-700 rounded">
-                    <a href="/Admin/Update/Name">Name</a>
-                </button>
-            </div>
-            <div className="my-4 mx-32 block text-lg duration-700">
-                <div>{adminData.email}</div>
-                <button
-                    className="bg-blue-500 hover:bg-blue-700 text-white
+                            <a href="/Admin/Update/Name">Name</a>
+                        </button>
+                        {adminData.name}
+                    </div>
+                    <div className="my-4 mx-32 block text-lg duration-700 flex">
+                        <button
+                            className="bg-blue-500 hover:bg-blue-700 text-white
                                font-bold py-2 px-4 border border-blue-700 rounded">
-                    <a href="/Admin/Update/Email">Email</a>
-                </button>
-                <p role="alert" className="text-red-700 text-ls">{error}</p>
+                            <a href="/Admin/Update/Email">Email</a>
+                        </button>
+                        {adminData.email}
+                    </div>
+                    <p role="alert" className="text-red-700 text-ls">{error}</p>
+                </div>
             </div>
-            <AdminFooter/>
         </>
     )
 }
 
 export function EditAdminName() {
-    const [adminName, setAdminName] = useState<nameData>({
+    const [adminName, setAdminName] = useState<NameData>({
         id: 0,
         name: "",
     });
@@ -182,10 +186,10 @@ export function EditAdminName() {
     const navigate = useNavigate();
     const [error, setError] = useState('');
     const {id} = useParams<{ id: string }>();
-    const {register, handleSubmit, formState: {errors}} = useForm<nameData>();
-    const onSubmit: SubmitHandler<nameData> = (data: nameData) => {
+    const {register, handleSubmit, formState: {errors}} = useForm<NameData>();
+    const onSubmit: SubmitHandler<NameData> = (data: NameData) => {
         axios
-            .put<nameData>(`${baseURL}./admin/${id}/update/name`, {
+            .put<NameData>(`${baseURL}/admin/${id}/update/name`, {
                 name: adminName.name,
             })
             .then((res) => {
@@ -206,7 +210,7 @@ export function EditAdminName() {
             })
     };
     useEffect(() => {
-        axios.get(`${baseURL}./admin/${id}/profile`)
+        axios.get(`${baseURL}/admin/${id}/profile`)
             .then(res => {
                 setAdminName(res.data.data.profile)
             })
@@ -255,7 +259,7 @@ export function EditAdminName() {
 }
 
 export function EditAdminEmail() {
-    const [adminEmail, setAdminEmail] = useState<emailData>({
+    const [adminEmail, setAdminEmail] = useState<EmailData>({
         id: 0,
         email: "",
     });
@@ -263,17 +267,17 @@ export function EditAdminEmail() {
     const navigate = useNavigate();
     const {id} = useParams<{ id: string }>();
     const [error, setError] = useState('');
-    const {register, handleSubmit, formState: {errors}} = useForm<emailData>()
+    const {register, handleSubmit, formState: {errors}} = useForm<EmailData>()
     useEffect(() => {
-        axios.get(`${baseURL}./admin/${id}/profile`)
+        axios.get(`${baseURL}/admin/${id}/profile`)
             .then(res => {
                 setAdminEmail(res.data.data.profile)
             })
     }, [])
 
-    const onSubmit: SubmitHandler<emailData> = (data: emailData) => {
+    const onSubmit: SubmitHandler<EmailData> = (data: EmailData) => {
         axios
-            .put<emailData>(`${baseURL}./admin/${id}/update/email`, {
+            .put<EmailData>(`${baseURL}./admin/${id}/update/email`, {
                 email: adminEmail.email,
             })
             .then((res) => {
@@ -333,14 +337,14 @@ export function EditAdminEmail() {
 }
 
 export function AllUsers() {
-    const [users, setUsers] = useState<userData[]>([]);
+    const [users, setUsers] = useState<UserData[]>([]);
     const [errorMessage, setErrorMessage] = useState("");
-    const [userInformationData, setUserInformationData] = useState<userInformationData>(({
+    const [userInformationData, setUserInformationData] = useState<UserInformationData>(({
         current_page: 1,
         from: 0,
         last_page: 0,
     }));
-    const [url, setUrl] = useState<url>(({
+    const [url, setUrl] = useState<Url>(({
         next: '',
         prev: '',
     }));
@@ -372,7 +376,7 @@ export function AllUsers() {
         <>
             <AdminHeader/>
             <div className="grid grid-cols-3 gap-4 mx-24">
-                {users.map((user: userData) => {
+                {users.map((user: UserData) => {
                     return (
                         <div className="grid grid-rows-5 gap-4 bg-blue-400 rounded-md px-8 pb-8" key={user.id}>
                             <div className="font-bold pt-6">User Name</div>

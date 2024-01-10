@@ -5,25 +5,25 @@ import {SubmitHandler, useForm} from "react-hook-form";
 import Footer from "../../common/footer/Footer";
 import Header from "../../common/header/Header";
 
-type createUser = {
+type CreateUser = {
     name: string,
     email: string,
     password: string,
 }
 
 
-type userData = {
+type UserData = {
     id: number,
     name: string,
     email: string,
 }
 
-type emailData = {
+type EmailData = {
     id: number,
     email: string,
 }
 
-type nameData = {
+type NameData = {
     id: number,
     name: string,
 }
@@ -32,8 +32,8 @@ export function CreateUser() {
     const [error, setError] = useState("");
     const baseURL = process.env.REACT_APP_API_BASE_URL;
     const navigate = useNavigate();
-    const {register, handleSubmit, formState: {errors}} = useForm<createUser>()
-    const onSubmit: SubmitHandler<createUser> = (data) => {
+    const {register, handleSubmit, formState: {errors}} = useForm<CreateUser>()
+    const onSubmit: SubmitHandler<CreateUser> = (data) => {
         axios
             .post(`${baseURL}./user/create`, data)
             .then((res) => {
@@ -105,7 +105,7 @@ export function CreateUser() {
 
 export function EachUserData() {
     const [error, setError] = useState("");
-    const [userData, setUserData] = useState<userData>({
+    const [userData, setUserData] = useState<UserData>({
         id: 0,
         email: '',
         name: ''
@@ -158,19 +158,19 @@ export function EachUserData() {
 }
 
 export function EditUserName() {
-    const [userName, setUserName] = useState<nameData>({
+    const [userName, setUserName] = useState<NameData>({
         id: 0,
         name: "",
     });
     const baseURL = process.env.REACT_APP_API_BASE_URL;
     const navigate = useNavigate();
     const [error, setError] = useState('');
-    const {register, handleSubmit, formState: {errors}} = useForm<nameData>();
+    const {register, handleSubmit, formState: {errors}} = useForm<NameData>();
     const {id} = useParams<{ id: string }>();
 
-    const onSubmit: SubmitHandler<nameData> = (data: nameData) => {
+    const onSubmit: SubmitHandler<NameData> = (data: NameData) => {
         axios
-            .put<nameData>(`${baseURL}./user/${id}/update/name`, {
+            .put<NameData>(`${baseURL}./user/${id}/update/name`, {
                 name: userName.name,
             })
             .then((res) => {
