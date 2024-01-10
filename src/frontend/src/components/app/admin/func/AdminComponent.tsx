@@ -3,12 +3,27 @@ import {AuthenticationComponents, ProfileComponents, ItemComponents} from "./Sid
 
 export function SideBar() {
     const [isOpen, setIsOpen] = useState(false);
+    const [helpPage, setHelpPage] = useState(false);
+    const [itemPage, setItemPage] = useState(false);
     const SideBarOpen = () => {
         setIsOpen(true);
     }
     const SideBarClose = () => {
         setIsOpen(false);
     }
+    const HelpBarOpen = () => {
+        setHelpPage(true);
+    }
+    const HelpBarClose = () => {
+        setHelpPage(false);
+    }
+    const ItemBarOpen = () => {
+        setItemPage(true);
+    }
+    const ItemBarClose = () => {
+        setItemPage(false);
+    }
+
     return (
         <>
             <div className="">
@@ -29,7 +44,7 @@ export function SideBar() {
                     </div>
                 ) : (
                     <div
-                        className={`left-0 w-[15vw] bg-blue-600  px-2 text-white fixed h-full z-40
+                        className={`left-0 w-[15vw] bg-blue-600  px-2 text-white fixed h-full overflow-y-auto z-40
                              ease-in-out duration-300 ${isOpen ? "translate-x-0 " : "translate-x-full"}`}
                     >
                         <div className="my-5 flex">
@@ -37,16 +52,15 @@ export function SideBar() {
                                 ×
                             </button>
                         </div>
-                        <div className="my-4 mx-3">
-                            <div className="my-4 mx-3">
+                        <div className="overflow-y-auto pb-12">
+                            <div className="my-8 mx-6">
+                                {/* Help Setting file */}
                                 <AuthenticationComponents/>
                             </div>
-                            <div className="my-4 mx-3">
-                                <ProfileComponents/>
-                            </div>
-                            <div className="my-4 mx-3">
+                            <div className="my-8 mx-6 overflow-y-auto">
                                 <ItemComponents/>
                             </div>
+                            <div className="my-8 mx-6"><ProfileComponents/></div>
                         </div>
                     </div>
                 )}

@@ -10,7 +10,6 @@ export function AuthenticationComponents() {
     const SideBarClose = () => {
         setIsOpen(false);
     }
-
     return (
         <>
             <div className="">
@@ -23,51 +22,36 @@ export function AuthenticationComponents() {
                         </button>
                     </div>
                 ) : (
-                    <div className="justify-center">
-                        <div
-                            className={`left-0 w-[15vw] bg-blue-600 text-white fixed h-full z-40
-                             ease-in-out duration-300 ${isOpen ? "translate-x-0 " : "translate-x-full"}`}
-                        >
-                            <div className="my-5 flex">
-                                <span className="text-gray-800 mx-auto font-bold">
-                                    Profile Page
-                                </span>
-                            </div>
-                            <div className="my-5 flex">
-                                <span className="text-gray-800 mx-auto font-bold">
-                                    Item Page
-                                </span>
-                            </div>
-                            <div className="my-5 flex  text-center">
+                    <div className="justify-center overflow-y-auto">
+                        <div className="my-5 flex  text-center">
                                 <span className="text-gray-800 mx-auto py-2 font-bold bg-pink-200 w-10/12 rounded-md">
                                 Help & Settings
                                 </span>
-                            </div>
-                            <div className="my-5 mx-7">
-                                <div className="flex my-5">
-                                    <button onClick={SideBarClose} className="w-full py-2 bg-indigo-500
+                        </div>
+                        <div>
+                            <div className="flex my-5">
+                                <button onClick={SideBarClose} className="w-full py-2 bg-indigo-500
                             hover:bg-indigo-600 text-white text-sm font-medium rounded-md">
-                                        Back to Previous
-                                    </button>
-                                </div>
-                                <div className="flex my-5 text-center">
+                                    Close
+                                </button>
+                            </div>
+                            <div className="flex my-5 text-center">
                                     <span className="w-full py-2 bg-indigo-500
                             hover:bg-indigo-600 text-white text-sm font-medium rounded-md">
                                         Settings
                                     </span>
-                                </div>
-                                <div className="flex my-5 text-center">
+                            </div>
+                            <div className="flex my-5 text-center">
                                     <span className="w-full py-2 bg-indigo-500
                             hover:bg-indigo-600 text-white text-sm font-medium rounded-md">
                                         Sign Out
                                     </span>
-                                </div>
-                                <div className="flex my-5 text-center">
+                            </div>
+                            <div className="flex my-5 text-center">
                                     <span className="w-full py-2 bg-indigo-500
                             hover:bg-indigo-600 text-white text-sm font-medium rounded-md">
                                         Language
                                     </span>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -87,37 +71,42 @@ export function ItemComponents() {
     }
     return (
         <>
-            <div>
-                <div>
-                    {!isOpen ? (
-                        <div className="flex justify-center">
-                            <button onClick={SideBarOpen}
-                                    className="bg-indigo-500 py-2 w-44
+            <div className="">
+                {!isOpen ? (
+                    <div className="flex justify-center">
+                        <button onClick={SideBarOpen}
+                                className=" w-full py-2 bg-indigo-500
                             hover:bg-indigo-600 text-white text-sm font-medium rounded-md">
-                                Registered Items
+                            Item Page
+                        </button>
+                    </div>
+                ) : (
+                    <div className="justify-center overflow-y-auto">
+                        <div className="my-5">
+                            <div className="my-5 flex  text-center">
+                                <span className="text-gray-800 mx-auto py-2 font-bold bg-pink-200 w-full rounded-md">
+                                    Item Page
+                                </span>
+                            </div>
+                            <button onClick={SideBarClose} className="w-full py-2 bg-indigo-500
+                            hover:bg-indigo-600 text-white text-sm font-medium rounded-md">
+                                Close
                             </button>
-                        </div>
-                    ) : (
-                        <div
-                            className={`left-0 w-[15vw] bg-blue-600  px-2 text-white fixed h-full z-40
-                             ease-in-out duration-300 ${isOpen ? "translate-x-0 " : "translate-x-full"} `}
-                        >
-                            <div className="my-1">
-                                <span className="text-gray-800">Help & Settings</span>
+                            <div className="flex my-5 text-center">
+                                    <span className="w-full py-2 bg-indigo-500
+                                          hover:bg-indigo-600 text-white text-sm font-medium rounded-md">
+                                        Item Register
+                                    </span>
                             </div>
-                            <div className="my-1">
-                                <button>
-                                    back
-                                </button>
-                            </div>
-                            <div className="my-1">
-                                <Link to="/Admin/Login">
-                                    Log in
-                                </Link>
+                            <div className="flex my-5 text-center">
+                                    <span className="w-full py-2 bg-indigo-500
+                            hover:bg-indigo-600 text-white text-sm font-medium rounded-md">
+                                        All Registered Items
+                                    </span>
                             </div>
                         </div>
-                    )}
-                </div>
+                    </div>
+                )}
             </div>
         </>
     )
@@ -131,39 +120,46 @@ export function ProfileComponents() {
     const SideBarClose = () => {
         setIsOpen(false);
     }
+
     return (
         <>
-            <div>
-                <div>
-                    {!isOpen ? (
-                        <div className="flex justify-center">
-                            <button onClick={SideBarOpen}
-                                    className=" w-full py-2 bg-indigo-500
+            <div className="pb-12">
+                {!isOpen ? (
+                    <div className="flex justify-center">
+                        <button onClick={SideBarOpen}
+                                className=" w-full py-2 bg-indigo-500
                             hover:bg-indigo-600 text-white text-sm font-medium rounded-md">
-                                Admin Profile
-                            </button>
+                            Admin Profile
+                        </button>
+                    </div>
+                ) : (
+                    <div className="justify-center">
+                        <div className="my-5 flex  text-center">
+                                <span className="text-gray-800 mx-auto py-2 font-bold bg-pink-200 w-10/12 rounded-md">
+                                    Admin Profile
+                                </span>
                         </div>
-                    ) : (
-                        <div
-                            className={`left-0 w-[15vw] bg-blue-600  px-2 text-white fixed h-full z-40
-                             ease-in-out duration-300 ${isOpen ? "translate-x-0 " : "translate-x-full"}`}
-                        >
-                            <div className="my-1">
-                                <span className="text-gray-800">Help & Settings</span>
+                        <button onClick={SideBarClose}
+                                className="w-full py-2 bg-indigo-500
+                                hover:bg-indigo-600 text-white text-sm font-medium rounded-md">
+                            Close
+                        </button>
+                        <div className=" overflow-y-auto">
+                            <div className="flex my-5 text-center">
+                                    <span className="w-full py-2 bg-indigo-500
+                                          hover:bg-indigo-600 text-white text-sm font-medium rounded-md">
+                                        Name Change
+                                    </span>
                             </div>
-                            <div className="my-1">
-                                <button>
-                                    back
-                                </button>
-                            </div>
-                            <div className="my-1">
-                                <Link to="/Admin/Login">
-                                    Log in
-                                </Link>
+                            <div className="flex my-6 text-center">
+                                <span className="w-full py-2 bg-indigo-500
+                                          hover:bg-indigo-600 text-white text-sm font-medium rounded-md">
+                                    Email Change
+                                </span>
                             </div>
                         </div>
-                    )}
-                </div>
+                    </div>
+                )}
             </div>
         </>
     )
