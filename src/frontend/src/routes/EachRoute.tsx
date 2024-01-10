@@ -34,14 +34,14 @@ export default function EachRoute() {
                 <Route path="/Forget/Password" element={<ForgetPassword/>}/>
                 <Route path="/Reset/Password" element={<ResetPassword/>}/>
                 <Route path="*" element={<NotFound/>}/>
-                //AdminProvider
+                {/*AdminProvider*/}
                 <Route path="/Admin/:id/Profile" element={<AdminData/>}/>
                 <Route path=":id/Item/:slug" element={<ShowSlug/>}/>
                 <Route path="/Post/:slug/Edit" element={<EditSlug/>}/>
                 <Route path="Admin/Update/Email" element={<EditAdminName/>}/>
                 <Route path="Admin/Update/Name" element={<EditAdminEmail/>}/>
                 <Route path="Admin/:id/Users" element={<AllUsers/>}/>
-                // UserProvider
+                {/*UserProvider*/}
                 <Route path="User/:id" element={<EachUserData/>}/>
                 <Route path="User/:id/Name" element={<EditUserName/>}/>
                 <Route path="User/:id/Email" element={<EditUserEmail/>}/>
