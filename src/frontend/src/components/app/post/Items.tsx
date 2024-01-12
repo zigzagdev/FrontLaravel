@@ -47,7 +47,7 @@ export function Items() {
     for (let i = 1; i <= paginationData.last_page; i++) {
         pageNumbers.push(i);
     }
-    let apiUrl = `${baseURL}/items?`;
+    let apiUrl = `${baseURL}items?`;
     const fetchItemData = (apiUrl: string) => {
         axios
             .get(apiUrl)
@@ -58,13 +58,14 @@ export function Items() {
             })
             .catch((error) => {
                 if (
-                    (error as AxiosError<AxiosErrorResponse>).response &&
+                    (error as AxiosError<AxiosErrorResponse>).response ||
                     (error as AxiosError<AxiosErrorResponse>).response!.status === 400
                 ) {
                     setErrorMessage('Something is wrong ....')
                 }
             });
     };
+
     useEffect(() => {
         fetchItemData(apiUrl);
     }, []);
