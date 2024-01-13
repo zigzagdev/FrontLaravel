@@ -48,10 +48,10 @@ Route::group(['middleware' => ['cors']], function () {
             Route::get('/admin/{id}/user/all', 'allUser');
         });
         Route::controller(ItemController::class)->group(function () {
-            Route::post('/{id}/create/item', 'createItem');
-            Route::get('/{id}/item/{slug}', 'displayItem');
-            Route::post('/{id}/item/{slug}', 'deleteItem');
-            Route::put('/{id}/item/{slug}/update', 'updateItem');
+            Route::post('admin/{id}/create/item', 'createItem');
+            Route::get('admin/{id}/item/{slug}', 'displayItem');
+            Route::post('admin/{id}/item/{slug}', 'deleteItem');
+            Route::put('admin/{id}/item/{slug}/update', 'updateItem');
         });
         Route::controller(AuthenticationController::class)->group(function () {
             Route::post('/logout', 'logoutAction');
