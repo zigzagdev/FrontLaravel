@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import axios from "axios";
+import axios, {AxiosError} from "axios";
 import {useParams, useNavigate} from "react-router-dom";
 import {useForm, SubmitHandler} from "react-hook-form";
 import {Genre} from "./Genre";
@@ -15,6 +15,11 @@ type Item = {
     categoryName: string,
 }
 
+type AxiosErrorResponse = {
+    error: string
+}
+
+const baseURL = process.env.REACT_APP_API_BASE_URL;
 
 export function ShowSlug() {
     const {slug} = useParams<{ slug: string }>();
@@ -29,9 +34,8 @@ export function ShowSlug() {
         category: 0,
         categoryName: "",
     }));
-    const baseURL = process.env.REACT_APP_API_BASE_URL;
     useEffect(() => {
-        axios.get(`${baseURL}./${id}/item/${slug}`)
+        axios.get(`${baseURL}admin/${id}/item/${slug}`)
             .then(res => {
                 setItem(res.data.data.profile)
             })
@@ -75,13 +79,11 @@ export function EditSlug() {
         category: 0,
         categoryName: "",
     }));
-    const baseURL = process.env.REACT_APP_API_BASE_URL;
-    const navigate = useNavigate();
     const id = item.adminId
-    const {register, handleSubmit, formState: {errors}} = useForm<Item>()
-
+    const {register, handleSubmit, formState: {errors}} = useForm<Item>();
+    const navigate = useNavigate();
     useEffect(() => {
-        axios.get(`${baseURL}./${id}/item/${slug}`)
+        axios.get(`${baseURL}admin/${id}/item/${slug}`)
             .then(res => {
                 setItem(res.data.data.profile)
             })
@@ -89,7 +91,7 @@ export function EditSlug() {
 
     const onSubmit: SubmitHandler<Item> = (data: Item) => {
         axios
-            .put<Item>(`${baseURL}./item/${slug}/update`, {
+            .put<Item>(`${baseURL}admin/${id}/item/${slug}/update`, {
                 id: item.id,
                 name: data.name,
                 content: data.content,
@@ -103,8 +105,11 @@ export function EditSlug() {
                     navigate('/')
                 )
             })
-            .catch((error: any) => {
-                if (error.response.statusText == 'Bad Request') {
+            .catch((error) => {
+                if (
+                    (error as AxiosError<AxiosErrorResponse>).response ||
+                    (error as AxiosError<AxiosErrorResponse>).response!.status === 400
+                )  {
                     setError('Item Information could not updated ...');
                 } else {
                     setError('Internal server error is happened. Please do it again.');
@@ -193,6 +198,8 @@ export function EditSlug() {
 }
 
 export function DeleteSlug() {
+    const [error, setError] = useState(false);
+    const {slug} = useParams<{ slug: string }>();
     return (
         <>
             <div>

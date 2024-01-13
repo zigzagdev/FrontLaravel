@@ -30,6 +30,8 @@ type AxiosErrorResponse = {
     error: string
 }
 
+const baseURL = process.env.REACT_APP_API_BASE_URL;
+
 export function Items() {
     const [errorMessage, setErrorMessage] = useState('');
     const [items, setItems] = useState<ItemsData[]>([]);
@@ -42,7 +44,6 @@ export function Items() {
         next: '',
         prev: '',
     }));
-    const baseURL = process.env.REACT_APP_API_BASE_URL;
     const pageNumbers = [];
     for (let i = 1; i <= paginationData.last_page; i++) {
         pageNumbers.push(i);
