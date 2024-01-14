@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useRef, useState} from "react";
 import axios from "axios";
 import {Link, useNavigate} from "react-router-dom";
 import {useForm, SubmitHandler} from "react-hook-form";
@@ -10,10 +10,13 @@ type Inputs = {
     password: string
 }
 
+const baseURL = process.env.REACT_APP_API_BASE_URL;
+
 export function UserLogin() {
     const [error, setError] = useState('');
+    const emailRef = useRef(null);
+    const passRef = useRef(null);
     const [visiblePassword, setVisiblePassword] = useState(false);
-    const baseURL = process.env.REACT_APP_API_BASE_URL;
     const navigate = useNavigate();
     const showPassword = () => {
         setVisiblePassword((prevState) => !prevState);
@@ -66,6 +69,7 @@ export function UserLogin() {
                                 className="w-72 rounded-md h-8 text-black"
                                 placeholder="Enter your mail"
                                 {...register("email", {required: true, minLength: 4})}
+                                ref={emailRef}
                             />
                             {errors.email?.type === "required" && (
                                 <span role="alert" className="text-red-400">Email is required</span>
@@ -86,6 +90,7 @@ export function UserLogin() {
                                 className="flex w-72 rounded-md h-8 text-black"
                                 placeholder="Enter your password"
                                 type={visiblePassword ? "text" : "password"}
+                                ref={passRef}
                             />
                             <span onClick={showPassword} className="ml-3">
                                 {visiblePassword ? "show" : "hidden"}

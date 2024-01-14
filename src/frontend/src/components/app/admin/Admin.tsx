@@ -50,9 +50,10 @@ type Url = {
     prev: string,
 }
 
+const baseURL = process.env.REACT_APP_API_BASE_URL;
+
 export function CreateAdmin() {
     const [error, setError] = useState("");
-    const baseURL = process.env.REACT_APP_API_BASE_URL;
     const navigate = useNavigate();
     const {register, handleSubmit, formState: {errors}} = useForm<CreateAdmin>()
     const onSubmit: SubmitHandler<CreateAdmin> = (data) => {
@@ -130,7 +131,6 @@ export function CreateAdmin() {
 }
 
 export function AdminData() {
-    const baseURL = process.env.REACT_APP_API_BASE_URL;
     const {id} = useParams<{ id: string }>();
     const [error, setError] = useState("");
     const [adminData, setAdminData] = useState<AdminData>({
@@ -139,7 +139,7 @@ export function AdminData() {
         name: ''
     });
     useEffect(() => {
-        axios.get(`${baseURL}/admin/${id}/profile`)
+        axios.get(`${baseURL}admin/${id}/profile`)
             .then(res => {
                 setAdminData(res.data.data.profile)
             })
@@ -182,14 +182,13 @@ export function EditAdminName() {
         id: 0,
         name: "",
     });
-    const baseURL = process.env.REACT_APP_API_BASE_URL;
     const navigate = useNavigate();
     const [error, setError] = useState('');
     const {id} = useParams<{ id: string }>();
     const {register, handleSubmit, formState: {errors}} = useForm<NameData>();
     const onSubmit: SubmitHandler<NameData> = (data: NameData) => {
         axios
-            .put<NameData>(`${baseURL}/admin/${id}/update/name`, {
+            .put<NameData>(`${baseURL}admin/${id}/update/name`, {
                 name: adminName.name,
             })
             .then((res) => {
@@ -210,7 +209,7 @@ export function EditAdminName() {
             })
     };
     useEffect(() => {
-        axios.get(`${baseURL}/admin/${id}/profile`)
+        axios.get(`${baseURL}admin/${id}/profile`)
             .then(res => {
                 setAdminName(res.data.data.profile)
             })
@@ -263,13 +262,12 @@ export function EditAdminEmail() {
         id: 0,
         email: "",
     });
-    const baseURL = process.env.REACT_APP_API_BASE_URL;
     const navigate = useNavigate();
     const {id} = useParams<{ id: string }>();
     const [error, setError] = useState('');
     const {register, handleSubmit, formState: {errors}} = useForm<EmailData>()
     useEffect(() => {
-        axios.get(`${baseURL}/admin/${id}/profile`)
+        axios.get(`${baseURL}admin/${id}/profile`)
             .then(res => {
                 setAdminEmail(res.data.data.profile)
             })
@@ -348,9 +346,8 @@ export function AllUsers() {
         next: '',
         prev: '',
     }));
-    const baseURL = process.env.REACT_APP_API_BASE_URL;
     const {id} = useParams<{ id: string }>();
-    let apiUrl = `${baseURL}/admin/${id}/user/all?`;
+    let apiUrl = `${baseURL}admin/${id}/user/all?`;
 
     const fetchItemData = (apiUrl: string) => {
         axios

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useRef} from "react";
 import {SubmitHandler, useForm} from "react-hook-form";
 import axios from "axios";
 import {Link, useNavigate, useLocation} from "react-router-dom";
@@ -12,15 +12,16 @@ type Password = {
     confirmPassword: string,
 }
 
+const baseURL = process.env.REACT_APP_API_BASE_URL;
+
 export function ForgetPassword() {
-    const [email, setEmail] = useState("");
+    const emailRef = useRef(null);
     const [error, setError] = useState("");
-    const baseURL = process.env.REACT_APP_API_BASE_URL;
     const {handleSubmit, register, formState: {errors}} = useForm<Email>();
     const navigate = useNavigate();
     const onSubmit: SubmitHandler<Email> = (data) => {
         axios
-            .post(`${baseURL}/send/reset/password`, data)
+            .post(`${baseURL}send/reset/password`, data)
             .then((res) => {
                 return (
                     navigate('/Login')
@@ -90,7 +91,7 @@ export function ForgetPassword() {
                                             },
                                         })}
                                         placeholder="Enter your email"
-                                        onChange={(e) => setEmail(e.target.value)}
+                                        ref={emailRef}
                                     />
                                     {errors.email && errors.email.type === "maxLength" && (
                                         <span role="alert" className="text-red-500 pt-1 block">
@@ -141,7 +142,6 @@ export function ForgetPassword() {
 export function ResetPassword() {
     const search = useLocation().search;
     const query = new URLSearchParams(search);
-    const baseURL = process.env.REACT_APP_API_BASE_URL;
     const [error, setError] = useState("");
     const [visiblePassword, setVisiblePassword] = useState(false);
     const [confirmVisiblePassword, setConfirmVisiblePassword] = useState(false);
@@ -155,7 +155,7 @@ export function ResetPassword() {
     const {handleSubmit, register, formState: {errors}, getValues} = useForm<Password>();
     const onSubmit: SubmitHandler<Password> = (data) => {
         axios
-            .post(`${baseURL}/password/reset?email=${query.get('email')}&token=${query.get('token')}`, data)
+            .post(`${baseURL}password/reset?email=${query.get('email')}&token=${query.get('token')}`, data)
             .then((res) => {
                 setMessage('Your password was updated successfully ! Check your email.' +
                     ' This page will be return to Top page in 6 seconds in automatically ..');
