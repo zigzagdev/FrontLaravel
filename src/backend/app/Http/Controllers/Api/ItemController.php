@@ -116,7 +116,6 @@ class ItemController extends Controller
     function displayItem(Request $request)
     {
         try {
-            $adminId = $request->route('id');
             $slug = $request->route('slug');
             $fetchItem = ItemFlag::onDateAllItems()->where('slug', $slug)->first();
             if (empty($fetchItem)) {
@@ -137,7 +136,11 @@ class ItemController extends Controller
     {
         try {
             DB::beginTransaction();
-            $adminId = $request->admin_id;
+            $adminId = $request->route('id');
+            if (empty(Admin::where('id', $adminId)->first)) {
+                $request->merge(['statusMessage' => sprintf(Common::ERR_11)]);
+                return new ErrorResource($request, Response::HTTP_NOT_ACCEPTABLE);
+            }
             $itemSlug = $request->route('slug');
             $targetItemName = Item::where('slug', $itemSlug)->first();
 
@@ -153,7 +156,7 @@ class ItemController extends Controller
                 return new ErrorResource($request, Response::HTTP_UNAUTHORIZED);
             }
 
-            $this->updateItemData($request, $adminId, $itemSlug);
+            $this->updateItemData($request, $itemSlug);
 
             ItemFlag::where('item_id', $itemId)->update(
                 [
@@ -179,14 +182,20 @@ class ItemController extends Controller
     {
         try {
             DB::beginTransaction();
+            $adminId = $request->route('id');
             $itemSlug = $request->route('slug');
+
+            if (empty(Admin::where('id', $adminId)->first())) {
+                $request->merge(['statusMessage' => sprintf(Common::ERR_11)]);
+                return new ErrorResource($request, Response::HTTP_NOT_ACCEPTABLE);
+            }
             if (!$itemSlug) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
                 return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
             }
-            $itemData = Item::where('slug', $itemSlug);
+            $itemData = Item::where('slug', $itemSlug)->first();
 
-            if ($itemData->deleted_at < Carbon::now()) {
+            if ($itemData->deleted_at > Carbon::now()) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_15)]);
                 return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
             }
@@ -197,7 +206,6 @@ class ItemController extends Controller
                     'deleted_at' => Carbon::now(),
                 ]
             );
-
             ItemFlag::where('item_id', $itemData->id)->update(
                 [
                     'is_display' => Number::Expired_Flag,
@@ -228,11 +236,10 @@ class ItemController extends Controller
             ]
         );
         $itemId = $itemData->id;
-
         return $itemId;
     }
 
-    private function updateItemData($request, string $itemSlug, $adminId)
+    private function updateItemData($request, string $itemSlug)
     {
         Item::where('slug', $itemSlug)->update(
             [
@@ -240,7 +247,6 @@ class ItemController extends Controller
                 'description' => $request->input('description'),
                 'price' => $request->input('price'),
                 'category' => $request->input('category'),
-                'admin_id' => $adminId,
                 'updated_at' => Carbon::now(),
                 'expiration' => Carbon::today()->addMonth(Number::Three_Months),
                 'slug' => Str::slug($request->input('name'))
