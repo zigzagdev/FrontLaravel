@@ -15,7 +15,7 @@ type Password = {
 const baseURL = process.env.REACT_APP_API_BASE_URL;
 
 export function ForgetPassword() {
-    const emailRef = useRef(null);
+    const [email, setEmail] = useState('');
     const [error, setError] = useState("");
     const {handleSubmit, register, formState: {errors}} = useForm<Email>();
     const navigate = useNavigate();
@@ -91,7 +91,8 @@ export function ForgetPassword() {
                                             },
                                         })}
                                         placeholder="Enter your email"
-                                        ref={emailRef}
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
                                     />
                                     {errors.email && errors.email.type === "maxLength" && (
                                         <span role="alert" className="text-red-500 pt-1 block">
