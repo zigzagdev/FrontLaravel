@@ -14,8 +14,8 @@ const baseURL = process.env.REACT_APP_API_BASE_URL;
 
 export function UserLogin() {
     const [error, setError] = useState('');
-    const emailRef = useRef(null);
-    const passRef = useRef(null);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [visiblePassword, setVisiblePassword] = useState(false);
     const navigate = useNavigate();
     const showPassword = () => {
@@ -23,6 +23,7 @@ export function UserLogin() {
     }
     const {register, handleSubmit, formState: {errors}} = useForm<Inputs>();
     const onSubmit: SubmitHandler<Inputs> = (data) => {
+        console.log(data)
         axios
             .post(`${baseURL}/login`, data)
             .then((res) => {
@@ -69,7 +70,8 @@ export function UserLogin() {
                                 className="w-72 rounded-md h-8 text-black"
                                 placeholder="Enter your mail"
                                 {...register("email", {required: true, minLength: 4})}
-                                ref={emailRef}
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                             />
                             {errors.email?.type === "required" && (
                                 <span role="alert" className="text-red-400">Email is required</span>
@@ -90,7 +92,8 @@ export function UserLogin() {
                                 className="flex w-72 rounded-md h-8 text-black"
                                 placeholder="Enter your password"
                                 type={visiblePassword ? "text" : "password"}
-                                ref={passRef}
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
                             />
                             <span onClick={showPassword} className="ml-3">
                                 {visiblePassword ? "show" : "hidden"}

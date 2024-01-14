@@ -14,11 +14,11 @@ const baseURL = process.env.REACT_APP_API_BASE_URL;
 
 export function AdminLogin() {
     const [error, setError] = useState('');
-    const emailRef = useRef(null);
-    const passwordRef = useRef(null);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [visiblePassword, setVisiblePassword] = useState(false);
     const navigate = useNavigate();
-    const {register, handleSubmit, formState: {errors}} = useForm<Inputs>()
+    const {register, handleSubmit, formState: {errors},} = useForm<Inputs>()
     const showPassword = () => {
         setVisiblePassword((prevState) => !prevState);
     }
@@ -62,7 +62,8 @@ export function AdminLogin() {
                                 className=""
                                 placeholder="Enter your mail"
                                 {...register("email", {required: true, minLength: 4})}
-                                ref={emailRef}
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                             />
                             {errors.email?.type === "required" && (
                                 <span role="alert" className="text-red-400">Email is required</span>
@@ -79,6 +80,8 @@ export function AdminLogin() {
                                 className="flex"
                                 placeholder="Enter your password"
                                 type={visiblePassword ? "text" : "password"}
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
                             />
                             <span className="mx-1" onClick={showPassword}>show password</span>
                             {errors.password?.type === "required" && (
