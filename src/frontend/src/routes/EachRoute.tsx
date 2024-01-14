@@ -36,10 +36,10 @@ export default function EachRoute() {
                 <Route path="*" element={<NotFound/>}/>
                 {/*AdminProvider*/}
                 <Route path="/Admin/:id/Profile" element={<AdminData/>}/>
-                <Route path=":id/Item/:slug" element={<ShowSlug/>}/>
-                <Route path="/Post/:slug/Edit" element={<EditSlug/>}/>
-                <Route path="Admin/Update/Email" element={<EditAdminName/>}/>
-                <Route path="Admin/Update/Name" element={<EditAdminEmail/>}/>
+                <Route path="/Admin/:id/Item/:slug" element={<ShowSlug/>}/>
+                <Route path="/Item/Edit/:slug" element={<EditSlug/>}/>
+                <Route path="Admin/:id/Update/Email" element={<EditAdminName/>}/>
+                <Route path="Admin/:id/Update/Name" element={<EditAdminEmail/>}/>
                 <Route path="Admin/:id/Users" element={<AllUsers/>}/>
                 {/*UserProvider*/}
                 <Route path="User/:id" element={<EachUserData/>}/>

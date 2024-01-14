@@ -1,18 +1,22 @@
-import React, {useState} from "react";
+import React, {useState, useRef} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {useForm, SubmitHandler} from "react-hook-form";
 import AdminHeader from "../../common/header/AdminHeader";
+
 
 type Inputs = {
     email: string,
     password: string
 }
 
+const baseURL = process.env.REACT_APP_API_BASE_URL;
+
 export function AdminLogin() {
     const [error, setError] = useState('');
+    const emailRef = useRef(null);
+    const passwordRef = useRef(null);
     const [visiblePassword, setVisiblePassword] = useState(false);
-    const baseURL = process.env.REACT_APP_API_BASE_URL;
     const navigate = useNavigate();
     const {register, handleSubmit, formState: {errors}} = useForm<Inputs>()
     const showPassword = () => {
@@ -20,7 +24,7 @@ export function AdminLogin() {
     }
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         axios
-            .post(`${baseURL}/admin/login`, data)
+            .post(`${baseURL}admin/login`, data)
             .then((res) => {
                 const id = res.data.data.id
                 return (
@@ -28,7 +32,7 @@ export function AdminLogin() {
                 )
             })
             .catch((error: any) => {
-                if (error.response.statusText == 'Bad Request') {
+                if (error.response.statusText !== null) {
                     setError('Email or Password is wrong ...');
                     return (
                         navigate(`/Admin/Login`)
@@ -58,6 +62,7 @@ export function AdminLogin() {
                                 className=""
                                 placeholder="Enter your mail"
                                 {...register("email", {required: true, minLength: 4})}
+                                ref={emailRef}
                             />
                             {errors.email?.type === "required" && (
                                 <span role="alert" className="text-red-400">Email is required</span>
