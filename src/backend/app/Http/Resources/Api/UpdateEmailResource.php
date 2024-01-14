@@ -21,7 +21,6 @@ class UpdateEmailResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'statusCode' => $this->statusCode,
             'statusMessage' => 'OK',
             'updateEmail' => [
                 'email' => $this->email,
