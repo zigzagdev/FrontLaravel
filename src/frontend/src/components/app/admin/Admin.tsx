@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import axios, {AxiosError} from "axios";
 import {SubmitHandler, useForm} from "react-hook-form";
-import {useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams, Link} from "react-router-dom";
 import AdminHeader from "../../common/header/AdminHeader";
 import AdminFooter from "../../common/footer/AdminFooter";
 import {Pagination} from "../config/Pagination";
@@ -158,7 +158,7 @@ export function AdminData() {
                         <button
                             className="bg-blue-500 hover:bg-blue-700 text-white
                                font-bold py-2 px-4 border border-blue-700 rounded">
-                            <a href="/Admin/Update/Name">Name</a>
+                            <Link to={`/Admin/${id}/Update/Name`}>Name</Link>
                         </button>
                         {adminData.name}
                     </div>
@@ -166,7 +166,7 @@ export function AdminData() {
                         <button
                             className="bg-blue-500 hover:bg-blue-700 text-white
                                font-bold py-2 px-4 border border-blue-700 rounded">
-                            <a href="/Admin/Update/Email">Email</a>
+                            <Link to={`/Admin/${id}/Update/Email`}>Email</Link>
                         </button>
                         {adminData.email}
                     </div>
@@ -223,6 +223,7 @@ export function EditAdminName() {
             <AdminHeader/>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="my-4 mx-32 block text-lg duration-700">
+
                     <input
                         type="name"
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg

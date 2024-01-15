@@ -28,9 +28,10 @@ type NameData = {
     name: string,
 }
 
+const baseURL = process.env.REACT_APP_API_BASE_URL;
+
 export function CreateUser() {
     const [error, setError] = useState("");
-    const baseURL = process.env.REACT_APP_API_BASE_URL;
     const navigate = useNavigate();
     const {register, handleSubmit, formState: {errors}} = useForm<CreateUser>()
     const onSubmit: SubmitHandler<CreateUser> = (data) => {
@@ -110,7 +111,6 @@ export function EachUserData() {
         email: '',
         name: ''
     });
-    const baseURL = process.env.REACT_APP_API_BASE_URL;
     const navigate = useNavigate();
     const {id} = useParams();
 
@@ -162,7 +162,6 @@ export function EditUserName() {
         id: 0,
         name: "",
     });
-    const baseURL = process.env.REACT_APP_API_BASE_URL;
     const navigate = useNavigate();
     const [error, setError] = useState('');
     const {register, handleSubmit, formState: {errors}} = useForm<NameData>();
