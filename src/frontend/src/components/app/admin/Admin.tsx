@@ -182,11 +182,9 @@ export function EditAdminName() {
         id: 0,
         name: "",
     });
-    console.log(typeof (adminName.id))
     const navigate = useNavigate();
     const [error, setError] = useState('');
     const {id} = useParams<{ id: string }>();
-    console.log(typeof(id))
     const {register, handleSubmit, formState: {errors}} = useForm<NameData>();
     const onSubmit: SubmitHandler<NameData> = (data: NameData) => {
         axios
@@ -220,7 +218,6 @@ export function EditAdminName() {
                 setTimeout("location.href='/Admin/Login'", 10000);
             })
     }, [])
-    console.log(adminName)
     return (
         <>
             <AdminHeader/>
