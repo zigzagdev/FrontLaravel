@@ -61,19 +61,17 @@ class AdminController extends Controller
             DB::beginTransaction();
             $adminId = $request->route('id');
             $currentAdminData = Admin::where('id', $adminId)->first();
-
             if (empty($currentAdminData)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
                 return new ErrorResource($request, Response::HTTP_NOT_FOUND);
             }
 
-            $expiration = $currentAdminData->expiration;
-            if ($expiration < Carbon::now('Asia/Tokyo')) {
+            $expiration = $currentAdminData->deleted_at;
+            if ($expiration > Carbon::now('Asia/Tokyo')) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_09)]);
                 return new ErrorResource($request, Response::HTTP_UNAUTHORIZED);
             }
 
-            $adminId = $currentAdminData->id;
             $this->updateAdminNameData($request, $adminId);
             DB::commit();
             return new UpdateAdminResource($request);
@@ -169,7 +167,6 @@ class AdminController extends Controller
             [
                 'name' => $request->input('name'),
                 'updated_at' => Carbon::now(),
-                'expiration' => Carbon::today()->addDays(Number::Three_Days),
             ]
         );
     }
@@ -180,7 +177,6 @@ class AdminController extends Controller
             [
                 'email' => $request->input('email'),
                 'updated_at' => Carbon::now(),
-                'expiration' => Carbon::today()->addDays(Number::Three_Days),
             ]
         );
     }

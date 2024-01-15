@@ -26,6 +26,7 @@ class AdminAuth extends Middleware
     {
         $adminId = $request->route('id');
         $adminData = Admin::where('id', $adminId)->first();
+
         if (empty($adminData)) {
             $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, '管理者データ')]);
             return new ErrorResource($request, Response::HTTP_UNAUTHORIZED);
