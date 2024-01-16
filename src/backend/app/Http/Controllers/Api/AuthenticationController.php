@@ -79,8 +79,6 @@ class AuthenticationController extends Controller
                     'updated_at' => Carbon::now()
                 ]
             );
-            $userData->save();
-
             DB::commit();
             return new UserLoginResource($userData);
         } catch (\Exception $e) {
