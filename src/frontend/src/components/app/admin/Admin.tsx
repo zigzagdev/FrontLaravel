@@ -151,26 +151,38 @@ export function AdminData() {
     return (
         <>
             <AdminHeader/>
-            <div className="flex">
+            <div className="">
                 <SideBar/>
-                <div className="mx-32 block text-lg duration-700">
-                    <div className="my-4 mx-32 block text-lg duration-700 flex">
-                        <button
-                            className="bg-blue-500 hover:bg-blue-700 text-white
+                <div className="w-2/5 mx-auto">
+                    <div className="text-lg duration-700 pb-8 h-auto bg-gray-200/30 backdrop-blur-lg
+                         rounded-md border">
+                        <strong className="block my-4 text-center">Profile Data</strong>
+                        <div className="text-lg duration-700 flex px-24 py-6 justify-around">
+                            <div className="pr-24">
+                                <button
+                                    className="bg-blue-500 hover:bg-blue-700 text-white
                                font-bold py-2 px-4 border border-blue-700 rounded">
-                            <Link to={`/Admin/${id}/Update/Name`}>Name</Link>
-                        </button>
-                        {adminData.name}
-                    </div>
-                    <div className="my-4 mx-32 block text-lg duration-700 flex">
-                        <button
-                            className="bg-blue-500 hover:bg-blue-700 text-white
+                                    <Link to={`/Admin/${id}/Update/Name`}>Name</Link>
+                                </button>
+                            </div>
+                            <div className="break-all w-full">
+                                {adminData.name}
+                            </div>
+                        </div>
+                        <div className="text-lg duration-700 flex px-24 py-6 justify-around">
+                            <div className="pr-24">
+                                <button
+                                    className="bg-blue-500 hover:bg-blue-700 text-white
                                font-bold py-2 px-4 border border-blue-700 rounded">
-                            <Link to={`/Admin/${id}/Update/Email`}>Email</Link>
-                        </button>
-                        {adminData.email}
+                                    <Link to={`/Admin/${id}/Update/Email`}>Email</Link>
+                                </button>
+                            </div>
+                            <div className="break-all w-full">
+                                {adminData.email}
+                            </div>
+                        </div>
+                        <p role="alert" className="text-red-700 text-ls">{error}</p>
                     </div>
-                    <p role="alert" className="text-red-700 text-ls">{error}</p>
                 </div>
             </div>
         </>
