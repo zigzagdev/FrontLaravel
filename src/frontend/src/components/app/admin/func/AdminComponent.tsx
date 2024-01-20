@@ -3,27 +3,12 @@ import {AuthenticationComponents, ProfileComponents, ItemComponents} from "./Sid
 
 export function SideBar() {
     const [isOpen, setIsOpen] = useState(false);
-    const [helpPage, setHelpPage] = useState(false);
-    const [itemPage, setItemPage] = useState(false);
     const SideBarOpen = () => {
         setIsOpen(true);
     }
     const SideBarClose = () => {
         setIsOpen(false);
     }
-    const HelpBarOpen = () => {
-        setHelpPage(true);
-    }
-    const HelpBarClose = () => {
-        setHelpPage(false);
-    }
-    const ItemBarOpen = () => {
-        setItemPage(true);
-    }
-    const ItemBarClose = () => {
-        setItemPage(false);
-    }
-
     return (
         <>
             <div className="">
@@ -60,7 +45,9 @@ export function SideBar() {
                             <div className="my-8 mx-6 overflow-y-auto">
                                 <ItemComponents/>
                             </div>
-                            <div className="my-8 mx-6"><ProfileComponents/></div>
+                            <div className="my-8 mx-6">
+                                <ProfileComponents/>
+                            </div>
                         </div>
                     </div>
                 )}

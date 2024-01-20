@@ -65,8 +65,11 @@ export function CreateAdmin() {
                     navigate(`/Admin/${id}/Profile`)
                 )
             })
-            .catch((error: any) => {
-                if (error.res !== null) {
+            .catch((error) => {
+                if (
+                    (error as AxiosError<AxiosErrorResponse>).response &&
+                    (error as AxiosError<AxiosErrorResponse>).response!.status === 400
+                ) {
                     setError('User can not registered ...');
                     setTimeout("location.href='/Admin/Create'", 10000);
                 } else {
@@ -144,6 +147,8 @@ export function AdminData() {
                 setAdminData(res.data.data.profile)
             })
             .catch((error: any) => {
+                (error as AxiosError<AxiosErrorResponse>).response &&
+                (error as AxiosError<AxiosErrorResponse>).response!.status === 400
                 setError('Email or Password is wrong ...');
                 setTimeout("location.href='/Admin/Login'", 10000);
             })
@@ -208,8 +213,11 @@ export function EditAdminName() {
                     navigate(`/Admin/${id}/Profile`)
                 )
             })
-            .catch((error: any) => {
-                if (error.response !== null) {
+            .catch((error) => {
+                if (
+                    (error as AxiosError<AxiosErrorResponse>).response &&
+                    (error as AxiosError<AxiosErrorResponse>).response!.status === 400
+                ) {
                     setError('Item Information could not updated ...');
                     setTimeout("location.href=`/Admin/${id}/Profile`", 10000);
                 } else {
@@ -296,8 +304,11 @@ export function EditAdminEmail() {
                     navigate(`/Admin/${id}/Profile`)
                 )
             })
-            .catch((error: any) => {
-                if (error.response.statusText !== null) {
+            .catch((error) => {
+                if (
+                    (error as AxiosError<AxiosErrorResponse>).response &&
+                    (error as AxiosError<AxiosErrorResponse>).response!.status === 400
+                ) {
                     setError('Item Information could not updated ...');
                     setTimeout("location.href=`/Admin/${id}/Profile`", 5000);
                 } else {
