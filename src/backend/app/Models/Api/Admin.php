@@ -20,4 +20,5 @@ class Admin extends Authenticatable
     {
         return $this->hasMany(Item::class, 'foreign_key');
     }
+
 }
