@@ -17,6 +17,7 @@ type AdminData = {
     id: number,
     name: string,
     email: string,
+    totalItems: number
 }
 
 type AxiosErrorResponse = {
@@ -48,6 +49,10 @@ type UserInformationData = {
 type Url = {
     next: string,
     prev: string,
+}
+
+type Items = {
+    count: number
 }
 
 const baseURL = process.env.REACT_APP_API_BASE_URL;
@@ -139,16 +144,19 @@ export function AdminData() {
     const [adminData, setAdminData] = useState<AdminData>({
         id: 0,
         email: '',
-        name: ''
+        name: '',
+        totalItems: 0
     });
     useEffect(() => {
         axios.get(`${baseURL}admin/${id}/profile`)
             .then(res => {
                 setAdminData(res.data.data.profile)
             })
-            .catch((error: any) => {
-                (error as AxiosError<AxiosErrorResponse>).response &&
-                (error as AxiosError<AxiosErrorResponse>).response!.status === 400
+            .catch((error) => {
+                if (
+                    (error as AxiosError<AxiosErrorResponse>).response &&
+                    (error as AxiosError<AxiosErrorResponse>).response!.status === 400
+                )
                 setError('Email or Password is wrong ...');
                 setTimeout("location.href='/Admin/Login'", 10000);
             })
@@ -158,12 +166,12 @@ export function AdminData() {
             <AdminHeader/>
             <div className="">
                 <SideBar/>
-                <div className="w-2/5 mx-auto">
+                <div className="w-6/12 mx-auto">
                     <div className="text-lg duration-700 pb-8 h-auto bg-gray-200/30 backdrop-blur-lg
                          rounded-md border">
                         <strong className="block my-4 text-center">Profile Data</strong>
-                        <div className="text-lg duration-700 flex px-24 py-6 justify-around">
-                            <div className="pr-24">
+                        <div className="text-lg duration-700 flex px-16 py-6 justify-around">
+                            <div className="w-11/12">
                                 <button
                                     className="bg-blue-500 hover:bg-blue-700 text-white
                                font-bold py-2 px-4 border border-blue-700 rounded">
@@ -174,8 +182,8 @@ export function AdminData() {
                                 {adminData.name}
                             </div>
                         </div>
-                        <div className="text-lg duration-700 flex px-24 py-6 justify-around">
-                            <div className="pr-24">
+                        <div className="text-lg duration-700 flex px-16 py-6 justify-around">
+                            <div className="w-11/12">
                                 <button
                                     className="bg-blue-500 hover:bg-blue-700 text-white
                                font-bold py-2 px-4 border border-blue-700 rounded">
@@ -184,6 +192,18 @@ export function AdminData() {
                             </div>
                             <div className="break-all w-full">
                                 {adminData.email}
+                            </div>
+                        </div>
+                        <div className="text-lg duration-700 flex px-16 py-6 justify-around">
+                            <div className="w-11/12">
+                                <button
+                                    className="bg-blue-500 hover:bg-blue-700 text-white
+                               font-bold py-2 px-4 border border-blue-700 rounded">
+                                    <Link to={''}>RegisteredItems</Link>
+                                </button>
+                            </div>
+                            <div className="break-all w-full">
+                                {adminData.totalItems}
                             </div>
                         </div>
                         <p role="alert" className="text-red-700 text-ls">{error}</p>
