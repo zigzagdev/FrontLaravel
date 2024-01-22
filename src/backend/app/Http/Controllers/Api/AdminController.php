@@ -26,12 +26,6 @@ use App\Http\Resources\Api\AdminResource;
 
 class AdminController extends Controller
 {
-
-    public function __construct()
-    {
-        $this->middleware('admin')->except('createAdmin', 'adminCreateData');
-    }
-
     function createAdmin(AdminRequest $request)
     {
         try {
@@ -111,17 +105,20 @@ class AdminController extends Controller
     {
         try {
             $adminId = $request->route('id');
-            $authentication = Admin::where('id', $adminId)->first()->toArray();
+            $authentication = Admin::where('id', $adminId)->first();
             $authenticationData = count(Item::select('id')->where('admin_id', $adminId)->get());
+
             if (empty($authentication)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
                 return new ErrorResource($request, Response::HTTP_NOT_FOUND);
             }
             $authentication['total_item'] = $authenticationData;
 
-            return new AdminResource($authentication);
+//            return new AdminResource($authentication);
         } catch (\Exception $e) {
             $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, '管理者データ')]);
+            $kk = $e->getMessage();
+            var_dump($kk);
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }

@@ -22,12 +22,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
-
-    public function __construct()
-    {
-        $this->middleware('user')->except('createUser', 'createUserData');
-    }
-
     public function createUser(UserRequest $request)
     {
         try {
