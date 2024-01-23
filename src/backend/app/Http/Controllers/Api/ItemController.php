@@ -25,11 +25,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ItemController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('admin')->except('searchItems', 'allItems');
-    }
-
     public function createItem(ItemRequest $request)
     {
         try {

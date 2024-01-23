@@ -26,9 +26,10 @@ class AdminResource extends JsonResource
             'statusCode' => $this->statusCode,
             'statusMessage' => 'OK',
             'profile' => [
-                'id' => $this->id,
-                'name' => $this->name,
-                'email' => $this->email
+                'id' => $this['id'],
+                'name' => $this['name'],
+                'email' => $this['email'],
+                'totalItems' => $this['total_item']
             ]
         ];
     }

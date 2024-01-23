@@ -3,11 +3,13 @@ import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import Header from "../../common/header/Header";
 
+
+const baseURL = process.env.REACT_APP_API_BASE_URL;
+
 export default function Search() {
     const [query, setQuery] = useState('');
     const [searchContent, setSearchContent] = useState("");
     const [error, setError] = useState("");
-    const baseURL = process.env.REACT_APP_API_BASE_URL;
     const navigate = useNavigate();
     const fetchData = async () => {
         try {

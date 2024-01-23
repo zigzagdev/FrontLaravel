@@ -17,6 +17,7 @@ type AdminData = {
     id: number,
     name: string,
     email: string,
+    totalItems: number
 }
 
 type AxiosErrorResponse = {
@@ -50,6 +51,10 @@ type Url = {
     prev: string,
 }
 
+type Items = {
+    count: number
+}
+
 const baseURL = process.env.REACT_APP_API_BASE_URL;
 
 export function CreateAdmin() {
@@ -65,8 +70,11 @@ export function CreateAdmin() {
                     navigate(`/Admin/${id}/Profile`)
                 )
             })
-            .catch((error: any) => {
-                if (error.res !== null) {
+            .catch((error) => {
+                if (
+                    (error as AxiosError<AxiosErrorResponse>).response &&
+                    (error as AxiosError<AxiosErrorResponse>).response!.status === 400
+                ) {
                     setError('User can not registered ...');
                     setTimeout("location.href='/Admin/Create'", 10000);
                 } else {
@@ -136,14 +144,19 @@ export function AdminData() {
     const [adminData, setAdminData] = useState<AdminData>({
         id: 0,
         email: '',
-        name: ''
+        name: '',
+        totalItems: 0
     });
     useEffect(() => {
         axios.get(`${baseURL}admin/${id}/profile`)
             .then(res => {
                 setAdminData(res.data.data.profile)
             })
-            .catch((error: any) => {
+            .catch((error) => {
+                if (
+                    (error as AxiosError<AxiosErrorResponse>).response &&
+                    (error as AxiosError<AxiosErrorResponse>).response!.status === 400
+                )
                 setError('Email or Password is wrong ...');
                 setTimeout("location.href='/Admin/Login'", 10000);
             })
@@ -151,26 +164,50 @@ export function AdminData() {
     return (
         <>
             <AdminHeader/>
-            <div className="flex">
+            <div className="">
                 <SideBar/>
-                <div className="mx-32 block text-lg duration-700">
-                    <div className="my-4 mx-32 block text-lg duration-700 flex">
-                        <button
-                            className="bg-blue-500 hover:bg-blue-700 text-white
+                <div className="w-6/12 mx-auto">
+                    <div className="text-lg duration-700 pb-8 h-auto bg-gray-200/30 backdrop-blur-lg
+                         rounded-md border">
+                        <strong className="block my-4 text-center">Profile Data</strong>
+                        <div className="text-lg duration-700 flex px-16 py-6 justify-around">
+                            <div className="w-11/12">
+                                <button
+                                    className="bg-blue-500 hover:bg-blue-700 text-white
                                font-bold py-2 px-4 border border-blue-700 rounded">
-                            <Link to={`/Admin/${id}/Update/Name`}>Name</Link>
-                        </button>
-                        {adminData.name}
-                    </div>
-                    <div className="my-4 mx-32 block text-lg duration-700 flex">
-                        <button
-                            className="bg-blue-500 hover:bg-blue-700 text-white
+                                    <Link to={`/Admin/${id}/Update/Name`}>Name</Link>
+                                </button>
+                            </div>
+                            <div className="break-all w-full">
+                                {adminData.name}
+                            </div>
+                        </div>
+                        <div className="text-lg duration-700 flex px-16 py-6 justify-around">
+                            <div className="w-11/12">
+                                <button
+                                    className="bg-blue-500 hover:bg-blue-700 text-white
                                font-bold py-2 px-4 border border-blue-700 rounded">
-                            <Link to={`/Admin/${id}/Update/Email`}>Email</Link>
-                        </button>
-                        {adminData.email}
+                                    <Link to={`/Admin/${id}/Update/Email`}>Email</Link>
+                                </button>
+                            </div>
+                            <div className="break-all w-full">
+                                {adminData.email}
+                            </div>
+                        </div>
+                        <div className="text-lg duration-700 flex px-16 py-6 justify-around">
+                            <div className="w-11/12">
+                                <button
+                                    className="bg-blue-500 hover:bg-blue-700 text-white
+                               font-bold py-2 px-4 border border-blue-700 rounded">
+                                    <Link to={''}>RegisteredItems</Link>
+                                </button>
+                            </div>
+                            <div className="break-all w-full">
+                                {adminData.totalItems}
+                            </div>
+                        </div>
+                        <p role="alert" className="text-red-700 text-ls">{error}</p>
                     </div>
-                    <p role="alert" className="text-red-700 text-ls">{error}</p>
                 </div>
             </div>
         </>
@@ -196,8 +233,11 @@ export function EditAdminName() {
                     navigate(`/Admin/${id}/Profile`)
                 )
             })
-            .catch((error: any) => {
-                if (error.response !== null) {
+            .catch((error) => {
+                if (
+                    (error as AxiosError<AxiosErrorResponse>).response &&
+                    (error as AxiosError<AxiosErrorResponse>).response!.status === 400
+                ) {
                     setError('Item Information could not updated ...');
                     setTimeout("location.href=`/Admin/${id}/Profile`", 10000);
                 } else {
@@ -284,8 +324,11 @@ export function EditAdminEmail() {
                     navigate(`/Admin/${id}/Profile`)
                 )
             })
-            .catch((error: any) => {
-                if (error.response.statusText !== null) {
+            .catch((error) => {
+                if (
+                    (error as AxiosError<AxiosErrorResponse>).response &&
+                    (error as AxiosError<AxiosErrorResponse>).response!.status === 400
+                ) {
                     setError('Item Information could not updated ...');
                     setTimeout("location.href=`/Admin/${id}/Profile`", 5000);
                 } else {
