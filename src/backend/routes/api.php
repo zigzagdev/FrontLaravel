@@ -38,6 +38,7 @@ Route::group(['middleware' => ['cors']], function () {
     Route::controller(ItemController::class)->group(function () {
         Route::get('/items', 'allItems');
         Route::get('/search', 'searchItems');
+        Route::get('/item/{slug}', 'displayItem');
     });
 
     Route::group(['middleware' => ['admin']], function () {

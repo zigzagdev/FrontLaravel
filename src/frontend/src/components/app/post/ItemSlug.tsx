@@ -3,6 +3,19 @@ import axios, {AxiosError} from "axios";
 import {useParams, useNavigate} from "react-router-dom";
 import {useForm, SubmitHandler} from "react-hook-form";
 import {Genre} from "./Genre";
+import Header from "../../common/header/Header";
+import Footer from "../../common/footer/Footer";
+
+type adminItem = {
+    id: number,
+    name: string,
+    content: string,
+    price: number,
+    slug: string,
+    adminId: number,
+    category: number,
+    categoryName: string,
+}
 
 type Item = {
     id: number,
@@ -10,7 +23,6 @@ type Item = {
     content: string,
     price: number,
     slug: string,
-    adminId: number,
     category: number,
     categoryName: string,
 }
@@ -23,8 +35,8 @@ const baseURL = process.env.REACT_APP_API_BASE_URL;
 
 export function ShowSlug() {
     const {slug} = useParams<{ slug: string }>();
-    const {id} = useParams<{id: string}>();
-    const [item, setItem] = useState<Item>(({
+    const {id} = useParams<{ id: string }>();
+    const [item, setItem] = useState<adminItem>(({
         id: 0,
         name: "",
         content: "",
@@ -69,7 +81,7 @@ export function ShowSlug() {
 export function EditSlug() {
     const {slug} = useParams<{ slug: string }>();
     const [error, setError] = useState('');
-    const [item, setItem] = useState<Item>(({
+    const [item, setItem] = useState<adminItem>(({
         id: 0,
         name: "",
         content: "",
@@ -80,7 +92,7 @@ export function EditSlug() {
         categoryName: "",
     }));
     const id = item.adminId
-    const {register, handleSubmit, formState: {errors}} = useForm<Item>();
+    const {register, handleSubmit, formState: {errors}} = useForm<adminItem>();
     const navigate = useNavigate();
     useEffect(() => {
         axios.get(`${baseURL}admin/${id}/item/${slug}`)
@@ -89,7 +101,7 @@ export function EditSlug() {
             })
     }, [])
 
-    const onSubmit: SubmitHandler<Item> = (data: Item) => {
+    const onSubmit: SubmitHandler<adminItem> = (data: adminItem) => {
         axios
             .put<Item>(`${baseURL}admin/${id}/item/${slug}/update`, {
                 id: item.id,
@@ -109,7 +121,7 @@ export function EditSlug() {
                 if (
                     (error as AxiosError<AxiosErrorResponse>).response ||
                     (error as AxiosError<AxiosErrorResponse>).response!.status === 400
-                )  {
+                ) {
                     setError('Item Information could not updated ...');
                 } else {
                     setError('Internal server error is happened. Please do it again.');
@@ -207,4 +219,50 @@ export function DeleteSlug() {
             </div>
         </>
     )
+}
+
+export function ItemsDisplay() {
+    const {slug} = useParams<{ slug: string }>();
+    const [item, setItem] = useState<Item>(({
+        id: 0,
+        name: "",
+        content: "",
+        price: 0,
+        slug: "",
+        category: 0,
+        categoryName: "",
+    }));
+    useEffect(() => {
+        axios.get(`${baseURL}item/${slug}`)
+            .then(res => {
+                setItem(res.data.data.profile)
+            })
+    }, [])
+    return (
+        <>
+            <Header/>
+            <div className="my-4 mx-32 block text-lg duration-700">
+                <div className="my-3 mx-4">
+                    <div className="my-5">
+                        <p className="my-3 mx-4">Item Name</p>
+                        <p className="mx-7">{item.name}</p>
+                    </div>
+                    <div className="my-5">
+                        <p className="my-3 mx-4">Item Content</p>
+                        <p className="mx-7">{item.content}</p>
+                    </div>
+                    <div className="my-5">
+                        <p className="my-3 mx-4">Item Price</p>
+                        <p className="mx-7">{item.price}</p>
+                    </div>
+                    <div className="my-5">
+                        <p className="my-3 mx-4">Item Category</p>
+                        <p className="mx-7">{Genre[item.category].label}</p>
+                    </div>
+                </div>
+            </div>
+            <Footer/>
+        </>
+    )
+
 }
