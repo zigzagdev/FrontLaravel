@@ -5,6 +5,7 @@ import {useForm, SubmitHandler} from "react-hook-form";
 import {Genre} from "./Genre";
 import Header from "../../common/header/Header";
 import Footer from "../../common/footer/Footer";
+import {BASE_URL} from "../../common/const/Const";
 
 type adminItem = {
     id: number,
@@ -31,8 +32,6 @@ type AxiosErrorResponse = {
     error: string
 }
 
-const baseURL = process.env.REACT_APP_API_BASE_URL;
-
 export function ShowSlug() {
     const {slug} = useParams<{ slug: string }>();
     const {id} = useParams<{ id: string }>();
@@ -47,7 +46,7 @@ export function ShowSlug() {
         categoryName: "",
     }));
     useEffect(() => {
-        axios.get(`${baseURL}admin/${id}/item/${slug}`)
+        axios.get(`${BASE_URL}admin/${id}/item/${slug}`)
             .then(res => {
                 setItem(res.data.data.profile)
             })
@@ -95,7 +94,7 @@ export function EditSlug() {
     const {register, handleSubmit, formState: {errors}} = useForm<adminItem>();
     const navigate = useNavigate();
     useEffect(() => {
-        axios.get(`${baseURL}admin/${id}/item/${slug}`)
+        axios.get(`${BASE_URL}admin/${id}/item/${slug}`)
             .then(res => {
                 setItem(res.data.data.profile)
             })
@@ -103,7 +102,7 @@ export function EditSlug() {
 
     const onSubmit: SubmitHandler<adminItem> = (data: adminItem) => {
         axios
-            .put<Item>(`${baseURL}admin/${id}/item/${slug}/update`, {
+            .put<Item>(`${BASE_URL}admin/${id}/item/${slug}/update`, {
                 id: item.id,
                 name: data.name,
                 content: data.content,
@@ -233,7 +232,7 @@ export function ItemsDisplay() {
         categoryName: "",
     }));
     useEffect(() => {
-        axios.get(`${baseURL}item/${slug}`)
+        axios.get(`${BASE_URL}item/${slug}`)
             .then(res => {
                 setItem(res.data.data.profile)
             })

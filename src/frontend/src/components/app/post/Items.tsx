@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from "react";
 import axios, {AxiosError} from "axios";
-import Search from "../input/Search";
 import {Link} from "react-router-dom";
 import {Pagination} from "../config/Pagination";
+import {BASE_URL} from "../../common/const/Const";
 
 type ItemsData = {
     Id: number,
@@ -30,8 +30,6 @@ type AxiosErrorResponse = {
     error: string
 }
 
-const baseURL = process.env.REACT_APP_API_BASE_URL;
-
 export function Items() {
     const [errorMessage, setErrorMessage] = useState('');
     const [items, setItems] = useState<ItemsData[]>([]);
@@ -48,7 +46,7 @@ export function Items() {
     for (let i = 1; i <= paginationData.last_page; i++) {
         pageNumbers.push(i);
     }
-    let apiUrl = `${baseURL}items?`;
+    let apiUrl = `${BASE_URL}items?`;
     const fetchItemData = (apiUrl: string) => {
         axios
             .get(apiUrl)
@@ -72,18 +70,10 @@ export function Items() {
     }, []);
     return (
         <>
-            <div
-                className="my-3 text-center block text-sm text-gray-300 sm:text-center
-                           duration-700 hover:text-gray-100">
-                <Search/>
-            </div>
-            <div className="my-1">
-                <span className="text-red-400">{errorMessage}</span>
-            </div>
             <div className="my-24 mx-16">
                 {items.map((item) => {
                     return (
-                        <Link to={`${item.adminId}/Item/${item.slug}`} state={{slug: item.slug}} key={item.Id}>
+                        <Link to={`/Item/${item.slug}`} state={{slug: item.slug}} key={item.Id}>
                             <div className="my-8 mx-5 inline-block max-w-sm w-full lg:max-w-full lg:flex">
                                 <div
                                     className="border-r border-b border-l border-gray-400 lg:border-l-0

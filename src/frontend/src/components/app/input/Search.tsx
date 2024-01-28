@@ -2,9 +2,7 @@ import React, {useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import Header from "../../common/header/Header";
-
-
-const baseURL = process.env.REACT_APP_API_BASE_URL;
+import {BASE_URL} from "../../common/const/Const";
 
 export default function Search() {
     const [query, setQuery] = useState('');
@@ -14,7 +12,7 @@ export default function Search() {
     const fetchData = async () => {
         try {
             const {data} = await axios.get(
-                `${baseURL}./search?q=${query}`
+                `${BASE_URL}./search?q=${query}`
             );
             setSearchContent(data.products);
             navigate(`/Result?q=${query}`)
