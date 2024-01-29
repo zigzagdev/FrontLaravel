@@ -34,22 +34,22 @@ export function AuthenticationComponents() {
                                 </button>
                             </div>
                             <div className="flex my-5 text-center">
-                                    <span className="w-full py-2 bg-indigo-500
+                                <span className="w-full py-2 bg-indigo-500
                             hover:bg-indigo-600 text-white text-sm font-medium rounded-md">
                                         Settings
-                                    </span>
+                                </span>
                             </div>
                             <div className="flex my-5 text-center">
-                                    <span className="w-full py-2 bg-indigo-500
+                                <span className="w-full py-2 bg-indigo-500
                             hover:bg-indigo-600 text-white text-sm font-medium rounded-md">
                                         Sign Out
-                                    </span>
+                                </span>
                             </div>
                             <div className="flex my-5 text-center">
-                                    <span className="w-full py-2 bg-indigo-500
+                                <span className="w-full py-2 bg-indigo-500
                             hover:bg-indigo-600 text-white text-sm font-medium rounded-md">
                                         Language
-                                    </span>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -91,16 +91,16 @@ export function ItemComponents() {
                                 Close
                             </button>
                             <div className="flex my-5 text-center">
-                                    <span className="w-full py-2 bg-indigo-500
-                                          hover:bg-indigo-600 text-white text-sm font-medium rounded-md">
-                                        Item Register
-                                    </span>
+                                <span className="w-full py-2 bg-indigo-500
+                                hover:bg-indigo-600 text-white text-sm font-medium rounded-md">
+                                    Item Register
+                                </span>
                             </div>
                             <div className="flex my-5 text-center">
-                                    <span className="w-full py-2 bg-indigo-500
-                            hover:bg-indigo-600 text-white text-sm font-medium rounded-md">
-                                        All Registered Items
-                                    </span>
+                                <span className="w-full py-2 bg-indigo-500
+                                hover:bg-indigo-600 text-white text-sm font-medium rounded-md">
+                                    All Registered Items
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -144,14 +144,14 @@ export function ProfileComponents() {
                         </button>
                         <div className=" overflow-y-auto">
                             <div className="flex my-5 text-center">
-                                    <span className="w-full py-2 bg-indigo-500
-                                          hover:bg-indigo-600 text-white text-sm font-medium rounded-md">
-                                        Name Change
-                                    </span>
+                                <span className="w-full py-2 bg-indigo-500
+                                hover:bg-indigo-600 text-white text-sm font-medium rounded-md">
+                                    Name Change
+                                </span>
                             </div>
                             <div className="flex my-6 text-center">
                                 <span className="w-full py-2 bg-indigo-500
-                                          hover:bg-indigo-600 text-white text-sm font-medium rounded-md">
+                                hover:bg-indigo-600 text-white text-sm font-medium rounded-md">
                                     Email Change
                                 </span>
                             </div>
