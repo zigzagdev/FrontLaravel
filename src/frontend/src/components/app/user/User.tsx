@@ -12,7 +12,6 @@ type CreateUser = {
     password: string,
 }
 
-
 type UserData = {
     id: number,
     name: string,
