@@ -216,6 +216,18 @@ class ItemController extends Controller
         }
     }
 
+    public function detailItem($request)
+    {
+        try {
+            DB::beginTransaction();
+            $slug = $request->route('slug');
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+        }
+    }
+
     private function createItemData($request, $adminId)
     {
         $itemData = Item::create(

@@ -17,7 +17,6 @@ class SendResetPasswordResource extends JsonResource
         parent::__construct($resource);
     }
 
-
     public function toArray($request)
     {
         return [
