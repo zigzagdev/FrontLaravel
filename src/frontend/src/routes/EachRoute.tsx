@@ -12,7 +12,7 @@ import Contact from "../components/common/footer/Contact";
 import {AdminLogin} from "../components/app/auth/AdminLogin";
 import {UserLogin} from "../components/app/auth/UserLogin";
 import {Result} from "../components/app/input/Result";
-import {ShowSlug, EditSlug} from "../components/app/post/ItemSlug";
+import {ShowSlug, EditSlug, ItemsDisplay} from "../components/app/post/ItemSlug";
 import {AdminData, AllUsers, CreateAdmin, EditAdminEmail, EditAdminName} from "../components/app/admin/Admin";
 import {CreateUser, EachUserData, EditUserEmail, EditUserName} from "../components/app/user/User";
 import {ForgetPassword, ResetPassword} from "../components/app/auth/PasswordReset";
@@ -28,6 +28,7 @@ export default function EachRoute() {
                 <Route path="/Instagram" element={<Instagram/>}/>
                 <Route path="/Contact" element={<Contact/>}/>
                 <Route path="/Items" element={<Items/>}/>
+                <Route path="/Item/:slug" element={<ItemsDisplay/>}/>
                 <Route path="/Result" element={<Result/>}/>
                 <Route path="/Signup" element={<CreateUser/>}/>
                 <Route path="/Admin/Create" element={<CreateAdmin/>}/>
@@ -41,6 +42,7 @@ export default function EachRoute() {
                 <Route path="Admin/:id/Update/Email" element={<EditAdminEmail/>}/>
                 <Route path="Admin/:id/Update/Name" element={<EditAdminName/>}/>
                 <Route path="Admin/:id/Users" element={<AllUsers/>}/>
+                {/*<Route path="Admin/:id/User/:name" element={<AllUsers/>}/>*/}
                 {/*UserProvider*/}
                 <Route path="User/:id" element={<EachUserData/>}/>
                 <Route path="User/:id/Name" element={<EditUserName/>}/>

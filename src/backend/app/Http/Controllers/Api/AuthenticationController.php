@@ -8,7 +8,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\LoginRequest;
 use App\Http\Requests\Api\PasswordResetRequest;
 use App\Http\Resources\Api\AdminLoginResource;
+use App\Http\Resources\Api\LogOutResource;
 use App\Http\Resources\Api\SendResetPasswordResource;
+use App\Http\Resources\Api\SuccessResource;
 use App\Http\Resources\Api\UpdatePasswordResource;
 use App\Http\Resources\Api\UserLoginResource;
 use App\Http\Resources\Api\ErrorResource;
@@ -98,7 +100,7 @@ class AuthenticationController extends Controller
                 return null;
             }
             $rememberUserData = RememberToken::generateRememberToken($sendEmail);
-            $changeUrl = url((env('FRONT_URL'). 'Reset/Password?token=' . $rememberUserData->remember_token . '&email=' .  $request->email));
+            $changeUrl = url((env('FRONT_URL') . 'Reset/Password?token=' . $rememberUserData->remember_token . '&email=' . $request->email));
             $formUrl = url(env('FRONT_URL') . "Contact");
 
             DB::commit();
@@ -145,18 +147,23 @@ class AuthenticationController extends Controller
         }
     }
 
+    public function logoutAction(Request $request)
+    {
+        try {
+            $userId = $request->route('id');
+            User::where('id', $userId)->update([
+                'updated_at' => Carbon::now()
+            ]);
 
-//    public function logoutAuth($request)
-//    {
-//        try {
-//            DB::beginTransaction();
-//        } catch (\Exception $e) {
-//            DB::rollBack();
-//
-//            $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, '管理者')]);
-//            return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
-//        }
-//    }
+            return new SuccessResource($request);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, '管理者')]);
+            return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
+        }
+    }
+
     private function updateUserPassword($request, $validEmail)
     {
         User::where('email', $validEmail)->update(

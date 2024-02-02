@@ -4,13 +4,13 @@ import {useNavigate, useParams} from "react-router-dom";
 import {SubmitHandler, useForm} from "react-hook-form";
 import Footer from "../../common/footer/Footer";
 import Header from "../../common/header/Header";
+import {BASE_URL} from "../../common/const/Const";
 
 type CreateUser = {
     name: string,
     email: string,
     password: string,
 }
-
 
 type UserData = {
     id: number,
@@ -28,15 +28,13 @@ type NameData = {
     name: string,
 }
 
-const baseURL = process.env.REACT_APP_API_BASE_URL;
-
 export function CreateUser() {
     const [error, setError] = useState("");
     const navigate = useNavigate();
     const {register, handleSubmit, formState: {errors}} = useForm<CreateUser>()
     const onSubmit: SubmitHandler<CreateUser> = (data) => {
         axios
-            .post(`${baseURL}./user/create`, data)
+            .post(`${BASE_URL}./user/create`, data)
             .then((res) => {
                 const {id} = res.data.data.profile
                 return (
@@ -115,7 +113,7 @@ export function EachUserData() {
     const {id} = useParams();
 
     useEffect(() => {
-        axios.get(`${baseURL}./user/${id}`)
+        axios.get(`${BASE_URL}./user/${id}`)
             .then(res => {
                 setUserData(res.data.data.profile)
             })
@@ -152,6 +150,7 @@ export function EachUserData() {
                     <a href={`/User/` + id + `/Email`}>Email</a>
                 </button>
             </div>
+            {error}
             <Footer/>
         </>
     )
@@ -169,7 +168,7 @@ export function EditUserName() {
 
     const onSubmit: SubmitHandler<NameData> = (data: NameData) => {
         axios
-            .put<NameData>(`${baseURL}./user/${id}/update/name`, {
+            .put<NameData>(`${BASE_URL}./user/${id}/update/name`, {
                 name: userName.name,
             })
             .then((res) => {
@@ -185,19 +184,6 @@ export function EditUserName() {
                 }
             })
     };
-    useEffect(() => {
-        axios.get(`${baseURL}./user/${id}`)
-            .then(res => {
-                setUserName(res.data.data.profile)
-            })
-            .catch((error: any) => {
-                if (error.response.statusText == 'Bad Request') {
-                    setError('Item Information could not updated ...');
-                } else {
-                    setError('Internal server error is happened. Please do it again.');
-                }
-            })
-    }, [])
     return (
         <>
             <Header/>
@@ -240,6 +226,10 @@ export function EditUserName() {
 }
 
 export function EditUserEmail() {
+    const [userEmail, setUserEmail] = useState<EmailData>({
+        id: 0,
+        email: "",
+    });
     return (
         <>
             <div>

@@ -38,6 +38,7 @@ Route::group(['middleware' => ['cors']], function () {
     Route::controller(ItemController::class)->group(function () {
         Route::get('/items', 'allItems');
         Route::get('/search', 'searchItems');
+        Route::get('/item/{slug}', 'displayItem');
     });
 
     Route::group(['middleware' => ['admin']], function () {
@@ -53,9 +54,6 @@ Route::group(['middleware' => ['cors']], function () {
             Route::post('admin/{id}/item/{slug}', 'deleteItem');
             Route::put('admin/{id}/item/{slug}/update', 'updateItem');
         });
-        Route::controller(AuthenticationController::class)->group(function () {
-            Route::post('/logout', 'logoutAction');
-        });
     });
 
     Route::group(['middleware' => ['user']], function () {
@@ -65,7 +63,7 @@ Route::group(['middleware' => ['cors']], function () {
             Route::put('/user/{id}/update/email', 'updateUserEmail');
         });
         Route::controller(AuthenticationController::class)->group(function () {
-            Route::post('/logout', 'logoutAction');
+            Route::get('/user/{id}/logout', 'logoutAction');
         });
     });
 

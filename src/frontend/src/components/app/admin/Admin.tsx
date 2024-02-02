@@ -6,6 +6,7 @@ import AdminHeader from "../../common/header/AdminHeader";
 import AdminFooter from "../../common/footer/AdminFooter";
 import {Pagination} from "../config/Pagination";
 import {SideBar} from "./func/AdminComponent";
+import {BASE_URL} from "../../common/const/Const";
 
 type CreateAdmin = {
     name: string,
@@ -51,11 +52,6 @@ type Url = {
     prev: string,
 }
 
-type Items = {
-    count: number
-}
-
-const baseURL = process.env.REACT_APP_API_BASE_URL;
 
 export function CreateAdmin() {
     const [error, setError] = useState("");
@@ -63,7 +59,7 @@ export function CreateAdmin() {
     const {register, handleSubmit, formState: {errors}} = useForm<CreateAdmin>()
     const onSubmit: SubmitHandler<CreateAdmin> = (data) => {
         axios
-            .post(`${baseURL}./admin/create`, data)
+            .post(`${BASE_URL}./admin/create`, data)
             .then((res) => {
                 const {id} = res.data.data.profile
                 return (
@@ -148,7 +144,7 @@ export function AdminData() {
         totalItems: 0
     });
     useEffect(() => {
-        axios.get(`${baseURL}admin/${id}/profile`)
+        axios.get(`${BASE_URL}admin/${id}/profile`)
             .then(res => {
                 setAdminData(res.data.data.profile)
             })
@@ -225,7 +221,7 @@ export function EditAdminName() {
     const {register, handleSubmit, formState: {errors}} = useForm<NameData>();
     const onSubmit: SubmitHandler<NameData> = (data: NameData) => {
         axios
-            .put<NameData>(`${baseURL}admin/${id}/update/name`, {
+            .put<NameData>(`${BASE_URL}admin/${id}/update/name`, {
                 name: adminName.name,
             })
             .then((res) => {
@@ -249,7 +245,7 @@ export function EditAdminName() {
             })
     };
     useEffect(() => {
-        axios.get(`${baseURL}admin/${id}/profile`)
+        axios.get(`${BASE_URL}admin/${id}/profile`)
             .then(res => {
                 setAdminName(res.data.data.profile)
             })
@@ -308,7 +304,7 @@ export function EditAdminEmail() {
     const [error, setError] = useState('');
     const {register, handleSubmit, formState: {errors}} = useForm<EmailData>()
     useEffect(() => {
-        axios.get(`${baseURL}admin/${id}/profile`)
+        axios.get(`${BASE_URL}admin/${id}/profile`)
             .then(res => {
                 setAdminEmail(res.data.data.profile)
             })
@@ -316,7 +312,7 @@ export function EditAdminEmail() {
 
     const onSubmit: SubmitHandler<EmailData> = (data: EmailData) => {
         axios
-            .put<EmailData>(`${baseURL}./admin/${id}/update/email`, {
+            .put<EmailData>(`${BASE_URL}./admin/${id}/update/email`, {
                 email: adminEmail.email,
             })
             .then((res) => {
@@ -391,7 +387,7 @@ export function AllUsers() {
         prev: '',
     }));
     const {id} = useParams<{ id: string }>();
-    let apiUrl = `${baseURL}admin/${id}/user/all?`;
+    let apiUrl = `${BASE_URL}admin/${id}/user/all?`;
 
     const fetchItemData = (apiUrl: string) => {
         axios

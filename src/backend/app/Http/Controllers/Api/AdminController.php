@@ -114,11 +114,9 @@ class AdminController extends Controller
             }
             $authentication['total_item'] = $authenticationData;
 
-//            return new AdminResource($authentication);
+            return new AdminResource($authentication);
         } catch (\Exception $e) {
             $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, '管理者データ')]);
-            $kk = $e->getMessage();
-            var_dump($kk);
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }

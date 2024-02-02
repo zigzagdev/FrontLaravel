@@ -3,6 +3,7 @@ import axios, {AxiosError} from "axios";
 import Search from "./Search";
 import {Link} from "react-router-dom";
 import {Pagination} from "../config/Pagination";
+import {BASE_URL} from "../../common/const/Const";
 
 type SearchResults = {
     Id: number,
@@ -41,8 +42,8 @@ export function Result() {
         next: '',
         prev: '',
     }));
-    const baseURL = process.env.REACT_APP_API_BASE_URL;
-    let apiUrl = `${baseURL}search?q=${query}&`;
+
+    let apiUrl = `${BASE_URL}search?q=${query}&`;
     const fetchItemData = (apiUrl: string) => {
         axios
             .get(apiUrl)
