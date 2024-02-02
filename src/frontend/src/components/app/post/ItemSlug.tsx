@@ -220,7 +220,7 @@ export function DeleteSlug() {
     )
 }
 
-export function ItemsDisplay() {
+export function ItemDisplay() {
     const {slug} = useParams<{ slug: string }>();
     const [item, setItem] = useState<Item>(({
         id: 0,
@@ -237,6 +237,7 @@ export function ItemsDisplay() {
                 setItem(res.data.data.profile)
             })
     }, [])
+    console.log(item)
     return (
         <>
             <Header/>

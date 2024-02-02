@@ -12,7 +12,7 @@ import Contact from "../components/common/footer/Contact";
 import {AdminLogin} from "../components/app/auth/AdminLogin";
 import {UserLogin} from "../components/app/auth/UserLogin";
 import {Result} from "../components/app/input/Result";
-import {ShowSlug, EditSlug, ItemsDisplay} from "../components/app/post/ItemSlug";
+import {ShowSlug, EditSlug, ItemDisplay} from "../components/app/post/ItemSlug";
 import {AdminData, AllUsers, CreateAdmin, EditAdminEmail, EditAdminName} from "../components/app/admin/Admin";
 import {CreateUser, EachUserData, EditUserEmail, EditUserName} from "../components/app/user/User";
 import {ForgetPassword, ResetPassword} from "../components/app/auth/PasswordReset";
@@ -28,7 +28,7 @@ export default function EachRoute() {
                 <Route path="/Instagram" element={<Instagram/>}/>
                 <Route path="/Contact" element={<Contact/>}/>
                 <Route path="/Items" element={<Items/>}/>
-                <Route path="/Item/:slug" element={<ItemsDisplay/>}/>
+                <Route path="/Item/:slug" element={<ItemDisplay/>}/>
                 <Route path="/Result" element={<Result/>}/>
                 <Route path="/Signup" element={<CreateUser/>}/>
                 <Route path="/Admin/Create" element={<CreateAdmin/>}/>
