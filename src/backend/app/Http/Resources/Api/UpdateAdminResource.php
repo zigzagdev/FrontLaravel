@@ -12,17 +12,16 @@ class UpdateAdminResource extends JsonResource
      * @param \Illuminate\Http\Request $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
-    public function __construct($resource, $statusCode = 201)
+    public function __construct($resource)
     {
         parent::__construct($resource);
-        $this->statusCode = $statusCode;
     }
 
 
     public function toArray($request)
     {
         return [
-            'statusCode' => $this->statusCode,
+            'statusCode' => 200,
             'statusMessage' => 'OK',
             'profile' => [
                 'name' => $this->name,
