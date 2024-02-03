@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import Header from "../../common/header/Header";
-import {BASE_URL} from "../../common/const/Const";
+import {BASE_URL} from "../../common/Const";
 
 export default function Search() {
     const [query, setQuery] = useState('');

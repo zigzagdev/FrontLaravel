@@ -5,7 +5,8 @@ import {useForm, SubmitHandler} from "react-hook-form";
 import {Genre} from "./Genre";
 import Header from "../../common/header/Header";
 import Footer from "../../common/footer/Footer";
-import {BASE_URL} from "../../common/const/Const";
+import {BASE_URL} from "../../common/Const";
+import {AxiosErrorResponse} from "../../common/types/Interface";
 
 type adminItem = {
     id: number,
@@ -26,10 +27,6 @@ type Item = {
     slug: string,
     category: number,
     categoryName: string,
-}
-
-type AxiosErrorResponse = {
-    error: string
 }
 
 export function ShowSlug() {
