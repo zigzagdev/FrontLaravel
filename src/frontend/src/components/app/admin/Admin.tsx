@@ -6,7 +6,8 @@ import AdminHeader from "../../common/header/AdminHeader";
 import AdminFooter from "../../common/footer/AdminFooter";
 import {Pagination} from "../config/Pagination";
 import {SideBar} from "./func/AdminComponent";
-import {BASE_URL} from "../../common/const/Const";
+import {BASE_URL} from "../../common/Const";
+import {AxiosErrorResponse, Url, PaginationData} from "../../common/types/Interface";
 
 type CreateAdmin = {
     name: string,
@@ -19,10 +20,6 @@ type AdminData = {
     name: string,
     email: string,
     totalItems: number
-}
-
-type AxiosErrorResponse = {
-    error: string
 }
 
 type EmailData = {
@@ -40,18 +37,6 @@ type UserData = {
     name: string,
     email: string,
 }
-
-type UserInformationData = {
-    current_page: number,
-    from: number,
-    last_page: number,
-}
-
-type Url = {
-    next: string,
-    prev: string,
-}
-
 
 export function CreateAdmin() {
     const [error, setError] = useState("");
@@ -377,7 +362,7 @@ export function EditAdminEmail() {
 export function AllUsers() {
     const [users, setUsers] = useState<UserData[]>([]);
     const [errorMessage, setErrorMessage] = useState("");
-    const [userInformationData, setUserInformationData] = useState<UserInformationData>(({
+    const [paginationData, setPaginationData] = useState<PaginationData>(({
         current_page: 1,
         from: 0,
         last_page: 0,
@@ -394,7 +379,7 @@ export function AllUsers() {
             .get(apiUrl)
             .then((data) => {
                 setUsers(data.data.data.userInformation);
-                setUserInformationData(data.data.meta);
+                setPaginationData(data.data.meta);
                 setUrl(data.data.links);
             })
             .catch((error) => {
@@ -433,9 +418,9 @@ export function AllUsers() {
             <p role="alert" className="text-red-400">{errorMessage}</p>
             <div className="my-3 mx-5">
                 <Pagination
-                    currentPage={userInformationData.current_page}
-                    lastPage={userInformationData.last_page}
-                    from={userInformationData.from}
+                    currentPage={paginationData.current_page}
+                    lastPage={paginationData.last_page}
+                    from={paginationData.from}
                     next={url.next}
                     prev={url.prev}
                     apiUrl={apiUrl}

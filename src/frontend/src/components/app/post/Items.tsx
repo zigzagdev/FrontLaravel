@@ -6,7 +6,7 @@ import {BASE_URL} from "../../common/Const";
 import {PaginationData, Url, AxiosErrorResponse} from "../../common/types/Interface";
 
 type ItemsData = {
-    Id: number,
+    id: number,
     itemName: string,
     content: string,
     price: number,
@@ -59,7 +59,7 @@ export function Items() {
             <div className="my-24 mx-16">
                 {items.map((item) => {
                     return (
-                        <Link to={`/Item/${item.slug}`} state={{slug: item.slug}} key={item.Id}>
+                        <Link to={`/Item/${item.slug}`} state={{slug: item.slug}} key={item.id}>
                             <div className="my-8 mx-5 inline-block max-w-sm w-full lg:max-w-full lg:flex">
                                 <div
                                     className="border-r border-b border-l border-gray-400 lg:border-l-0
@@ -76,6 +76,7 @@ export function Items() {
                         </Link>
                     )
                 })}
+                {errorMessage}
                 <div className="my-3 mx-5">
                     <Pagination
                         currentPage={paginationData.current_page}

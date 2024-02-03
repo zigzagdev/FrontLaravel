@@ -3,14 +3,13 @@ import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {useForm, SubmitHandler} from "react-hook-form";
 import AdminHeader from "../../common/header/AdminHeader";
+import {BASE_URL} from "../../common/Const";
 
 
 type Inputs = {
     email: string,
     password: string
 }
-
-const baseURL = process.env.REACT_APP_API_BASE_URL;
 
 export function AdminLogin() {
     const [error, setError] = useState('');
@@ -24,7 +23,7 @@ export function AdminLogin() {
     }
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         axios
-            .post(`${baseURL}admin/login`, data)
+            .post(`${BASE_URL}admin/login`, data)
             .then((res) => {
                 const id = res.data.data.id
                 return (
