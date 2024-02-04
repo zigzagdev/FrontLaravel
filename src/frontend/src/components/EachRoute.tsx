@@ -4,18 +4,19 @@ import {
     Routes,
     Route,
 } from "react-router-dom";
-import {Items} from "../components/app/post/Items";
-import {TopPage} from "../components/TopPage";
-import Instagram from "../components/common/footer/Instagram";
-import NotFound from "../components/app/exception/NotFound";
-import Contact from "../components/common/footer/Contact";
-import {AdminLogin} from "../components/app/auth/AdminLogin";
-import {UserLogin} from "../components/app/auth/UserLogin";
-import {Result} from "../components/app/input/Result";
-import {ShowSlug, EditSlug, ItemDisplay} from "../components/app/post/ItemSlug";
-import {AdminData, AllUsers, CreateAdmin, EditAdminEmail, EditAdminName} from "../components/app/admin/Admin";
-import {CreateUser, EachUserData, EditUserEmail, EditUserName} from "../components/app/user/User";
-import {ForgetPassword, ResetPassword} from "../components/app/auth/PasswordReset";
+import {Items} from "./app/post/Items";
+import {TopPage} from "./TopPage";
+import Instagram from "./common/footer/Instagram";
+import NotFound from "./app/exception/NotFound";
+import Contact from "./common/footer/Contact";
+import {AdminLogin} from "./app/auth/AdminLogin";
+import {UserLogin} from "./app/auth/UserLogin";
+import {Result} from "./app/input/Result";
+import {ItemDisplay} from "./app/post/ItemSlug";
+import {AdminData, AllUsers, CreateAdmin, EditAdminEmail, EditAdminName} from "./app/admin/Profile";
+import {CreateUser, EachUserData, EditUserEmail, EditUserName} from "./app/user/User";
+import {ForgetPassword, ResetPassword} from "./app/auth/PasswordReset";
+import {ShowSlug, EditSlug} from "./app/admin/Item"
 
 
 export default function EachRoute() {
@@ -42,7 +43,6 @@ export default function EachRoute() {
                 <Route path="Admin/:id/Update/Email" element={<EditAdminEmail/>}/>
                 <Route path="Admin/:id/Update/Name" element={<EditAdminName/>}/>
                 <Route path="Admin/:id/Users" element={<AllUsers/>}/>
-                {/*<Route path="Admin/:id/User/:name" element={<AllUsers/>}/>*/}
                 {/*UserProvider*/}
                 <Route path="User/:id" element={<EachUserData/>}/>
                 <Route path="User/:id/Name" element={<EditUserName/>}/>

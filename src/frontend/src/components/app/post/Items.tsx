@@ -11,9 +11,7 @@ type ItemsData = {
     content: string,
     price: number,
     category: string,
-    slug: string,
-    perPage: number,
-    adminId: number
+    slug: string
 }
 
 export function Items() {
@@ -50,7 +48,7 @@ export function Items() {
                 }
             });
     };
-
+    console.log(items)
     useEffect(() => {
         fetchItemData(apiUrl);
     }, []);
