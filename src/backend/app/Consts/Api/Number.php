@@ -33,4 +33,7 @@ class Number
 
     public const Is_Admin_True = 1;
     public const Is_Admin_False = 2;
+
+    public const Is_Able = 0;
+    public const Is_Disable = 1;
 }

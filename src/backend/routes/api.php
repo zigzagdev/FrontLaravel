@@ -63,7 +63,7 @@ Route::group(['middleware' => ['cors']], function () {
             Route::put('/user/{id}/update/email', 'updateUserEmail');
         });
         Route::controller(AuthenticationController::class)->group(function () {
-            Route::get('/user/{id}/logout', 'logoutAction');
+            Route::post('/user/{id}/logout', 'logoutAction');
         });
     });
 
