@@ -3,7 +3,8 @@ import axios, {AxiosError} from "axios";
 import Search from "./Search";
 import {Link} from "react-router-dom";
 import {Pagination} from "../config/Pagination";
-import {BASE_URL} from "../../common/const/Const";
+import {BASE_URL} from "../../common/Const";
+import {PaginationData, Url} from "../../common/types/Interface";
 
 type SearchResults = {
     Id: number,
@@ -11,17 +12,6 @@ type SearchResults = {
     content: string,
     price: number,
     categoryName: string
-}
-
-type PaginationData = {
-    current_page: number,
-    from: number,
-    last_page: number,
-}
-
-type Url = {
-    next: string,
-    prev: string,
 }
 
 type AxiosErrorResponse = {

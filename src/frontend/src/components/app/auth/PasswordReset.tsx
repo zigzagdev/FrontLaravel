@@ -2,6 +2,7 @@ import React, {useState, useRef} from "react";
 import {SubmitHandler, useForm} from "react-hook-form";
 import axios from "axios";
 import {Link, useNavigate, useLocation} from "react-router-dom";
+import {BASE_URL} from "../../common/Const";
 
 type Email = {
     email: string
@@ -12,8 +13,6 @@ type Password = {
     confirmPassword: string,
 }
 
-const baseURL = process.env.REACT_APP_API_BASE_URL;
-
 export function ForgetPassword() {
     const [email, setEmail] = useState('');
     const [error, setError] = useState("");
@@ -21,7 +20,7 @@ export function ForgetPassword() {
     const navigate = useNavigate();
     const onSubmit: SubmitHandler<Email> = (data) => {
         axios
-            .post(`${baseURL}send/reset/password`, data)
+            .post(`${BASE_URL}send/reset/password`, data)
             .then((res) => {
                 return (
                     navigate('/Login')
@@ -156,7 +155,7 @@ export function ResetPassword() {
     const {handleSubmit, register, formState: {errors}, getValues} = useForm<Password>();
     const onSubmit: SubmitHandler<Password> = (data) => {
         axios
-            .post(`${baseURL}password/reset?email=${query.get('email')}&token=${query.get('token')}`, data)
+            .post(`${BASE_URL}password/reset?email=${query.get('email')}&token=${query.get('token')}`, data)
             .then((res) => {
                 setMessage('Your password was updated successfully ! Check your email.' +
                     ' This page will be return to Top page in 6 seconds in automatically ..');

@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\LoginRequest;
 use App\Http\Requests\Api\PasswordResetRequest;
 use App\Http\Resources\Api\AdminLoginResource;
-use App\Http\Resources\Api\LogOutResource;
 use App\Http\Resources\Api\SendResetPasswordResource;
 use App\Http\Resources\Api\SuccessResource;
 use App\Http\Resources\Api\UpdatePasswordResource;
@@ -78,7 +77,8 @@ class AuthenticationController extends Controller
             $userData->update(
                 [
                     'token' => Str::random(60),
-                    'updated_at' => Carbon::now()
+                    'updated_at' => Carbon::now(),
+                    'is_able' => Number::Is_Able
                 ]
             );
             DB::commit();
@@ -152,7 +152,8 @@ class AuthenticationController extends Controller
         try {
             $userId = $request->route('id');
             User::where('id', $userId)->update([
-                'updated_at' => Carbon::now()
+                'updated_at' => Carbon::now(),
+                'is_able' => Number::Is_Disable
             ]);
 
             return new SuccessResource($request);

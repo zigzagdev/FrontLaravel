@@ -115,7 +115,8 @@ class UserController extends Controller
                 'token' => Str::random(60),
                 'is_admin' => Number::Is_Admin_False,
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now()
+                'updated_at' => Carbon::now(),
+                'is_able' => Number::Is_Able
             ]
         );
         $userId = $userData->id;

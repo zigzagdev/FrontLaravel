@@ -4,7 +4,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {SubmitHandler, useForm} from "react-hook-form";
 import Footer from "../../common/footer/Footer";
 import Header from "../../common/header/Header";
-import {BASE_URL} from "../../common/const/Const";
+import {BASE_URL} from "../../common/Const";
 
 type CreateUser = {
     name: string,
@@ -102,7 +102,7 @@ export function CreateUser() {
     )
 }
 
-export function EachUserData() {
+export function EachData() {
     const [error, setError] = useState("");
     const [userData, setUserData] = useState<UserData>({
         id: 0,
@@ -156,7 +156,7 @@ export function EachUserData() {
     )
 }
 
-export function EditUserName() {
+export function EditName() {
     const [userName, setUserName] = useState<NameData>({
         id: 0,
         name: "",
@@ -225,7 +225,7 @@ export function EditUserName() {
     )
 }
 
-export function EditUserEmail() {
+export function EditEmail() {
     const [userEmail, setUserEmail] = useState<EmailData>({
         id: 0,
         email: "",

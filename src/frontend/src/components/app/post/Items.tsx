@@ -2,32 +2,17 @@ import React, {useState, useEffect} from "react";
 import axios, {AxiosError} from "axios";
 import {Link} from "react-router-dom";
 import {Pagination} from "../config/Pagination";
-import {BASE_URL} from "../../common/const/Const";
+import {BASE_URL} from "../../common/Const";
+import {PaginationData, Url, AxiosErrorResponse} from "../../common/types/Interface";
+import Footer from "../../common/footer/Footer";
 
 type ItemsData = {
-    Id: number,
+    id: number,
     itemName: string,
     content: string,
     price: number,
     category: string,
-    slug: string,
-    perPage: number,
-    adminId: number
-}
-
-type PaginationData = {
-    current_page: number,
-    from: number,
-    last_page: number,
-}
-
-type Url = {
-    next: string,
-    prev: string,
-}
-
-type AxiosErrorResponse = {
-    error: string
+    slug: string
 }
 
 export function Items() {
@@ -64,7 +49,7 @@ export function Items() {
                 }
             });
     };
-
+    console.log(items)
     useEffect(() => {
         fetchItemData(apiUrl);
     }, []);
@@ -73,7 +58,7 @@ export function Items() {
             <div className="my-24 mx-16">
                 {items.map((item) => {
                     return (
-                        <Link to={`/Item/${item.slug}`} state={{slug: item.slug}} key={item.Id}>
+                        <Link to={`/Item/${item.slug}`} state={{slug: item.slug}} key={item.id}>
                             <div className="my-8 mx-5 inline-block max-w-sm w-full lg:max-w-full lg:flex">
                                 <div
                                     className="border-r border-b border-l border-gray-400 lg:border-l-0
@@ -90,6 +75,7 @@ export function Items() {
                         </Link>
                     )
                 })}
+                {errorMessage}
                 <div className="my-3 mx-5">
                     <Pagination
                         currentPage={paginationData.current_page}
@@ -102,6 +88,7 @@ export function Items() {
                     />
                 </div>
             </div>
+            <Footer/>
         </>
     )
 }

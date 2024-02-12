@@ -1,16 +1,15 @@
-import React, {useRef, useState} from "react";
+import React, {useState} from "react";
 import axios from "axios";
 import {Link, useNavigate} from "react-router-dom";
 import {useForm, SubmitHandler} from "react-hook-form";
 import Footer from "../../common/footer/Footer";
 import Header from "../../common/header/Header";
+import {BASE_URL} from "../../common/Const";
 
 type Inputs = {
     email: string,
     password: string
 }
-
-const baseURL = process.env.REACT_APP_API_BASE_URL;
 
 export function UserLogin() {
     const [error, setError] = useState('');
@@ -23,9 +22,8 @@ export function UserLogin() {
     }
     const {register, handleSubmit, formState: {errors}} = useForm<Inputs>();
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        console.log(data)
         axios
-            .post(`${baseURL}/login`, data)
+            .post(`${BASE_URL}login`, data)
             .then((res) => {
                 const id = res.data.data.id
                 return (
