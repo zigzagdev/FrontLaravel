@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import {Pagination} from "../config/Pagination";
 import {BASE_URL} from "../../common/Const";
 import {PaginationData, Url, AxiosErrorResponse} from "../../common/types/Interface";
+import Footer from "../../common/footer/Footer";
 
 type ItemsData = {
     id: number,
@@ -87,6 +88,7 @@ export function Items() {
                     />
                 </div>
             </div>
+            <Footer/>
         </>
     )
 }

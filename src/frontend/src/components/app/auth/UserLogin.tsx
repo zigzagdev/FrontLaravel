@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, {useState} from "react";
 import axios from "axios";
 import {Link, useNavigate} from "react-router-dom";
 import {useForm, SubmitHandler} from "react-hook-form";
@@ -22,9 +22,8 @@ export function UserLogin() {
     }
     const {register, handleSubmit, formState: {errors}} = useForm<Inputs>();
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        console.log(data)
         axios
-            .post(`${BASE_URL}/login`, data)
+            .post(`${BASE_URL}login`, data)
             .then((res) => {
                 const id = res.data.data.id
                 return (

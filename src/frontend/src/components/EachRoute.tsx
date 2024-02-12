@@ -14,7 +14,7 @@ import {UserLogin} from "./app/auth/UserLogin";
 import {Result} from "./app/input/Result";
 import {ItemDisplay} from "./app/post/ItemSlug";
 import {AdminData, AllUsers, CreateAdmin, EditAdminEmail, EditAdminName} from "./app/admin/Profile";
-import {CreateUser, EachUserData, EditUserEmail, EditUserName} from "./app/user/User";
+import {CreateUser, EachData,EditEmail, EditName} from "./app/user/User";
 import {ForgetPassword, ResetPassword} from "./app/auth/PasswordReset";
 import {ShowSlug, EditSlug} from "./app/admin/Item"
 
@@ -44,9 +44,9 @@ export default function EachRoute() {
                 <Route path="Admin/:id/Update/Name" element={<EditAdminName/>}/>
                 <Route path="Admin/:id/Users" element={<AllUsers/>}/>
                 {/*UserProvider*/}
-                <Route path="User/:id" element={<EachUserData/>}/>
-                <Route path="User/:id/Name" element={<EditUserName/>}/>
-                <Route path="User/:id/Email" element={<EditUserEmail/>}/>
+                <Route path="User/:id" element={<EachData/>}/>
+                <Route path="User/:id/Name" element={<EditName/>}/>
+                <Route path="User/:id/Email" element={<EditEmail/>}/>
             </Routes>
         </BrowserRouter>
     )

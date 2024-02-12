@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom'
+import {LogOut} from "../../app/user/func/LogOut";
 
 export default function Footer() {
     return (
@@ -17,6 +18,7 @@ export default function Footer() {
                 <Link to='/SignUp' className='text-black-500 xxs:text-gray-500 px-12 xxs:py-3'>
                     SignUp
                 </Link>
+                <LogOut/>
             </div>
         </>
     )
