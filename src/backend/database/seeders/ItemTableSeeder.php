@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-
+use App\Models\Api\Item;
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
+class ItemTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,9 +14,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call([
-            ItemTableSeeder::class,
-            ItemFlagTableSeeder::class
-        ]);
+        Item::factory(10)->create();
     }
 }

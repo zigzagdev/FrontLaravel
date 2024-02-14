@@ -49,7 +49,6 @@ export function Items() {
                 }
             });
     };
-    console.log(items)
     useEffect(() => {
         fetchItemData(apiUrl);
     }, []);

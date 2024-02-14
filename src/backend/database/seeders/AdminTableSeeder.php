@@ -3,9 +3,10 @@
 namespace Database\Seeders;
 
 
+use App\Models\Api\Admin;
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
+class AdminTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,9 +15,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call([
-            ItemTableSeeder::class,
-            ItemFlagTableSeeder::class
-        ]);
+        Admin::factory(1)->create();
     }
 }
