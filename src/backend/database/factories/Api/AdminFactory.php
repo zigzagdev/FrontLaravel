@@ -3,13 +3,16 @@
 namespace Database\Factories\Api;
 
 use App\Consts\Api\Number;
+use App\Models\Api\Admin;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Api\>
  */
-class ItemFactory extends Factory
+class AdminFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,16 +21,12 @@ class ItemFactory extends Factory
      */
     public function definition()
     {
-        $wordName = $this->faker->unique()->word();
-
         return [
-            'name' => $wordName,
-            'description' => $this->faker->sentence(),
-            'price' => $this->faker->numberBetween(100, 100000),
-            'category' => $this->faker->numberBetween(1, 28),
-            'expiration' => Carbon::now(),
-            'slug' => $wordName,
-            'admin_id' => 1,
+            'name' => Str::random(10),
+            'email' => Str::random(10).'@test.com',
+            'password' => Hash::make('test1234'),
+            'token' => Str::random(60),
+            'is_admin' => Number::Is_Admin_True,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];
