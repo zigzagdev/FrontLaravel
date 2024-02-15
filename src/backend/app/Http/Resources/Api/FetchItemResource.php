@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Api;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Str;
 
 class FetchItemResource extends JsonResource
 {
@@ -21,17 +22,14 @@ class FetchItemResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'statusCode' => $this->statusCode,
+            'statusCode' => 200,
             'statusMessage' => 'OK',
-            'profile' => [
-                'id' => $this->itemId,
-                'name' => $this->name,
-                'content' => $this->description,
-                'price' => number_format($this->price),
-                'slug' => $this->slug,
-                'adminId' => $this->adminId,
-                'category' => $this->category,
-                'categoryName' => $this->categoryName
+            'itemInformation' => [
+                'itemName' => $this[0]['name'],
+                'content' => Str::limit($this[0]['description'], 15, '...'),
+                'price' => number_format($this[0]['price']),
+                'slug' => $this[0]['name'],
+                'category' => $this[0]['categoryName'],
             ]
         ];
     }

@@ -112,17 +112,20 @@ class ItemController extends Controller
     {
         try {
             $slug = $request->route('slug');
-            $fetchItem = ItemFlag::onDateAllItems()->where('slug', $slug)->first();
+            $fetchItem = ItemFlag::onDateAllItems()->where('slug', $slug);
+
             if (empty($fetchItem)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
                 return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
             }
-            $category = $fetchItem->category;
-            $fetchItem['categoryName'] = Category::genre[$category];
+            $fetchItemArray = $fetchItem->toArray();
+            $category = $fetchItemArray[0]['category'];
+            $fetchItemArray[0]['categoryName'] = Category::genre[$category];
 
-            return new FetchItemResource($fetchItem);
+            return new FetchItemResource($fetchItemArray);
         } catch (\Exception $e) {
             $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, 'アイテム')]);
+
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
