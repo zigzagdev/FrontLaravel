@@ -107,11 +107,22 @@ class ItemController extends Controller
         }
     }
 
-    public function detailItem($request)
+    public function detailItem(Request $request)
     {
         try {
             $slug = $request->route('slug');
+            $fetchItem = ItemFlag::onDateAllItems()->where('slug', $slug)->first();
 
+            if (empty($fetchItem)) {
+                $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
+                return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
+            }
+
+            $categoryNumber = $fetchItem->category;
+            $categoryName = Category::genre[$categoryNumber];
+            $fetchItem->categoryName = $categoryName;
+
+            return new ItemResource($fetchItem);
         } catch (\Exception $e) {
             $request->merge(['statusMessage' => sprintf(Common::UPDATE_FAILED, 'アイテム')]);
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
