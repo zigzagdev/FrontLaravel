@@ -182,8 +182,6 @@ class ItemController extends Controller
             return new ItemResource($fetchItem);
         } catch (\Exception $e) {
             $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, 'アイテム')]);
-            $kk = $e->getMessage();
-            var_dump($kk);
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
