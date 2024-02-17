@@ -20,7 +20,7 @@ class ItemResource extends JsonResource
             'statusCode' => 200,
             'statusMessage' => 'OK',
             'itemInformation' => [
-                'itemName' => $this->name,
+                'name' => $this->name,
                 'content' => Str::limit($this->description, 15, '...'),
                 'price' => number_format($this->price),
                 'slug' => $this->name,

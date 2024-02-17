@@ -21,12 +21,12 @@ class ItemCollection extends ResourceCollection
             'statusMessage' => 'OK',
             'itemDetail' => $this->collection->map(function ($changeItems) {
                 return [
-                    'Id' => $changeItems['itemId'],
-                    'itemName' => $changeItems['name'],
+                    'id' => $changeItems['itemId'],
+                    'name' => $changeItems['name'],
                     'content' => Str::limit($changeItems['description'], 15, '...'),
                     'price' => $changeItems['price'],
                     'slug' => $changeItems['slug'],
-                    'categoryName' => $changeItems['categoryName'],
+                    'category' => $changeItems['categoryName'],
                     'adminId' => $changeItems['adminId']
                 ];
             }),

@@ -21,11 +21,11 @@ class SearchCollection extends ResourceCollection
             'statusMessage' => 'OK',
             'itemInformation' => $this->collection->map(function ($items) {
                 return [
-                    'Id' => $items['itemId'],
-                    'itemName' => $items['name'],
+                    'id' => $items['itemId'],
+                    'name' => $items['name'],
                     'content' => Str::limit($items['description'], 15, '...'),
                     'price' => $items['price'],
-                    'categoryName' => $items['categoryName'],
+                    'category' => $items['categoryName'],
                     'slug' => $items['slug']
                 ];
             }),
