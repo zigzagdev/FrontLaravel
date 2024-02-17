@@ -121,7 +121,7 @@ class AdminController extends Controller
         }
     }
 
-    function allUser(Request $request)
+    function allUsers(Request $request)
     {
         try {
             $adminId = $request->route('id');

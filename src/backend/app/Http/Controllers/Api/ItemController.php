@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ItemRequest;
 use App\Http\Resources\Api\DeleteResource;
 use App\Http\Resources\Api\ErrorResource;
-use App\Http\Resources\Api\FetchItemResource;
 use App\Http\Resources\Api\ItemCollection;
 use App\Http\Resources\Api\ItemResource;
 use App\Http\Resources\Api\SearchCollection;
@@ -108,24 +107,24 @@ class ItemController extends Controller
         }
     }
 
-    function displayItem(Request $request)
+    public function detailItem(Request $request)
     {
         try {
             $slug = $request->route('slug');
-            $fetchItem = ItemFlag::onDateAllItems()->where('slug', $slug);
+            $fetchItem = ItemFlag::onDateAllItems()->where('slug', $slug)->first();
 
             if (empty($fetchItem)) {
                 $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
                 return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
             }
-            $fetchItemArray = $fetchItem->toArray();
-            $category = $fetchItemArray[0]['category'];
-            $fetchItemArray[0]['categoryName'] = Category::genre[$category];
 
-            return new FetchItemResource($fetchItemArray);
+            $categoryNumber = $fetchItem->category;
+            $categoryName = Category::genre[$categoryNumber];
+            $fetchItem->categoryName = $categoryName;
+
+            return new ItemResource($fetchItem);
         } catch (\Exception $e) {
-            $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, 'アイテム')]);
-
+            $request->merge(['statusMessage' => sprintf(Common::UPDATE_FAILED, 'アイテム')]);
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
         }
     }
@@ -176,6 +175,28 @@ class ItemController extends Controller
         }
     }
 
+    function displayItem(Request $request)
+    {
+        try {
+            $slug = $request->route('slug');
+            $fetchItem = ItemFlag::onDateAllItems()->where('slug', $slug)->first();
+
+            if (empty($fetchItem)) {
+                $request->merge(['statusMessage' => sprintf(Common::ERR_05)]);
+                return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
+            }
+
+            $categoryNumber = $fetchItem->category;
+            $categoryName = Category::genre[$categoryNumber];
+            $fetchItem->categoryName = $categoryName;
+
+            return new ItemResource($fetchItem);
+        } catch (\Exception $e) {
+            $request->merge(['statusMessage' => sprintf(Common::FETCH_FAILED, 'アイテム')]);
+            return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
+        }
+    }
+
     public function deleteItem(Request $request)
     {
         try {
@@ -216,18 +237,6 @@ class ItemController extends Controller
             DB::rollBack();
             $request->merge(['statusMessage' => sprintf(Common::UPDATE_FAILED, 'アイテム')]);
             return new ErrorResource($request, Response::HTTP_BAD_REQUEST);
-        }
-    }
-
-    public function detailItem($request)
-    {
-        try {
-            DB::beginTransaction();
-            $slug = $request->route('slug');
-
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollBack();
         }
     }
 
