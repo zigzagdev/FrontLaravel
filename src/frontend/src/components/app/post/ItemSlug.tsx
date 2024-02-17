@@ -45,7 +45,7 @@ export function ShowSlug() {
     useEffect(() => {
         axios.get(`${BASE_URL}admin/${id}/item/${slug}`)
             .then(res => {
-                setItem(res.data.data.profile)
+                setItem(res.data.data.itemInformation)
             })
     }, [])
     return (
@@ -66,7 +66,7 @@ export function ShowSlug() {
                     </div>
                     <div className="my-5">
                         <p className="my-3 mx-4">Item Category</p>
-                        <p className="mx-7">{Genre[item.category].label}</p>
+                        <p className="mx-7">{item.category}</p>
                     </div>
                 </div>
             </div>
@@ -100,7 +100,7 @@ export function ItemDisplay() {
     useEffect(() => {
         axios.get(`${BASE_URL}item/${slug}`)
             .then(res => {
-                setItem(res.data.data.profile)
+                setItem(res.data.data.itemInformation)
             })
     }, [])
     console.log(item)
@@ -123,7 +123,7 @@ export function ItemDisplay() {
                     </div>
                     <div className="my-5">
                         <p className="my-3 mx-4">Item Category</p>
-                        <p className="mx-7">{Genre[item.category].label}</p>
+                        <p className="mx-7">{item.category}</p>
                     </div>
                 </div>
             </div>

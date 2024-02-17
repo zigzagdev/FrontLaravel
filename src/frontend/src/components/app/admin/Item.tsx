@@ -5,6 +5,8 @@ import {BASE_URL} from "../../common/Const";
 import {Genre} from "../post/Genre";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {AxiosErrorResponse} from "../../common/types/Interface";
+import AdminHeader from "../../common/header/AdminHeader";
+import AdminFooter from "../../common/footer/AdminFooter";
 
 type item = {
     id: number,
@@ -33,11 +35,12 @@ export function ShowSlug() {
     useEffect(() => {
         axios.get(`${BASE_URL}admin/${id}/item/${slug}`)
             .then(res => {
-                setItem(res.data.data.profile)
+                setItem(res.data.data.itemInformation)
             })
     }, [])
     return (
         <>
+            <AdminHeader/>
             <div className="my-4 mx-32 block text-lg duration-700">
                 <div className="my-3 mx-4">
                     <div className="my-5">
@@ -54,10 +57,11 @@ export function ShowSlug() {
                     </div>
                     <div className="my-5">
                         <p className="my-3 mx-4">Item Category</p>
-                        <p className="mx-7">{Genre[item.category].label}</p>
+                        <p className="mx-7">{item.category}</p>
                     </div>
                 </div>
             </div>
+            <AdminFooter/>
         </>
     )
 }

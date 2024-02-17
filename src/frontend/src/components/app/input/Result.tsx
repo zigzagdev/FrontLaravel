@@ -7,11 +7,11 @@ import {BASE_URL} from "../../common/Const";
 import {PaginationData, Url} from "../../common/types/Interface";
 
 type SearchResults = {
-    Id: number,
-    itemName: string,
+    id: number,
+    name: string,
     content: string,
     price: number,
-    categoryName: string
+    category: string
 }
 
 type AxiosErrorResponse = {
@@ -66,7 +66,7 @@ export function Result() {
             <div className="my-24 mx-16">
                 {searchContents.map(searchContent => {
                     return (
-                        <Link to="" key={searchContent.Id}>
+                        <Link to="" key={searchContent.id}>
                             <div className="my-8 mx-5 inline-block max-w-sm w-full lg:max-w-full lg:flex">
                                 <div
                                     className="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400
@@ -75,7 +75,7 @@ export function Result() {
                                 >
                                     <div className="mb-8">
                                         <div className="text-black">
-                                            {searchContent.itemName}
+                                            {searchContent.name}
                                         </div>
                                     </div>
                                 </div>

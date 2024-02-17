@@ -8,7 +8,7 @@ import Footer from "../../common/footer/Footer";
 
 type ItemsData = {
     id: number,
-    itemName: string,
+    name: string,
     content: string,
     price: number,
     category: string,
@@ -66,7 +66,7 @@ export function Items() {
                                 >
                                     <div className="mb-8">
                                         <div className="text-black">
-                                            {item.itemName}
+                                            {item.name}
                                         </div>
                                     </div>
                                 </div>
