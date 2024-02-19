@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import axios, {AxiosError} from "axios";
-import {BASE_URL} from "../../common/Const";
+import {BASE_URL} from "../../../config/const/Url";
 import {Genre} from "../post/Genre";
 import {SubmitHandler, useForm} from "react-hook-form";
-import {AxiosErrorResponse} from "../../common/types/Interface";
+import {AxiosErrorResponse} from "../../../config/common/Interface";
 import AdminHeader from "../../common/header/AdminHeader";
 import AdminFooter from "../../common/footer/AdminFooter";
 
