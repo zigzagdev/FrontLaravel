@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from "react";
-import axios, {AxiosError} from "axios";
+import axios, { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
 import {useParams, useNavigate} from "react-router-dom";
 import {useForm, SubmitHandler} from "react-hook-form";
 import {Genre} from "./Genre";
 import Header from "../../common/header/Header";
 import Footer from "../../common/footer/Footer";
-import {BASE_URL} from "../../common/Const";
-import {AxiosErrorResponse} from "../../common/types/Interface";
+import {getSingleNoteFn} from "../../../config/common/Function";
 
 type adminItem = {
     id: number,
@@ -19,15 +18,21 @@ type adminItem = {
     categoryName: string,
 }
 
-type Item = {
+export interface Item {
     id: number,
-    name: string,
+    name?: string,
     content: string,
     price: number,
-    slug: string,
+    slug?: string,
     category: number,
     categoryName: string,
 }
+
+// export type INotesResponse = {
+//     status: string;
+//     results: number;
+//     items: INote[];
+// };
 
 export function ShowSlug() {
     const {slug} = useParams<{ slug: string }>();
@@ -42,12 +47,12 @@ export function ShowSlug() {
         category: 0,
         categoryName: "",
     }));
-    useEffect(() => {
-        axios.get(`${BASE_URL}admin/${id}/item/${slug}`)
-            .then(res => {
-                setItem(res.data.data.itemInformation)
-            })
-    }, [])
+    // useEffect(() => {
+    //     axios.get(`${BASE_URL}admin/${id}/item/${slug}`)
+    //         .then(res => {
+    //             setItem(res.data.data.itemInformation)
+    //         })
+    // }, [])
     return (
         <>
             <div className="my-4 mx-32 block text-lg duration-700">
@@ -87,7 +92,7 @@ export function DeleteSlug() {
 }
 
 export function ItemDisplay() {
-    const {slug} = useParams<{ slug: string }>();
+    const {slug} = useParams<{slug: any}>();
     const [item, setItem] = useState<Item>(({
         id: 0,
         name: "",
@@ -98,12 +103,11 @@ export function ItemDisplay() {
         categoryName: "",
     }));
     useEffect(() => {
-        axios.get(`${BASE_URL}item/${slug}`)
-            .then(res => {
-                setItem(res.data.data.itemInformation)
-            })
-    }, [])
-    console.log(item)
+       getSingleNoteFn(slug)
+           .then((result:any) => {
+               setItem(result.data.itemInformation)
+           })
+    }, []);
     return (
         <>
             <Header/>
