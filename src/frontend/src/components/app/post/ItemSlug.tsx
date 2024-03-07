@@ -6,6 +6,7 @@ import {Genre} from "./Genre";
 import Header from "../../common/header/Header";
 import Footer from "../../common/footer/Footer";
 import {getSingleNoteFn} from "../../../config/common/Function";
+import {AxiosErrorResponse} from "../../../config/common/Interface";
 
 type adminItem = {
     id: number,
@@ -27,12 +28,6 @@ export interface Item {
     category: number,
     categoryName: string,
 }
-
-// export type INotesResponse = {
-//     status: string;
-//     results: number;
-//     items: INote[];
-// };
 
 export function ShowSlug() {
     const {slug} = useParams<{ slug: string }>();
@@ -92,7 +87,7 @@ export function DeleteSlug() {
 }
 
 export function ItemDisplay() {
-    const {slug} = useParams<{slug: any}>();
+    const [errorMessage, setErrorMessage] = useState('');
     const [item, setItem] = useState<Item>(({
         id: 0,
         name: "",
@@ -102,11 +97,20 @@ export function ItemDisplay() {
         category: 0,
         categoryName: "",
     }));
+    const {slug} = useParams<{slug: any}>();
     useEffect(() => {
-       getSingleNoteFn(slug)
-           .then((result:any) => {
-               setItem(result.data.itemInformation)
-           })
+        getSingleNoteFn(slug)
+            .then((result: any) => {
+                setItem(result.data.itemInformation)
+            })
+            .catch((error) => {
+                if (
+                    (error as AxiosError<AxiosErrorResponse>).response ||
+                    (error as AxiosError<AxiosErrorResponse>).response!.status === 400
+                ) {
+                    setErrorMessage('Something is wrong ....')
+                }
+            });
     }, []);
     return (
         <>
