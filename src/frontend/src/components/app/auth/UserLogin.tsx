@@ -4,7 +4,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {useForm, SubmitHandler} from "react-hook-form";
 import Footer from "../../common/footer/Footer";
 import Header from "../../common/header/Header";
-import {BASE_URL} from "../../common/Const";
+import {BASE_URL} from "../../../config/const/Url";
 
 type Inputs = {
     email: string,

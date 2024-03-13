@@ -6,8 +6,9 @@ import AdminHeader from "../../common/header/AdminHeader";
 import AdminFooter from "../../common/footer/AdminFooter";
 import {Pagination} from "../config/Pagination";
 import {SideBar} from "./func/AdminComponent";
-import {BASE_URL} from "../../common/Const";
-import {AxiosErrorResponse, Url, PaginationData} from "../../common/types/Interface";
+import {BASE_URL} from "../../../config/const/Url";
+import {AxiosErrorResponse, Url, PaginationData} from "../../../config/common/Interface";
+import {getAdminData, getAdminSingleItemData} from "../../../config/common/Function";
 
 type CreateAdmin = {
     name: string,
@@ -15,7 +16,7 @@ type CreateAdmin = {
     password: string,
 }
 
-type AdminData = {
+export interface AdminData {
     id: number,
     name: string,
     email: string,
@@ -120,8 +121,8 @@ export function CreateAdmin() {
 }
 
 export function AdminData() {
-    const {id} = useParams<{ id: string }>();
-    const [error, setError] = useState("");
+    const {id} = useParams<{ id: any }>();
+    const [errorMessage, setErrorMessage] = useState("");
     const [adminData, setAdminData] = useState<AdminData>({
         id: 0,
         email: '',
@@ -129,19 +130,19 @@ export function AdminData() {
         totalItems: 0
     });
     useEffect(() => {
-        axios.get(`${BASE_URL}admin/${id}/profile`)
-            .then(res => {
-                setAdminData(res.data.data.profile)
+        getAdminData(id)
+            .then((result: any) => {
+                setAdminData(result.data.profile)
             })
             .catch((error) => {
                 if (
-                    (error as AxiosError<AxiosErrorResponse>).response &&
+                    (error as AxiosError<AxiosErrorResponse>).response ||
                     (error as AxiosError<AxiosErrorResponse>).response!.status === 400
-                )
-                setError('Email or Password is wrong ...');
-                setTimeout("location.href='/Admin/Login'", 10000);
-            })
-    }, [])
+                ) {
+                    setErrorMessage('Something is wrong ....')
+                }
+            });
+    }, []);
     return (
         <>
             <AdminHeader/>
@@ -187,7 +188,7 @@ export function AdminData() {
                                 {adminData.totalItems}
                             </div>
                         </div>
-                        <p role="alert" className="text-red-700 text-ls">{error}</p>
+                        <p role="alert" className="text-red-700 text-ls">{errorMessage}</p>
                     </div>
                 </div>
             </div>
@@ -202,7 +203,7 @@ export function EditAdminName() {
     });
     const navigate = useNavigate();
     const [error, setError] = useState('');
-    const {id} = useParams<{ id: string }>();
+    const {id} = useParams<{ id: any }>();
     const {register, handleSubmit, formState: {errors}} = useForm<NameData>();
     const onSubmit: SubmitHandler<NameData> = (data: NameData) => {
         axios
@@ -230,15 +231,20 @@ export function EditAdminName() {
             })
     };
     useEffect(() => {
-        axios.get(`${BASE_URL}admin/${id}/profile`)
-            .then(res => {
-                setAdminName(res.data.data.profile)
+        getAdminSingleItemData(id)
+            .then((result: any) => {
+                setAdminName(result.data.profile)
             })
-            .catch((error: any) => {
-                setError('Email or Password is wrong ...');
-                setTimeout("location.href='/Admin/Login'", 10000);
-            })
-    }, [])
+            .catch((error) => {
+                if (
+                    (error as AxiosError<AxiosErrorResponse>).response ||
+                    (error as AxiosError<AxiosErrorResponse>).response!.status === 400
+                ) {
+                    setError('Email or Password is wrong ...');
+                    setTimeout("location.href='/Admin/Login'", 10000);
+                }
+            });
+    }, []);
     return (
         <>
             <AdminHeader/>
