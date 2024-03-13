@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import axios from "axios";
-import {BASE_URL} from "../../../common/Const";
+import {BASE_URL} from "../../../../config/const/Url";
 import {useNavigate, useParams} from "react-router-dom";
 
 export function LogOut() {

@@ -4,7 +4,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {SubmitHandler, useForm} from "react-hook-form";
 import Footer from "../../common/footer/Footer";
 import Header from "../../common/header/Header";
-import {BASE_URL} from "../../common/Const";
+import {BASE_URL} from "../../../config/const/Url";
 
 type CreateUser = {
     name: string,

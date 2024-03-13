@@ -45,11 +45,11 @@ services:
       - /sessions
 
   react:
-    container_name: react
-    build:
-      context: ./src/frontend
-      dockerfile: Dockerfile
-    volumes:
-      - ./frontend:/usr/src/app
-    ports:
-      - '3007:3000'
+      build:
+        context: .
+        dockerfile: Dockerfile
+      volumes:
+        - ./:/docker/react/Dockerfile
+      command: sh -c "cd ../src/frontend && yarn start"
+      ports:
+        - "3007:3000"

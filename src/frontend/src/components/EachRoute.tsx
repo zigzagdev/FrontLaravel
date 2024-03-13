@@ -40,13 +40,13 @@ export default function EachRoute() {
                 <Route path="/Admin/:id/Profile" element={<AdminData/>}/>
                 <Route path="/Admin/:id/Item/:slug" element={<ShowSlug/>}/>
                 <Route path="/Item/Edit/:slug" element={<EditSlug/>}/>
-                <Route path="Admin/:id/Update/Email" element={<EditAdminEmail/>}/>
-                <Route path="Admin/:id/Update/Name" element={<EditAdminName/>}/>
-                <Route path="Admin/:id/Users" element={<AllUsers/>}/>
+                <Route path="/Admin/:id/Update/Email" element={<EditAdminEmail/>}/>
+                <Route path="/Admin/:id/Update/Name" element={<EditAdminName/>}/>
+                <Route path="/Admin/:id/Users" element={<AllUsers/>}/>
                 {/*UserProvider*/}
-                <Route path="User/:id" element={<EachData/>}/>
-                <Route path="User/:id/Name" element={<EditName/>}/>
-                <Route path="User/:id/Email" element={<EditEmail/>}/>
+                <Route path="/User/:id" element={<EachData/>}/>
+                <Route path="/User/:id/Name" element={<EditName/>}/>
+                <Route path="/User/:id/Email" element={<EditEmail/>}/>
             </Routes>
         </BrowserRouter>
     )

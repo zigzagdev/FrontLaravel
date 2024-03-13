@@ -5,7 +5,7 @@ import {useForm, SubmitHandler} from "react-hook-form";
 import {Genre} from "./Genre";
 import Header from "../../common/header/Header";
 import Footer from "../../common/footer/Footer";
-import {getSingleNoteFn} from "../../../config/common/Function";
+import {getSingleItemData} from "../../../config/common/Function";
 import {AxiosErrorResponse} from "../../../config/common/Interface";
 
 type adminItem = {
@@ -99,7 +99,7 @@ export function ItemDisplay() {
     }));
     const {slug} = useParams<{slug: any}>();
     useEffect(() => {
-        getSingleNoteFn(slug)
+        getSingleItemData(slug)
             .then((result: any) => {
                 setItem(result.data.itemInformation)
             })
@@ -117,6 +117,7 @@ export function ItemDisplay() {
             <Header/>
             <div className="my-4 mx-32 block text-lg duration-700">
                 <div className="my-3 mx-4">
+                    {errorMessage}
                     <div className="my-5">
                         <p className="my-3 mx-4">Item Name</p>
                         <p className="mx-7">{item.name}</p>

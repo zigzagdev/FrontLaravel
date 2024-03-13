@@ -2,7 +2,7 @@ import React, {useState, useRef} from "react";
 import {SubmitHandler, useForm} from "react-hook-form";
 import axios from "axios";
 import {Link, useNavigate, useLocation} from "react-router-dom";
-import {BASE_URL} from "../../common/Const";
+import {BASE_URL} from "../../../config/const/Url";
 
 type Email = {
     email: string

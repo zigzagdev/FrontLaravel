@@ -3,8 +3,8 @@ import axios, {AxiosError} from "axios";
 import Search from "./Search";
 import {Link} from "react-router-dom";
 import {Pagination} from "../config/Pagination";
-import {BASE_URL} from "../../common/Const";
-import {PaginationData, Url} from "../../common/types/Interface";
+import {BASE_URL} from "../../../config/const/Url";
+import {PaginationData, Url} from "../../../config/common/Interface";
 
 type SearchResults = {
     id: number,
