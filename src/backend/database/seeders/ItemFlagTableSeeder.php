@@ -14,6 +14,6 @@ class ItemFlagTableSeeder extends Seeder
      */
     public function run()
     {
-        ItemFlag::factory(50)->create();
+        ItemFlag::factory(70)->create();
     }
 }
